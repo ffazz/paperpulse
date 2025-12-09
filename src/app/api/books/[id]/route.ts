@@ -6,33 +6,40 @@ export async function GET(
   { params }: { params: { id: string } }
 ) {
   try {
+    const bookId = parseInt(params.id)
+
+    if (isNaN(bookId)) {
+      return NextResponse.json(
+        { error: 'Invalid book ID' },
+        { status: 400 }
+      )
+    }
+
+    console.log(`📖 Fetching book #${bookId}...`)
+
     const book = await prisma.book.findUnique({
-      where: { id: params.id },
+      where: { id: bookId }
     })
 
     if (!book) {
-      return NextResponse.json({ error: 'Book not found' }, { status: 404 })
+      console.log(`❌ Book #${bookId} not found`)
+      return NextResponse.json(
+        { error: 'Book not found' },
+        { status: 404 }
+      )
     }
 
+    console.log(`✅ Found book: ${book.title}`)
     return NextResponse.json(book)
+    
   } catch (error) {
-    console.error('Error fetching book:', error)
-    return NextResponse.json({ error: 'Failed to fetch book' }, { status: 500 })
-  }
-}
-
-export async function DELETE(
-  request: NextRequest,
-  { params }: { params: { id: string } }
-) {
-  try {
-    await prisma.book.delete({
-      where: { id: params.id },
-    })
-
-    return NextResponse.json({ message: 'Book deleted successfully' })
-  } catch (error) {
-    console.error('Error deleting book:', error)
-    return NextResponse.json({ error: 'Failed to delete book' }, { status: 500 })
+    console.error('❌ API Error:', error)
+    return NextResponse.json(
+      { 
+        error: 'Failed to fetch book',
+        message: error instanceof Error ? error.message : 'Unknown error'
+      },
+      { status: 500 }
+    )
   }
 }

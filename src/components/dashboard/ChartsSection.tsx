@@ -1,177 +1,93 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts'
-import { DatasetInsights } from '@/types'
 
 interface ChartsSectionProps {
-  insights: DatasetInsights
+  insights: {
+    topSubjects?: Array<{ name: string; count: number }>
+    languageDistribution?: Array<{ name: string; count: number }>
+    genreDistribution?: Array<{ name: string; count: number }>
+    totalBooks?: number
+  }
 }
 
-const COLORS = ['#3b82f6', '#06b6d4', '#8b5cf6', '#ec4899', '#f59e0b', '#10b981']
-
 export default function ChartsSection({ insights }: ChartsSectionProps) {
-  const genreData = Object.entries(insights.genreDistribution)
-    .map(([name, value]) => ({ name, value }))
-    .sort((a, b) => b.value - a.value)
-    .slice(0, 8)
+  // Safely extract data with fallbacks
+  const genreData = insights?.genreDistribution || insights?.topSubjects || []
+  const languageData = insights?.languageDistribution || []
 
-  const languageData = Object.entries(insights.languageDistribution).map(([name, value]) => ({
-    name: name === 'Indonesian' ? 'Indonesia' : name,
-    value,
-  }))
-
-  const ratingData = Object.entries(insights.ratingDistribution).map(([name, value]) => ({
-    name,
-    value,
-  }))
-
-  const topVibes = Object.entries(insights.vibesFrequency)
-    .sort((a, b) => b[1] - a[1])
-    .slice(0, 8)
-    .map(([name, value]) => ({ name, value }))
+  // Find max values for scaling
+  const maxGenre = genreData.length > 0 ? Math.max(...genreData.map(d => d.count)) : 1
+  const maxLang = languageData.length > 0 ? Math.max(...languageData.map(d => d.count)) : 1
 
   return (
-    <div className="space-y-8">
-      {/* Genre Distribution */}
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-16">
+      {/* Top Subjects Chart */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.2 }}
-        className="backdrop-blur-xl bg-white/50 border border-midnight/5 rounded-3xl p-8"
+        transition={{ duration: 0.5 }}
+        className="bg-white rounded-3xl p-8 shadow-lg"
       >
-        <h3 className="text-2xl font-bold mb-6 flex items-center gap-3">
-          <span className="w-2 h-8 bg-gradient-to-b from-accent to-glow rounded-full" />
-          Genre Distribution
-        </h3>
-        <ResponsiveContainer width="100%" height={300}>
-          <BarChart data={genreData}>
-            <CartesianGrid strokeDasharray="3 3" stroke="#0a0a0a" strokeOpacity={0.1} />
-            <XAxis 
-              dataKey="name" 
-              angle={-45} 
-              textAnchor="end" 
-              height={120}
-              tick={{ fill: '#0a0a0a', fontSize: 12 }}
-            />
-            <YAxis tick={{ fill: '#0a0a0a', fontSize: 12 }} />
-            <Tooltip 
-              contentStyle={{ 
-                backgroundColor: 'rgba(255, 255, 255, 0.95)', 
-                border: '1px solid rgba(10, 10, 10, 0.1)',
-                borderRadius: '12px',
-                boxShadow: '0 8px 32px rgba(0, 0, 0, 0.1)'
-              }}
-            />
-            <Bar dataKey="value" fill="url(#colorGradient)" radius={[8, 8, 0, 0]} />
-            <defs>
-              <linearGradient id="colorGradient" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stopColor="#3b82f6" />
-                <stop offset="100%" stopColor="#60a5fa" />
-              </linearGradient>
-            </defs>
-          </BarChart>
-        </ResponsiveContainer>
+        <h3 className="text-2xl font-bold mb-6">Top Subjects</h3>
+        <div className="space-y-4">
+          {genreData.length > 0 ? (
+            genreData.map((genre, index) => (
+              <div key={index} className="space-y-2">
+                <div className="flex justify-between text-sm">
+                  <span className="font-medium truncate pr-2">{genre.name}</span>
+                  <span className="text-midnight/60 whitespace-nowrap">{genre.count}</span>
+                </div>
+                <div className="w-full bg-midnight/10 rounded-full h-3 overflow-hidden">
+                  <motion.div
+                    initial={{ width: 0 }}
+                    animate={{ width: `${(genre.count / maxGenre) * 100}%` }}
+                    transition={{ duration: 0.8, delay: index * 0.1 }}
+                    className="h-full bg-gradient-to-r from-accent to-accent/80 rounded-full"
+                  />
+                </div>
+              </div>
+            ))
+          ) : (
+            <div className="text-center py-12 text-midnight/60">
+              No subject data available
+            </div>
+          )}
+        </div>
       </motion.div>
 
-      {/* Language & Rating */}
-      <div className="grid md:grid-cols-2 gap-8">
-        <motion.div
-          initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ delay: 0.3 }}
-          className="backdrop-blur-xl bg-white/50 border border-midnight/5 rounded-3xl p-8"
-        >
-          <h3 className="text-2xl font-bold mb-6 flex items-center gap-3">
-            <span className="w-2 h-8 bg-gradient-to-b from-emerald-500 to-teal-500 rounded-full" />
-            Language Split
-          </h3>
-          <ResponsiveContainer width="100%" height={300}>
-            <PieChart>
-              <Pie
-                data={languageData}
-                cx="50%"
-                cy="50%"
-                labelLine={false}
-                label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
-                outerRadius={100}
-                dataKey="value"
-              >
-                {languageData.map((entry, index) => (
-                  <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                ))}
-              </Pie>
-              <Tooltip 
-                contentStyle={{ 
-                  backgroundColor: 'rgba(255, 255, 255, 0.95)', 
-                  border: '1px solid rgba(10, 10, 10, 0.1)',
-                  borderRadius: '12px'
-                }}
-              />
-            </PieChart>
-          </ResponsiveContainer>
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0, x: 20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ delay: 0.4 }}
-          className="backdrop-blur-xl bg-white/50 border border-midnight/5 rounded-3xl p-8"
-        >
-          <h3 className="text-2xl font-bold mb-6 flex items-center gap-3">
-            <span className="w-2 h-8 bg-gradient-to-b from-amber-500 to-orange-500 rounded-full" />
-            Rating Distribution
-          </h3>
-          <ResponsiveContainer width="100%" height={300}>
-            <BarChart data={ratingData}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#0a0a0a" strokeOpacity={0.1} />
-              <XAxis dataKey="name" tick={{ fill: '#0a0a0a', fontSize: 12 }} />
-              <YAxis tick={{ fill: '#0a0a0a', fontSize: 12 }} />
-              <Tooltip 
-                contentStyle={{ 
-                  backgroundColor: 'rgba(255, 255, 255, 0.95)', 
-                  border: '1px solid rgba(10, 10, 10, 0.1)',
-                  borderRadius: '12px'
-                }}
-              />
-              <Bar dataKey="value" fill="#f59e0b" radius={[8, 8, 0, 0]} />
-            </BarChart>
-          </ResponsiveContainer>
-        </motion.div>
-      </div>
-
-      {/* Top Vibes */}
+      {/* Language Distribution Chart */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.5 }}
-        className="backdrop-blur-xl bg-white/50 border border-midnight/5 rounded-3xl p-8"
+        transition={{ duration: 0.5, delay: 0.2 }}
+        className="bg-white rounded-3xl p-8 shadow-lg"
       >
-        <h3 className="text-2xl font-bold mb-6 flex items-center gap-3">
-          <span className="w-2 h-8 bg-gradient-to-b from-purple-500 to-pink-500 rounded-full" />
-          Top Vibes
-        </h3>
-        <ResponsiveContainer width="100%" height={300}>
-          <BarChart data={topVibes} layout="vertical">
-            <CartesianGrid strokeDasharray="3 3" stroke="#0a0a0a" strokeOpacity={0.1} />
-            <XAxis type="number" tick={{ fill: '#0a0a0a', fontSize: 12 }} />
-            <YAxis dataKey="name" type="category" width={120} tick={{ fill: '#0a0a0a', fontSize: 12 }} />
-            <Tooltip 
-              contentStyle={{ 
-                backgroundColor: 'rgba(255, 255, 255, 0.95)', 
-                border: '1px solid rgba(10, 10, 10, 0.1)',
-                borderRadius: '12px'
-              }}
-            />
-            <Bar dataKey="value" fill="url(#vibesGradient)" radius={[0, 8, 8, 0]} />
-            <defs>
-              <linearGradient id="vibesGradient" x1="0" y1="0" x2="1" y2="0">
-                <stop offset="0%" stopColor="#8b5cf6" />
-                <stop offset="100%" stopColor="#ec4899" />
-              </linearGradient>
-            </defs>
-          </BarChart>
-        </ResponsiveContainer>
+        <h3 className="text-2xl font-bold mb-6">Language Distribution</h3>
+        <div className="space-y-4">
+          {languageData.length > 0 ? (
+            languageData.map((lang, index) => (
+              <div key={index} className="space-y-2">
+                <div className="flex justify-between text-sm">
+                  <span className="font-medium">{lang.name}</span>
+                  <span className="text-midnight/60 whitespace-nowrap">{lang.count}</span>
+                </div>
+                <div className="w-full bg-midnight/10 rounded-full h-3 overflow-hidden">
+                  <motion.div
+                    initial={{ width: 0 }}
+                    animate={{ width: `${(lang.count / maxLang) * 100}%` }}
+                    transition={{ duration: 0.8, delay: index * 0.1 }}
+                    className="h-full bg-gradient-to-r from-midnight to-midnight/80 rounded-full"
+                  />
+                </div>
+              </div>
+            ))
+          ) : (
+            <div className="text-center py-12 text-midnight/60">
+              No language data available
+            </div>
+          )}
+        </div>
       </motion.div>
     </div>
   )

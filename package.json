@@ -1,50 +1,39 @@
 {
   "name": "paperpulse",
-  "version": "1.0.0",
-  "description": "Platform rekomendasi buku Indonesia dan Internasional",
+  "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "build": "prisma generate && prisma migrate deploy && next build",
+    "dev": "next dev --turbo",
+    "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "format": "prettier --write .",
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate dev",
+    "prisma:push": "prisma db push",
     "prisma:seed": "tsx prisma/seed.ts",
     "prisma:studio": "prisma studio",
     "prisma:reset": "prisma migrate reset",
-    "setup": "npm install && npm run prisma:generate && npm run prisma:migrate && npm run prisma:seed"
+    "db:setup": "prisma generate && prisma db push && npm run prisma:seed"
   },
   "dependencies": {
-    "@prisma/client": "^5.20.0",
+    "@prisma/client": "^5.22.0",
     "clsx": "^2.1.1",
-    "date-fns": "^3.6.0",
-    "framer-motion": "^12.23.25",
+    "framer-motion": "^11.11.17",
     "next": "^15.0.3",
-    "papaparse": "^5.4.1",
-    "prisma": "^5.20.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-icons": "^5.5.0",
-    "recharts": "^2.12.7"
+    "recharts": "^2.15.4"
   },
   "devDependencies": {
-    "@types/node": "^22.0.0",
-    "@types/papaparse": "^5.3.14",
-    "@types/react": "^19.0.0",
-    "@types/react-dom": "^19.0.0",
+    "@types/node": "^22.9.3",
+    "@types/react": "^19.0.1",
+    "@types/react-dom": "^19.0.2",
     "autoprefixer": "^10.4.20",
-    "eslint": "^8.57.0",
-    "eslint-config-next": "^15.0.3",
-    "postcss": "^8.4.47",
-    "prettier": "^3.3.3",
-    "tailwindcss": "^3.4.14",
-    "tsx": "^4.19.0",
-    "typescript": "^5.6.3"
-  },
-  "engines": {
-    "node": ">=18.0.0",
-    "npm": ">=9.0.0"
+    "postcss": "^8.4.49",
+    "prisma": "^5.22.0",
+    "tailwindcss": "^3.4.15",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.2"
   }
 }

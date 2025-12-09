@@ -1,0 +1,6 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 4, "column": 0}, "map": {"version":3,"sources":["file:///Users/fazlabisha/Documents/GitHub/paperpulse/src/app/loading.tsx"],"sourcesContent":["export default function Loading() {\n  return (\n    <div className=\"container mx-auto px-4 py-24\">\n      <div className=\"max-w-2xl mx-auto text-center space-y-6\">\n        <div className=\"text-6xl mb-4 pulse-animation\">📚</div>\n        <h2 className=\"text-2xl font-semibold text-gray-700\">\n          Memuat...\n        </h2>\n        <div className=\"flex justify-center\">\n          <div className=\"animate-spin rounded-full h-12 w-12 border-b-2 border-cyan-600\"></div>\n        </div>\n      </div>\n    </div>\n  )\n}"],"names":[],"mappings":";;;;;;AAAe,SAAS;IACtB,qBACE,8OAAC;QAAI,WAAU;kBACb,cAAA,8OAAC;YAAI,WAAU;;8BACb,8OAAC;oBAAI,WAAU;8BAAgC;;;;;;8BAC/C,8OAAC;oBAAG,WAAU;8BAAuC;;;;;;8BAGrD,8OAAC;oBAAI,WAAU;8BACb,cAAA,8OAAC;wBAAI,WAAU;;;;;;;;;;;;;;;;;;;;;;AAKzB","debugId":null}}]
+}

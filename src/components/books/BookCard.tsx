@@ -1,78 +1,113 @@
 'use client'
 
-import Link from 'next/link'
 import { motion } from 'framer-motion'
-import { HiStar } from 'react-icons/hi2'
+import Image from 'next/image'
+import Link from 'next/link'
+import { useState } from 'react'
 import { Book } from '@/types'
-import { Badge } from '@/components/ui/Badge'
 
 interface BookCardProps {
   book: Book
+  index: number
 }
 
-export default function BookCard({ book }: BookCardProps) {
+export default function BookCard({ book, index }: BookCardProps) {
+  const [imageError, setImageError] = useState(false)
+
+  // ✅ FIX: Check if book.language exists (singular)
+  const isIndonesian = book.language 
+    ? (() => {
+        const lang = book.language.toLowerCase()
+        return lang.includes('indonesia') || 
+               lang.includes('indonesian') || 
+               lang === 'id' || 
+               lang === 'ind'
+      })()
+    : false
+
   return (
-    <Link href={`/books/${book.id}`}>
-      <motion.div
-        whileHover={{ y: -8, transition: { duration: 0.2 } }}
-        className="group relative h-full rounded-2xl border border-midnight/5 hover:border-midnight/10 overflow-hidden bg-white/50 backdrop-blur-sm hover:shadow-2xl hover:shadow-accent/5 transition-all duration-300"
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.3, delay: index * 0.05 }}
+    >
+      <Link
+        href={`/books/${book.id}`}
+        className="group block bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-midnight/5"
       >
         {/* Book Cover */}
-        <div className="aspect-[3/4] bg-gradient-to-br from-accent/10 via-glow/5 to-transparent flex items-center justify-center overflow-hidden relative">
-          <div className="absolute inset-0 bg-gradient-to-t from-midnight/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-          <motion.div
-            className="text-6xl"
-            whileHover={{ scale: 1.1, rotate: 5 }}
-            transition={{ duration: 0.3 }}
-          >
-            📖
-          </motion.div>
-        </div>
-
-        {/* Content */}
-        <div className="p-6 space-y-3">
-          {/* Rating Badge */}
-          <div className="flex items-center gap-2">
-            <div className="flex items-center gap-1 px-3 py-1 rounded-full bg-accent/10">
-              <HiStar className="w-4 h-4 text-accent" />
-              <span className="text-sm font-bold">{book.rating.toFixed(1)}</span>
+        <div className="relative h-80 bg-gradient-to-br from-accent/10 to-accent/5 overflow-hidden">
+          {!imageError && book.cover_image_url ? (
+            <Image
+              src={book.cover_image_url}
+              alt={book.title}
+              fill
+              className="object-cover group-hover:scale-105 transition-transform duration-500"
+              onError={() => setImageError(true)}
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            />
+          ) : (
+            <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-accent/20 to-accent/10">
+              <div className="text-center p-6">
+                <div className="text-6xl mb-2">📚</div>
+                <p className="text-sm text-midnight/40 font-medium line-clamp-2">
+                  {book.title}
+                </p>
+              </div>
             </div>
-            <Badge variant="default">
-              {book.language === 'Indonesian' ? '🇮🇩' : '🌍'}
-            </Badge>
-          </div>
+          )}
 
-          {/* Title & Author */}
-          <div>
-            <h3 className="font-bold text-lg line-clamp-2 group-hover:text-accent transition-colors">
-              {book.title}
-            </h3>
-            <p className="text-sm text-midnight/60 mt-1">{book.author}</p>
-          </div>
-
-          {/* Genre Badge */}
-          <Badge variant="secondary">{book.genre}</Badge>
-
-          {/* Vibes */}
-          <div className="flex flex-wrap gap-1">
-            {book.vibes.slice(0, 2).map((vibe, idx) => (
-              <span
-                key={idx}
-                className="text-xs px-2 py-1 rounded-full bg-midnight/5 text-midnight/60"
-              >
-                {vibe}
-              </span>
-            ))}
-          </div>
-
-          {/* Meta Info */}
-          <div className="flex items-center gap-3 text-xs text-midnight/40 pt-2 border-t border-midnight/5">
-            <span>{book.pages} pages</span>
-            <span>·</span>
-            <span>{book.year}</span>
+          {/* Language Badge */}
+          <div className="absolute top-4 right-4 z-10">
+            <span
+              className={`px-3 py-1.5 rounded-full text-xs font-bold shadow-lg backdrop-blur-sm ${
+                isIndonesian
+                  ? 'bg-red-500/90 text-white'
+                  : 'bg-blue-500/90 text-white'
+              }`}
+            >
+              {isIndonesian ? '🇮🇩 ID' : '🌍 INT'}
+            </span>
           </div>
         </div>
-      </motion.div>
-    </Link>
+
+        {/* Book Info */}
+        <div className="p-6">
+          <h3 className="font-bold text-xl mb-3 line-clamp-2 text-midnight group-hover:text-accent transition-colors">
+            {book.title}
+          </h3>
+
+          {book.authors && book.authors.length > 0 && (
+            <p className="text-sm text-midnight/60 mb-2 line-clamp-1">
+              ✍️ {book.authors.join(', ')}
+            </p>
+          )}
+
+          {book.publisher && (
+            <p className="text-xs text-midnight/40 mb-4">
+              📚 {book.publisher}
+            </p>
+          )}
+
+          {book.subjects && book.subjects.length > 0 && (
+            <div className="flex flex-wrap gap-2">
+              {book.subjects.slice(0, 2).map((subject, idx) => (
+                <span
+                  key={idx}
+                  className="px-2 py-1 bg-accent/10 text-accent rounded-md text-xs font-medium"
+                >
+                  {subject}
+                </span>
+              ))}
+              {book.subjects.length > 2 && (
+                <span className="px-2 py-1 bg-midnight/5 text-midnight/60 rounded-md text-xs">
+                  +{book.subjects.length - 2}
+                </span>
+              )}
+            </div>
+          )}
+        </div>
+      </Link>
+    </motion.div>
   )
 }

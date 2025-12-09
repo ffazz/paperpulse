@@ -2,37 +2,55 @@
 
 import { motion } from 'framer-motion'
 import { HiBookOpen, HiStar, HiDocumentText, HiCalendar } from 'react-icons/hi2'
-import { DatasetInsights } from '@/types'
 
 interface StatsCardsProps {
-  insights: DatasetInsights
+  insights?: {
+    totalBooks?: number
+    indonesianBooks?: number
+    internationalBooks?: number
+    averageRating?: number
+    averagePages?: number
+    yearRange?: {
+      min: number
+      max: number
+    }
+  }
 }
 
 export default function StatsCards({ insights }: StatsCardsProps) {
+  // Default values if insights is undefined
+  const totalBooks = insights?.totalBooks || 0
+  const indonesianBooks = insights?.indonesianBooks || 0
+  const internationalBooks = insights?.internationalBooks || 0
+  const averageRating = insights?.averageRating || 0
+  const averagePages = insights?.averagePages || 0
+  const yearMin = insights?.yearRange?.min || new Date().getFullYear()
+  const yearMax = insights?.yearRange?.max || new Date().getFullYear()
+
   const stats = [
     {
       icon: HiBookOpen,
       label: 'Total Books',
-      value: insights.totalBooks.toString(),
+      value: totalBooks.toString(),
       color: 'from-blue-500 to-cyan-500',
     },
     {
-      icon: HiStar,
-      label: 'Avg Rating',
-      value: insights.averageRating.toFixed(1),
-      color: 'from-amber-500 to-orange-500',
+      icon: HiBookOpen,
+      label: 'Indonesian',
+      value: indonesianBooks.toString(),
+      color: 'from-red-500 to-pink-500',
     },
     {
-      icon: HiDocumentText,
-      label: 'Avg Pages',
-      value: Math.round(insights.averagePages).toString(),
-      color: 'from-purple-500 to-pink-500',
+      icon: HiBookOpen,
+      label: 'International',
+      value: internationalBooks.toString(),
+      color: 'from-green-500 to-emerald-500',
     },
     {
       icon: HiCalendar,
       label: 'Year Range',
-      value: `${insights.yearRange.min}-${insights.yearRange.max}`,
-      color: 'from-emerald-500 to-teal-500',
+      value: `${yearMin}-${yearMax}`,
+      color: 'from-purple-500 to-pink-500',
     },
   ]
 

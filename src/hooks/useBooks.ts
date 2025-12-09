@@ -1,38 +1,33 @@
-'use client'
-
 import { useState, useEffect } from 'react'
-import { Book, FilterOptions } from '@/types'
+import { FilterOptions, Book } from '@/types'
 
-export function useBooks(filters?: FilterOptions) {
+export function useBooks(filters: FilterOptions) {
   const [books, setBooks] = useState<Book[]>([])
   const [loading, setLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
-    const fetchBooks = async () => {
+    async function fetchBooks() {
+      setLoading(true)
       try {
-        setLoading(true)
         const params = new URLSearchParams()
         
-        if (filters?.search) params.append('search', filters.search)
-        if (filters?.genre) params.append('genre', filters.genre)
-        if (filters?.language) params.append('language', filters.language)
-        if (filters?.minRating) params.append('minRating', filters.minRating.toString())
-        if (filters?.maxRating) params.append('maxRating', filters.maxRating.toString())
-        if (filters?.sortBy) params.append('sortBy', filters.sortBy)
-        if (filters?.sortOrder) params.append('sortOrder', filters.sortOrder)
+        if (filters.language) params.append('language', filters.language)
+        if (filters.subject) params.append('subject', filters.subject)
+        if (filters.publisher) params.append('publisher', filters.publisher)
+        if (filters.search) params.append('search', filters.search)
+        if (filters.yearFrom) params.append('yearFrom', filters.yearFrom.toString())
+        if (filters.yearTo) params.append('yearTo', filters.yearTo.toString())
 
         const response = await fetch(`/api/books?${params.toString()}`)
         
         if (!response.ok) {
           throw new Error('Failed to fetch books')
         }
-
+        
         const data = await response.json()
         setBooks(data)
-        setError(null)
-      } catch (err) {
-        setError(err instanceof Error ? err.message : 'An error occurred')
+      } catch (error) {
+        console.error('❌ Failed to fetch books:', error)
         setBooks([])
       } finally {
         setLoading(false)
@@ -40,7 +35,7 @@ export function useBooks(filters?: FilterOptions) {
     }
 
     fetchBooks()
-  }, [filters?.search, filters?.genre, filters?.language, filters?.minRating, filters?.maxRating, filters?.sortBy, filters?.sortOrder])
+  }, [filters])
 
-  return { books, loading, error }
+  return { books, loading }
 }

@@ -6,16 +6,28 @@ import CTASection from '@/components/home/CTASection'
 
 async function getStats() {
   try {
-    const [total, indonesian, english] = await Promise.all([
+    const [total, indonesian, international] = await Promise.all([
       prisma.book.count(),
-      prisma.book.count({ where: { language: 'Indonesian' } }),
-      prisma.book.count({ where: { language: 'English' } }),
+      prisma.book.count({ 
+        where: { 
+          language: { 
+            in: ['Indonesian', 'Indonesia', 'id', 'ind'] 
+          } 
+        } 
+      }),
+      prisma.book.count({ 
+        where: { 
+          language: { 
+            notIn: ['Indonesian', 'Indonesia', 'id', 'ind'] 
+          } 
+        } 
+      }),
     ])
     
-    return { total, indonesian, english }
+    return { total, indonesian, international }
   } catch (error) {
     console.error('Error fetching stats:', error)
-    return { total: 0, indonesian: 0, english: 0 }
+    return { total: 0, indonesian: 0, international: 0 }
   }
 }
 

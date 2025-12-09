@@ -1,46 +1,49 @@
+// Book Interface
 export interface Book {
-  id: string
+  id: number
   title: string
-  author: string
-  genre: string
-  rating: number
-  vibes: string[]
-  themes: string[]
-  pages: number
-  year: number
+  authors: string[]
+  translators?: string[]
+  editors?: string[]
+  reviewers?: string[]
+  illustrators?: string[]
+  series_editors?: string[]
+  contributors?: string[]
+  cover_image_url?: string
+  epub_isbn?: string | null
+  publisher: string
+  subjects: string[]
   language: string
-  createdAt: Date
-  updatedAt: Date
+  publication_date?: string | Date | null
+  description?: string | null
+  createdAt?: Date
+  updatedAt?: Date
 }
 
-export interface BookWithSimilarity extends Book {
-  similarityScore?: number
-}
-
+// Extended Filter Options
 export interface FilterOptions {
-  search?: string
-  genre?: string
-  vibes?: string[]
-  themes?: string[]
   language?: string
-  minRating?: number
-  maxRating?: number
-  minPages?: number
-  maxPages?: number
-  minYear?: number
-  maxYear?: number
-  sortBy?: 'rating' | 'pages' | 'year' | 'title'
-  sortOrder?: 'asc' | 'desc'
+  subject?: string
+  publisher?: string
+  search?: string
+  yearFrom?: number
+  yearTo?: number
 }
 
-export interface DatasetInsights {
+// Stats Interface
+export interface Stats {
+  total: number
+  indonesian: number
+  international: number
+}
+
+// Dashboard Insights Interface (optional)
+export interface DashboardInsights {
   totalBooks: number
-  averageRating: number
-  averagePages: number
-  genreDistribution: Record<string, number>
-  vibesFrequency: Record<string, number>
-  themesFrequency: Record<string, number>
-  languageDistribution: Record<string, number>
-  yearRange: { min: number; max: number }
-  ratingDistribution: Record<string, number>
+  indonesianBooks: number
+  internationalBooks: number
+  yearRange?: {
+    min: number
+    max: number
+  }
 }

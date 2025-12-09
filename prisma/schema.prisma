@@ -1,28 +1,37 @@
+// This is your Prisma schema file
+// Learn more: https://pris.ly/d/prisma-schema
+
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "postgresql" // Atau "mysql" / "sqlite" sesuai database Anda
   url      = env("DATABASE_URL")
 }
 
 model Book {
-  id        String   @id @default(uuid())
-  title     String
-  author    String
-  genre     String
-  rating    Float
-  vibes     String[]
-  themes    String[]
-  pages     Int
-  year      Int
-  language  String   @default("English")
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id               Int       @id @default(autoincrement())
+  title            String
+  authors          String[]
+  translators      String[]  @default([])
+  editors          String[]  @default([])
+  reviewers        String[]  @default([])
+  illustrators     String[]  @default([])
+  series_editors   String[]  @default([])
+  contributors     String[]  @default([])
+  cover_image_url  String?
+  epub_isbn        String?   @unique
+  publisher        String
+  subjects         String[]
+  language         String    // Language as single string
+  publication_date DateTime?
+  description      String?   @db.Text
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
 
-  @@index([genre])
-  @@index([rating])
-  @@index([year])
   @@index([language])
+  @@index([publisher])
+  @@index([title])
+  @@map("books")
 }

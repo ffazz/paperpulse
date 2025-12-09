@@ -1,10 +1,8 @@
 {
   "/api/books/route": "app/api/books/route.js",
   "/api/insights/route": "app/api/insights/route.js",
-  "/api/recommend/route": "app/api/recommend/route.js",
-  "/dashboard/page": "app/dashboard/page.js",
   "/books/page": "app/books/page.js",
+  "/dashboard/page": "app/dashboard/page.js",
   "/page": "app/page.js",
-  "/upload/page": "app/upload/page.js",
-  "/books/[id]/page": "app/books/[id]/page.js"
+  "/upload/page": "app/upload/page.js"
 }

@@ -1,79 +1,89 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
-import { FilterOptions } from '@/types'
 
 export async function GET(request: NextRequest) {
   try {
-    const searchParams = request.nextUrl.searchParams
-    
-    const filters: FilterOptions = {
-      search: searchParams.get('search') || undefined,
-      genre: searchParams.get('genre') || undefined,
-      language: searchParams.get('language') || undefined,
-      minRating: searchParams.get('minRating') ? parseFloat(searchParams.get('minRating')!) : undefined,
-      maxRating: searchParams.get('maxRating') ? parseFloat(searchParams.get('maxRating')!) : undefined,
-      sortBy: (searchParams.get('sortBy') as any) || 'rating',
-      sortOrder: (searchParams.get('sortOrder') as any) || 'desc',
-    }
+    const { searchParams } = new URL(request.url)
+    const languageFilter = searchParams.get('language')
+    const subjectFilter = searchParams.get('subject')
+    const publisherFilter = searchParams.get('publisher')
+    const searchQuery = searchParams.get('search')
+    const yearFrom = searchParams.get('yearFrom')
+    const yearTo = searchParams.get('yearTo')
 
+    console.log('🔍 API Request Filters:', {
+      language: languageFilter,
+      subject: subjectFilter,
+      publisher: publisherFilter,
+      search: searchQuery,
+      yearFrom,
+      yearTo
+    })
+
+    // Build where clause dynamically
     const where: any = {}
 
-    if (filters.search) {
+    // Language Filter
+    if (languageFilter) {
+      where.language = languageFilter
+    }
+
+    // Subject Filter
+    if (subjectFilter) {
+      where.subjects = {
+        has: subjectFilter
+      }
+    }
+
+    // Publisher Filter
+    if (publisherFilter) {
+      where.publisher = publisherFilter
+    }
+
+    // Search Query Filter
+    if (searchQuery) {
       where.OR = [
-        { title: { contains: filters.search, mode: 'insensitive' } },
-        { author: { contains: filters.search, mode: 'insensitive' } },
+        { title: { contains: searchQuery, mode: 'insensitive' } },
+        { publisher: { contains: searchQuery, mode: 'insensitive' } },
+        { description: { contains: searchQuery, mode: 'insensitive' } }
       ]
     }
 
-    if (filters.genre) {
-      where.genre = filters.genre
+    // Year Range Filter
+    if (yearFrom || yearTo) {
+      where.publication_date = {}
+      
+      if (yearFrom) {
+        where.publication_date.gte = new Date(`${yearFrom}-01-01`)
+      }
+      
+      if (yearTo) {
+        where.publication_date.lte = new Date(`${yearTo}-12-31`)
+      }
     }
 
-    if (filters.language) {
-      where.language = filters.language
-    }
+    console.log('🔍 Prisma where clause:', JSON.stringify(where, null, 2))
 
-    if (filters.minRating !== undefined || filters.maxRating !== undefined) {
-      where.rating = {}
-      if (filters.minRating !== undefined) where.rating.gte = filters.minRating
-      if (filters.maxRating !== undefined) where.rating.lte = filters.maxRating
-    }
-
+    // Fetch books with filters
     const books = await prisma.book.findMany({
       where,
-      orderBy: {
-        [filters.sortBy || 'rating']: filters.sortOrder || 'desc',
-      },
+      take: 1000,
+      orderBy: { id: 'asc' }
     })
+
+    console.log(`✅ Found ${books.length} books`)
 
     return NextResponse.json(books)
-  } catch (error) {
-    console.error('Error fetching books:', error)
-    return NextResponse.json({ error: 'Failed to fetch books' }, { status: 500 })
-  }
-}
 
-export async function POST(request: NextRequest) {
-  try {
-    const body = await request.json()
+  } catch (error) {
+    console.error('❌ API Error:', error)
     
-    const book = await prisma.book.create({
-      data: {
-        title: body.title,
-        author: body.author,
-        genre: body.genre,
-        rating: body.rating,
-        vibes: body.vibes,
-        themes: body.themes,
-        pages: body.pages,
-        year: body.year,
-        language: body.language || 'English',
-      },
-    })
-
-    return NextResponse.json(book, { status: 201 })
-  } catch (error) {
-    console.error('Error creating book:', error)
-    return NextResponse.json({ error: 'Failed to create book' }, { status: 500 })
+    return NextResponse.json(
+      { 
+        error: 'Failed to fetch books',
+        message: error instanceof Error ? error.message : 'Unknown error'
+      }, 
+      { status: 500 }
+    )
   }
 }

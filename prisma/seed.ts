@@ -2,1138 +2,709 @@ import { PrismaClient } from '@prisma/client'
 
 const prisma = new PrismaClient()
 
-const sampleBooks = [
-  // ========== BUKU INDONESIA POPULER 2020-2025 (50 buku) ==========
-  {
-    title: "Laut Bercerita",
-    author: "Leila S. Chudori",
-    genre: "Fiksi Sejarah",
-    rating: 4.8,
-    vibes: ["mengharukan", "historis", "emosional"],
-    themes: ["kemanusiaan", "perjuangan", "kehilangan"],
-    pages: 379,
-    year: 2020,
-    language: "Indonesian",
-  },
-  {
-    title: "Hujan",
-    author: "Tere Liye",
-    genre: "Fiksi",
-    rating: 4.7,
-    vibes: ["magis", "petualangan", "misterius"],
-    themes: ["persahabatan", "keluarga", "supernatural"],
-    pages: 320,
-    year: 2020,
-    language: "Indonesian",
-  },
-  {
-    title: "Gadis Kretek",
-    author: "Ratih Kumala",
-    genre: "Roman",
-    rating: 4.6,
-    vibes: ["romantis", "nostalgia", "indah"],
-    themes: ["cinta", "sejarah", "budaya"],
-    pages: 370,
-    year: 2020,
-    language: "Indonesian",
-  },
-  {
-    title: "Ronggeng Dukuh Paruk",
-    author: "Ahmad Tohari",
-    genre: "Fiksi Sastra",
-    rating: 4.9,
-    vibes: ["filosofis", "tradisional", "mendalam"],
-    themes: ["tradisi", "konflik", "identitas"],
-    pages: 198,
-    year: 2020,
-    language: "Indonesian",
-  },
-  {
-    title: "Pulang",
-    author: "Tere Liye",
-    genre: "Fiksi",
-    rating: 4.7,
-    vibes: ["mengharukan", "inspiratif", "penuh makna"],
-    themes: ["keluarga", "penebusan", "harapan"],
-    pages: 400,
-    year: 2020,
-    language: "Indonesian",
-  },
-  {
-    title: "Bumi Manusia",
-    author: "Pramoedya Ananta Toer",
-    genre: "Fiksi Sejarah",
-    rating: 4.8,
-    vibes: ["epik", "revolusioner", "kuat"],
-    themes: ["kolonialisme", "pendidikan", "keadilan"],
-    pages: 535,
-    year: 2020,
-    language: "Indonesian",
-  },
-  {
-    title: "Cantik Itu Luka",
-    author: "Eka Kurniawan",
-    genre: "Realisme Magis",
-    rating: 4.7,
-    vibes: ["dark", "surreal", "kompleks"],
-    themes: ["sejarah", "keluarga", "supernatural"],
-    pages: 520,
-    year: 2020,
-    language: "Indonesian",
-  },
-  {
-    title: "Pergi",
-    author: "Tere Liye",
-    genre: "Fiksi",
-    rating: 4.6,
-    vibes: ["petualangan", "inspiratif", "mengharukan"],
-    themes: ["perjalanan", "kehidupan", "makna"],
-    pages: 380,
-    year: 2020,
-    language: "Indonesian",
-  },
-  {
-    title: "Tentang Kamu",
-    author: "Tere Liye",
-    genre: "Roman",
-    rating: 4.5,
-    vibes: ["romantis", "ringan", "menyentuh"],
-    themes: ["cinta", "kehidupan", "takdir"],
-    pages: 350,
-    year: 2020,
-    language: "Indonesian",
-  },
-  {
-    title: "Negeri 5 Menara",
-    author: "Ahmad Fuadi",
-    genre: "Fiksi Inspiratif",
-    rating: 4.7,
-    vibes: ["inspiratif", "penuh semangat", "mengharukan"],
-    themes: ["pendidikan", "persahabatan", "mimpi"],
-    pages: 423,
-    year: 2021,
-    language: "Indonesian",
-  },
-  {
-    title: "Perempuan Yang Menangis Kepada Bulan Hitam",
-    author: "Dian Purnomo",
-    genre: "Puisi",
-    rating: 4.5,
-    vibes: ["melankolik", "puitis", "introspektif"],
-    themes: ["cinta", "kehilangan", "eksistensial"],
-    pages: 180,
-    year: 2021,
-    language: "Indonesian",
-  },
-  {
-    title: "Seperti Dendam, Rindu Harus Dibayar Tuntas",
-    author: "Eka Kurniawan",
-    genre: "Thriller",
-    rating: 4.6,
-    vibes: ["intense", "dark", "menegangkan"],
-    themes: ["balas dendam", "kekerasan", "obsesi"],
-    pages: 198,
-    year: 2021,
-    language: "Indonesian",
-  },
-  {
-    title: "Bumi",
-    author: "Tere Liye",
-    genre: "Fiksi Petualangan",
-    rating: 4.8,
-    vibes: ["magis", "seru", "penuh teka-teki"],
-    themes: ["persahabatan", "kekuatan", "paralel"],
-    pages: 440,
-    year: 2021,
-    language: "Indonesian",
-  },
-  {
-    title: "Bulan",
-    author: "Tere Liye",
-    genre: "Fiksi Petualangan",
-    rating: 4.7,
-    vibes: ["misteri", "magis", "menegangkan"],
-    themes: ["petualangan", "kegelapan", "harapan"],
-    pages: 400,
-    year: 2021,
-    language: "Indonesian",
-  },
-  {
-    title: "Matahari",
-    author: "Tere Liye",
-    genre: "Fiksi Petualangan",
-    rating: 4.8,
-    vibes: ["epik", "heroik", "emosional"],
-    themes: ["pengorbanan", "keberanian", "cinta"],
-    pages: 420,
-    year: 2021,
-    language: "Indonesian",
-  },
-  {
-    title: "Si Anak Badai",
-    author: "Tere Liye",
-    genre: "Fiksi Petualangan",
-    rating: 4.7,
-    vibes: ["petualangan", "magis", "seru"],
-    themes: ["persahabatan", "keberanian", "supernatural"],
-    pages: 400,
-    year: 2022,
-    language: "Indonesian",
-  },
-  {
-    title: "Orang-Orang Biasa",
-    author: "Andrea Hirata",
-    genre: "Fiksi",
-    rating: 4.6,
-    vibes: ["inspiratif", "hangat", "optimis"],
-    themes: ["kehidupan", "perjuangan", "harapan"],
-    pages: 350,
-    year: 2022,
-    language: "Indonesian",
-  },
-  {
-    title: "Laskar Pelangi",
-    author: "Andrea Hirata",
-    genre: "Fiksi Inspiratif",
-    rating: 4.8,
-    vibes: ["inspiratif", "mengharukan", "ceria"],
-    themes: ["pendidikan", "kemiskinan", "mimpi"],
-    pages: 529,
-    year: 2022,
-    language: "Indonesian",
-  },
-  {
-    title: "Sang Pemimpi",
-    author: "Andrea Hirata",
-    genre: "Fiksi Inspiratif",
-    rating: 4.7,
-    vibes: ["penuh semangat", "optimis", "menyentuh"],
-    themes: ["mimpi", "persahabatan", "perjuangan"],
-    pages: 292,
-    year: 2022,
-    language: "Indonesian",
-  },
-  {
-    title: "Edensor",
-    author: "Andrea Hirata",
-    genre: "Fiksi Inspiratif",
-    rating: 4.6,
-    vibes: ["petualangan", "inspiratif", "romantis"],
-    themes: ["cinta", "perjalanan", "impian"],
-    pages: 300,
-    year: 2022,
-    language: "Indonesian",
-  },
-  {
-    title: "Rindu",
-    author: "Tere Liye",
-    genre: "Fiksi",
-    rating: 4.6,
-    vibes: ["emosional", "mendalam", "menyentuh"],
-    themes: ["kerinduan", "kehilangan", "cinta"],
-    pages: 370,
-    year: 2022,
-    language: "Indonesian",
-  },
-  {
-    title: "Komet",
-    author: "Tere Liye",
-    genre: "Fiksi Petualangan",
-    rating: 4.5,
-    vibes: ["misterius", "seru", "penuh aksi"],
-    themes: ["misteri", "petualangan", "persahabatan"],
-    pages: 390,
-    year: 2023,
-    language: "Indonesian",
-  },
-  {
-    title: "Komet Minor",
-    author: "Tere Liye",
-    genre: "Fiksi Petualangan",
-    rating: 4.6,
-    vibes: ["menegangkan", "penuh teka-teki", "magis"],
-    themes: ["petualangan", "bahaya", "kesetiaan"],
-    pages: 410,
-    year: 2023,
-    language: "Indonesian",
-  },
-  {
-    title: "Funiculi Funicula",
-    author: "Toshikazu Kawaguchi (Terjemahan)",
-    genre: "Fiksi Fantasi",
-    rating: 4.5,
-    vibes: ["filosofis", "menyentuh", "magis"],
-    themes: ["waktu", "penyesalan", "hubungan"],
-    pages: 213,
-    year: 2023,
-    language: "Indonesian",
-  },
-  {
-    title: "Selamat Tinggal",
-    author: "Tere Liye",
-    genre: "Fiksi",
-    rating: 4.6,
-    vibes: ["emosional", "mendalam", "reflektif"],
-    themes: ["perpisahan", "kehilangan", "makna hidup"],
-    pages: 380,
-    year: 2023,
-    language: "Indonesian",
-  },
-  {
-    title: "Nebula",
-    author: "Tere Liye",
-    genre: "Fiksi Petualangan",
-    rating: 4.7,
-    vibes: ["epik", "dramatis", "menegangkan"],
-    themes: ["konflik", "keberanian", "pengorbanan"],
-    pages: 450,
-    year: 2023,
-    language: "Indonesian",
-  },
-  {
-    title: "Selena",
-    author: "Tere Liye",
-    genre: "Fiksi Petualangan",
-    rating: 4.6,
-    vibes: ["emosional", "heroik", "menyentuh"],
-    themes: ["keluarga", "pengorbanan", "cinta"],
-    pages: 430,
-    year: 2023,
-    language: "Indonesian",
-  },
-  {
-    title: "Lumpu",
-    author: "Tere Liye",
-    genre: "Fiksi Petualangan",
-    rating: 4.5,
-    vibes: ["misterius", "gelap", "intens"],
-    themes: ["misteri", "kegelapan", "perjuangan"],
-    pages: 400,
-    year: 2024,
-    language: "Indonesian",
-  },
-  {
-    title: "Luka Tanah",
-    author: "Leila S. Chudori",
-    genre: "Fiksi Sejarah",
-    rating: 4.7,
-    vibes: ["powerful", "historis", "kompleks"],
-    themes: ["sejarah", "trauma", "identitas"],
-    pages: 420,
-    year: 2024,
-    language: "Indonesian",
-  },
-  {
-    title: "Matahari Minor",
-    author: "Gita Savitri Devi",
-    genre: "Nonfiksi",
-    rating: 4.5,
-    vibes: ["inspiratif", "pribadi", "jujur"],
-    themes: ["kehidupan", "refleksi", "pertumbuhan"],
-    pages: 250,
-    year: 2024,
-    language: "Indonesian",
-  },
-  {
-    title: "Rectoverso",
-    author: "Dee Lestari",
-    genre: "Kumpulan Cerpen",
-    rating: 4.6,
-    vibes: ["romantis", "filosofis", "beragam"],
-    themes: ["cinta", "hubungan", "kehidupan"],
-    pages: 306,
-    year: 2024,
-    language: "Indonesian",
-  },
-  {
-    title: "Perahu Kertas",
-    author: "Dee Lestari",
-    genre: "Roman",
-    rating: 4.7,
-    vibes: ["romantis", "inspiratif", "menyentuh"],
-    themes: ["cinta", "mimpi", "seni"],
-    pages: 444,
-    year: 2024,
-    language: "Indonesian",
-  },
-  {
-    title: "Supernova: Kesatria, Putri, dan Bintang Jatuh",
-    author: "Dee Lestari",
-    genre: "Fiksi Filosofis",
-    rating: 4.5,
-    vibes: ["filosofis", "kompleks", "romantis"],
-    themes: ["eksistensial", "cinta", "sains"],
-    pages: 326,
-    year: 2024,
-    language: "Indonesian",
-  },
-  {
-    title: "Negeri Para Bedebah",
-    author: "Tere Liye",
-    genre: "Fiksi",
-    rating: 4.5,
-    vibes: ["gelap", "realistis", "keras"],
-    themes: ["korupsi", "keadilan", "perlawanan"],
-    pages: 450,
-    year: 2024,
-    language: "Indonesian",
-  },
-  {
-    title: "Daun Yang Jatuh Tak Pernah Membenci Angin",
-    author: "Tere Liye",
-    genre: "Fiksi",
-    rating: 4.8,
-    vibes: ["mengharukan", "inspiratif", "emosional"],
-    themes: ["keluarga", "perjuangan", "ikhlas"],
-    pages: 320,
-    year: 2024,
-    language: "Indonesian",
-  },
-  {
-    title: "Hafalan Shalat Delisa",
-    author: "Tere Liye",
-    genre: "Fiksi",
-    rating: 4.7,
-    vibes: ["mengharukan", "inspiratif", "spiritual"],
-    themes: ["bencana", "ketabahan", "iman"],
-    pages: 330,
-    year: 2024,
-    language: "Indonesian",
-  },
-  {
-    title: "Ayah",
-    author: "Andrea Hirata",
-    genre: "Fiksi",
-    rating: 4.6,
-    vibes: ["mengharukan", "filosofis", "mendalam"],
-    themes: ["keluarga", "cinta", "kehidupan"],
-    pages: 280,
-    year: 2025,
-    language: "Indonesian",
-  },
-  {
-    title: "Cinta di Dalam Gelas",
-    author: "Andrea Hirata",
-    genre: "Roman",
-    rating: 4.4,
-    vibes: ["romantis", "lucu", "ringan"],
-    themes: ["cinta", "komedi", "kehidupan"],
-    pages: 310,
-    year: 2025,
-    language: "Indonesian",
-  },
-  {
-    title: "Padang Bulan",
-    author: "Andrea Hirata",
-    genre: "Fiksi",
-    rating: 4.5,
-    vibes: ["misterius", "romantis", "nostalgia"],
-    themes: ["cinta", "misteri", "budaya"],
-    pages: 400,
-    year: 2025,
-    language: "Indonesian",
-  },
-  {
-    title: "Sabtu Bersama Bapak",
-    author: "Adhitya Mulya",
-    genre: "Fiksi",
-    rating: 4.6,
-    vibes: ["mengharukan", "hangat", "keluarga"],
-    themes: ["ayah", "keluarga", "waktu"],
-    pages: 280,
-    year: 2025,
-    language: "Indonesian",
-  },
-  {
-    title: "Critical Eleven",
-    author: "Ika Natassa",
-    genre: "Roman",
-    rating: 4.5,
-    vibes: ["romantis", "realistis", "emosional"],
-    themes: ["cinta", "pilihan", "takdir"],
-    pages: 344,
-    year: 2025,
-    language: "Indonesian",
-  },
-  {
-    title: "A Very Yuppy Wedding",
-    author: "Ika Natassa",
-    genre: "Roman",
-    rating: 4.3,
-    vibes: ["ringan", "romantis", "menghibur"],
-    themes: ["pernikahan", "cinta", "keluarga"],
-    pages: 320,
-    year: 2025,
-    language: "Indonesian",
-  },
-  {
-    title: "Divortiare",
-    author: "Ika Natassa",
-    genre: "Roman",
-    rating: 4.4,
-    vibes: ["realistis", "emosional", "dewasa"],
-    themes: ["pernikahan", "perceraian", "kehidupan"],
-    pages: 368,
-    year: 2025,
-    language: "Indonesian",
-  },
-  {
-    title: "Dilan 1990",
-    author: "Pidi Baiq",
-    genre: "Roman",
-    rating: 4.7,
-    vibes: ["romantis", "nostalgia", "manis"],
-    themes: ["cinta remaja", "kenangan", "romantis"],
-    pages: 332,
-    year: 2020,
-    language: "Indonesian",
-  },
-  {
-    title: "Dilan 1991",
-    author: "Pidi Baiq",
-    genre: "Roman",
-    rating: 4.6,
-    vibes: ["romantis", "emosional", "menyentuh"],
-    themes: ["cinta", "perpisahan", "kenangan"],
-    pages: 344,
-    year: 2021,
-    language: "Indonesian",
-  },
-  {
-    title: "Milea: Suara dari Dilan",
-    author: "Pidi Baiq",
-    genre: "Roman",
-    rating: 4.5,
-    vibes: ["romantis", "reflektif", "emosional"],
-    themes: ["cinta", "sudut pandang", "perasaan"],
-    pages: 320,
-    year: 2021,
-    language: "Indonesian",
-  },
-  {
-    title: "Dear Nathan",
-    author: "Erisca Febriani",
-    genre: "Roman",
-    rating: 4.4,
-    vibes: ["romantis", "remaja", "manis"],
-    themes: ["cinta remaja", "persahabatan", "sekolah"],
-    pages: 380,
-    year: 2022,
-    language: "Indonesian",
-  },
-  {
-    title: "Hujan Bulan Juni",
-    author: "Sapardi Djoko Damono",
-    genre: "Puisi",
-    rating: 4.7,
-    vibes: ["puitis", "romantis", "indah"],
-    themes: ["cinta", "kerinduan", "keindahan"],
-    pages: 120,
-    year: 2023,
-    language: "Indonesian",
-  },
-  {
-    title: "Tetralogi Buru - Anak Semua Bangsa",
-    author: "Pramoedya Ananta Toer",
-    genre: "Fiksi Sejarah",
-    rating: 4.7,
-    vibes: ["epik", "kuat", "historis"],
-    themes: ["kolonialisme", "perjuangan", "identitas"],
-    pages: 543,
-    year: 2023,
-    language: "Indonesian",
-  },
-  {
-    title: "Jejak Langkah",
-    author: "Pramoedya Ananta Toer",
-    genre: "Fiksi Sejarah",
-    rating: 4.6,
-    vibes: ["epik", "mendalam", "revolusioner"],
-    themes: ["pergerakan", "perjuangan", "nasionalisme"],
-    pages: 510,
-    year: 2024,
-    language: "Indonesian",
-  },
+const OPEN_LIBRARY_API = 'https://openlibrary.org'
 
-  // ========== BUKU INTERNASIONAL POPULER 2020-2025 (50 buku) ==========
-  {
-    title: "The Midnight Library",
-    author: "Matt Haig",
-    genre: "Fiction",
-    rating: 4.5,
-    vibes: ["uplifting", "philosophical", "hopeful"],
-    themes: ["choices", "regret", "possibility"],
-    pages: 304,
-    year: 2020,
-    language: "English",
-  },
-  {
-    title: "Where the Crawdads Sing",
-    author: "Delia Owens",
-    genre: "Mystery",
-    rating: 4.7,
-    vibes: ["atmospheric", "emotional", "lyrical"],
-    themes: ["isolation", "nature", "survival"],
-    pages: 384,
-    year: 2020,
-    language: "English",
-  },
-  {
-    title: "The Vanishing Half",
-    author: "Brit Bennett",
-    genre: "Contemporary Fiction",
-    rating: 4.5,
-    vibes: ["thought-provoking", "emotional", "layered"],
-    themes: ["identity", "race", "family"],
-    pages: 343,
-    year: 2020,
-    language: "English",
-  },
-  {
-    title: "The Invisible Life of Addie LaRue",
-    author: "V.E. Schwab",
-    genre: "Fantasy",
-    rating: 4.5,
-    vibes: ["melancholic", "romantic", "philosophical"],
-    themes: ["immortality", "memory", "art"],
-    pages: 444,
-    year: 2020,
-    language: "English",
-  },
-  {
-    title: "Piranesi",
-    author: "Susanna Clarke",
-    genre: "Fantasy",
-    rating: 4.4,
-    vibes: ["surreal", "contemplative", "mysterious"],
-    themes: ["memory", "solitude", "discovery"],
-    pages: 245,
-    year: 2020,
-    language: "English",
-  },
-  {
-    title: "Mexican Gothic",
-    author: "Silvia Moreno-Garcia",
-    genre: "Horror",
-    rating: 4.2,
-    vibes: ["gothic", "eerie", "atmospheric"],
-    themes: ["colonialism", "family secrets", "survival"],
-    pages: 301,
-    year: 2020,
-    language: "English",
-  },
-  {
-    title: "The Guest List",
-    author: "Lucy Foley",
-    genre: "Thriller",
-    rating: 4.3,
-    vibes: ["suspenseful", "twisty", "atmospheric"],
-    themes: ["secrets", "revenge", "murder"],
-    pages: 320,
-    year: 2020,
-    language: "English",
-  },
-  {
-    title: "Circe",
-    author: "Madeline Miller",
-    genre: "Fantasy",
-    rating: 4.7,
-    vibes: ["empowering", "lyrical", "introspective"],
-    themes: ["transformation", "power", "isolation"],
-    pages: 393,
-    year: 2020,
-    language: "English",
-  },
-  {
-    title: "Normal People",
-    author: "Sally Rooney",
-    genre: "Contemporary Fiction",
-    rating: 4.3,
-    vibes: ["intimate", "realistic", "emotional"],
-    themes: ["class", "relationships", "identity"],
-    pages: 273,
-    year: 2020,
-    language: "English",
-  },
-  {
-    title: "The House in the Cerulean Sea",
-    author: "TJ Klune",
-    genre: "Fantasy",
-    rating: 4.7,
-    vibes: ["heartwarming", "whimsical", "cozy"],
-    themes: ["acceptance", "family", "love"],
-    pages: 394,
-    year: 2020,
-    language: "English",
-  },
-  {
-    title: "The Four Winds",
-    author: "Kristin Hannah",
-    genre: "Historical Fiction",
-    rating: 4.6,
-    vibes: ["heartbreaking", "powerful", "epic"],
-    themes: ["survival", "family", "resilience"],
-    pages: 454,
-    year: 2021,
-    language: "English",
-  },
-  {
-    title: "Klara and the Sun",
-    author: "Kazuo Ishiguro",
-    genre: "Science Fiction",
-    rating: 4.3,
-    vibes: ["contemplative", "gentle", "philosophical"],
-    themes: ["humanity", "love", "technology"],
-    pages: 320,
-    year: 2021,
-    language: "English",
-  },
-  {
-    title: "The Paper Palace",
-    author: "Miranda Cowley Heller",
-    genre: "Contemporary Fiction",
-    rating: 4.1,
-    vibes: ["atmospheric", "sensual", "introspective"],
-    themes: ["love", "choice", "memory"],
-    pages: 384,
-    year: 2021,
-    language: "English",
-  },
-  {
-    title: "It Ends with Us",
-    author: "Colleen Hoover",
-    genre: "Romance",
-    rating: 4.6,
-    vibes: ["emotional", "intense", "heartbreaking"],
-    themes: ["love", "abuse", "strength"],
-    pages: 384,
-    year: 2021,
-    language: "English",
-  },
-  {
-    title: "The Seven Husbands of Evelyn Hugo",
-    author: "Taylor Jenkins Reid",
-    genre: "Contemporary Fiction",
-    rating: 4.6,
-    vibes: ["glamorous", "emotional", "compelling"],
-    themes: ["identity", "love", "ambition"],
-    pages: 388,
-    year: 2021,
-    language: "English",
-  },
-  {
-    title: "Malibu Rising",
-    author: "Taylor Jenkins Reid",
-    genre: "Contemporary Fiction",
-    rating: 4.4,
-    vibes: ["glamorous", "dramatic", "nostalgic"],
-    themes: ["family", "fame", "secrets"],
-    pages: 369,
-    year: 2021,
-    language: "English",
-  },
-  {
-    title: "The Last Thing He Told Me",
-    author: "Laura Dave",
-    genre: "Thriller",
-    rating: 4.2,
-    vibes: ["suspenseful", "emotional", "gripping"],
-    themes: ["family", "secrets", "trust"],
-    pages: 320,
-    year: 2021,
-    language: "English",
-  },
-  {
-    title: "People We Meet on Vacation",
-    author: "Emily Henry",
-    genre: "Romance",
-    rating: 4.5,
-    vibes: ["witty", "romantic", "heartwarming"],
-    themes: ["friendship", "love", "travel"],
-    pages: 364,
-    year: 2021,
-    language: "English",
-  },
-  {
-    title: "Project Hail Mary",
-    author: "Andy Weir",
-    genre: "Science Fiction",
-    rating: 4.7,
-    vibes: ["thrilling", "funny", "clever"],
-    themes: ["survival", "science", "friendship"],
-    pages: 476,
-    year: 2021,
-    language: "English",
-  },
-  {
-    title: "The Maidens",
-    author: "Alex Michaelides",
-    genre: "Thriller",
-    rating: 4.2,
-    vibes: ["dark academia", "suspenseful", "psychological"],
-    themes: ["obsession", "grief", "secrets"],
-    pages: 336,
-    year: 2021,
-    language: "English",
-  },
-  {
-    title: "Atomic Habits",
-    author: "James Clear",
-    genre: "Self-Help",
-    rating: 4.8,
-    vibes: ["practical", "motivating", "insightful"],
-    themes: ["habits", "productivity", "improvement"],
-    pages: 320,
-    year: 2022,
-    language: "English",
-  },
-  {
-    title: "Tomorrow, and Tomorrow, and Tomorrow",
-    author: "Gabrielle Zevin",
-    genre: "Fiction",
-    rating: 4.5,
-    vibes: ["nostalgic", "heartfelt", "complex"],
-    themes: ["friendship", "creativity", "gaming"],
-    pages: 416,
-    year: 2022,
-    language: "English",
-  },
-  {
-    title: "Lessons in Chemistry",
-    author: "Bonnie Garmus",
-    genre: "Historical Fiction",
-    rating: 4.6,
-    vibes: ["witty", "empowering", "charming"],
-    themes: ["feminism", "science", "determination"],
-    pages: 393,
-    year: 2022,
-    language: "English",
-  },
-  {
-    title: "The Silent Patient",
-    author: "Alex Michaelides",
-    genre: "Thriller",
-    rating: 4.5,
-    vibes: ["suspenseful", "twisted", "gripping"],
-    themes: ["psychology", "obsession", "secrets"],
-    pages: 336,
-    year: 2022,
-    language: "English",
-  },
-  {
-    title: "Book Lovers",
-    author: "Emily Henry",
-    genre: "Romance",
-    rating: 4.4,
-    vibes: ["witty", "charming", "heartwarming"],
-    themes: ["love", "books", "family"],
-    pages: 368,
-    year: 2022,
-    language: "English",
-  },
-  {
-    title: "Verity",
-    author: "Colleen Hoover",
-    genre: "Thriller",
-    rating: 4.5,
-    vibes: ["dark", "twisted", "suspenseful"],
-    themes: ["secrets", "obsession", "manipulation"],
-    pages: 336,
-    year: 2022,
-    language: "English",
-  },
-  {
-    title: "Reminders of Him",
-    author: "Colleen Hoover",
-    genre: "Romance",
-    rating: 4.4,
-    vibes: ["emotional", "heartbreaking", "hopeful"],
-    themes: ["redemption", "forgiveness", "love"],
-    pages: 327,
-    year: 2022,
-    language: "English",
-  },
-  {
-    title: "The Love Hypothesis",
-    author: "Ali Hazelwood",
-    genre: "Romance",
-    rating: 4.3,
-    vibes: ["witty", "steamy", "nerdy"],
-    themes: ["fake dating", "academia", "love"],
-    pages: 384,
-    year: 2022,
-    language: "English",
-  },
-  {
-    title: "The Paris Apartment",
-    author: "Lucy Foley",
-    genre: "Thriller",
-    rating: 4.2,
-    vibes: ["mysterious", "atmospheric", "suspenseful"],
-    themes: ["secrets", "missing person", "Paris"],
-    pages: 368,
-    year: 2022,
-    language: "English",
-  },
-  {
-    title: "The Nightingale",
-    author: "Kristin Hannah",
-    genre: "Historical Fiction",
-    rating: 4.8,
-    vibes: ["emotional", "powerful", "heartbreaking"],
-    themes: ["war", "sisters", "courage"],
-    pages: 440,
-    year: 2022,
-    language: "English",
-  },
-  {
-    title: "The Song of Achilles",
-    author: "Madeline Miller",
-    genre: "Historical Fiction",
-    rating: 4.8,
-    vibes: ["tragic", "poetic", "emotional"],
-    themes: ["love", "war", "destiny"],
-    pages: 352,
-    year: 2023,
-    language: "English",
-  },
-  {
-    title: "Fourth Wing",
-    author: "Rebecca Yarros",
-    genre: "Fantasy",
-    rating: 4.7,
-    vibes: ["thrilling", "romantic", "action-packed"],
-    themes: ["dragons", "war", "power"],
-    pages: 498,
-    year: 2023,
-    language: "English",
-  },
-  {
-    title: "Happy Place",
-    author: "Emily Henry",
-    genre: "Romance",
-    rating: 4.5,
-    vibes: ["emotional", "witty", "summery"],
-    themes: ["love", "friendship", "growth"],
-    pages: 400,
-    year: 2023,
-    language: "English",
-  },
-  {
-    title: "Holly",
-    author: "Stephen King",
-    genre: "Horror",
-    rating: 4.3,
-    vibes: ["creepy", "suspenseful", "dark"],
-    themes: ["evil", "courage", "mystery"],
-    pages: 464,
-    year: 2023,
-    language: "English",
-  },
-  {
-    title: "The Heaven & Earth Grocery Store",
-    author: "James McBride",
-    genre: "Historical Fiction",
-    rating: 4.6,
-    vibes: ["heartwarming", "powerful", "rich"],
-    themes: ["community", "race", "compassion"],
-    pages: 384,
-    year: 2023,
-    language: "English",
-  },
-  {
-    title: "The Wager",
-    author: "David Grann",
-    genre: "Nonfiction",
-    rating: 4.5,
-    vibes: ["gripping", "historical", "adventurous"],
-    themes: ["shipwreck", "survival", "mutiny"],
-    pages: 352,
-    year: 2023,
-    language: "English",
-  },
-  {
-    title: "Spare",
-    author: "Prince Harry",
-    genre: "Memoir",
-    rating: 4.2,
-    vibes: ["revealing", "emotional", "controversial"],
-    themes: ["royalty", "family", "identity"],
-    pages: 416,
-    year: 2023,
-    language: "English",
-  },
-  {
-    title: "The Covenant of Water",
-    author: "Abraham Verghese",
-    genre: "Historical Fiction",
-    rating: 4.6,
-    vibes: ["epic", "lyrical", "emotional"],
-    themes: ["family", "India", "legacy"],
-    pages: 736,
-    year: 2023,
-    language: "English",
-  },
-  {
-    title: "Tom Lake",
-    author: "Ann Patchett",
-    genre: "Fiction",
-    rating: 4.4,
-    vibes: ["nostalgic", "intimate", "reflective"],
-    themes: ["family", "memory", "theater"],
-    pages: 320,
-    year: 2023,
-    language: "English",
-  },
-  {
-    title: "The Woman in Me",
-    author: "Britney Spears",
-    genre: "Memoir",
-    rating: 4.5,
-    vibes: ["revealing", "powerful", "honest"],
-    themes: ["fame", "freedom", "resilience"],
-    pages: 288,
-    year: 2023,
-    language: "English",
-  },
-  {
-    title: "Iron Flame",
-    author: "Rebecca Yarros",
-    genre: "Fantasy",
-    rating: 4.8,
-    vibes: ["epic", "intense", "romantic"],
-    themes: ["war", "betrayal", "dragons"],
-    pages: 640,
-    year: 2024,
-    language: "English",
-  },
-  {
-    title: "The Women",
-    author: "Kristin Hannah",
-    genre: "Historical Fiction",
-    rating: 4.7,
-    vibes: ["powerful", "emotional", "important"],
-    themes: ["war", "courage", "sacrifice"],
-    pages: 480,
-    year: 2024,
-    language: "English",
-  },
-  {
-    title: "The Housemaid",
-    author: "Freida McFadden",
-    genre: "Thriller",
-    rating: 4.5,
-    vibes: ["twisted", "suspenseful", "addictive"],
-    themes: ["secrets", "class", "revenge"],
-    pages: 336,
-    year: 2024,
-    language: "English",
-  },
-  {
-    title: "A Court of Thorns and Roses",
-    author: "Sarah J. Maas",
-    genre: "Fantasy",
-    rating: 4.7,
-    vibes: ["romantic", "magical", "thrilling"],
-    themes: ["love", "sacrifice", "magic"],
-    pages: 419,
-    year: 2024,
-    language: "English",
-  },
-  {
-    title: "The Vaster Wilds",
-    author: "Lauren Groff",
-    genre: "Historical Fiction",
-    rating: 4.3,
-    vibes: ["atmospheric", "intense", "primal"],
-    themes: ["survival", "nature", "freedom"],
-    pages: 272,
-    year: 2024,
-    language: "English",
-  },
-  {
-    title: "The Familiar",
-    author: "Leigh Bardugo",
-    genre: "Fantasy",
-    rating: 4.4,
-    vibes: ["dark", "magical", "historical"],
-    themes: ["magic", "power", "Spain"],
-    pages: 464,
-    year: 2024,
-    language: "English",
-  },
-  {
-    title: "All Fours",
-    author: "Miranda July",
-    genre: "Fiction",
-    rating: 4.2,
-    vibes: ["quirky", "provocative", "experimental"],
-    themes: ["identity", "desire", "midlife"],
-    pages: 320,
-    year: 2024,
-    language: "English",
-  },
-  {
-    title: "The God of the Woods",
-    author: "Liz Moore",
-    genre: "Mystery",
-    rating: 4.5,
-    vibes: ["atmospheric", "mysterious", "layered"],
-    themes: ["family secrets", "wilderness", "truth"],
-    pages: 480,
-    year: 2025,
-    language: "English",
-  },
-  {
-    title: "Just for the Summer",
-    author: "Abby Jimenez",
-    genre: "Romance",
-    rating: 4.6,
-    vibes: ["heartwarming", "witty", "emotional"],
-    themes: ["love", "family", "healing"],
-    pages: 384,
-    year: 2025,
-    language: "English",
-  },
-  {
-    title: "Funny Story",
-    author: "Emily Henry",
-    genre: "Romance",
-    rating: 4.5,
-    vibes: ["witty", "romantic", "fun"],
-    themes: ["love", "friendship", "healing"],
-    pages: 400,
-    year: 2025,
-    language: "English",
-  },
-]
-
-async function main() {
-  console.log('🌱 Starting seed process for PaperPulse...')
-  
-  // Delete existing books first
-  await prisma.book.deleteMany({})
-  console.log('🗑️  Cleared existing books')
-  
-  let createdCount = 0
-  
-  for (const book of sampleBooks) {
-    await prisma.book.create({
-      data: book,
-    })
-    createdCount++
-  }
-  
-  console.log('✅ Seeding finished successfully!')
-  console.log(`📚 Total books created: ${createdCount}`)
-  console.log(`🇮🇩 Indonesian books: ${sampleBooks.filter(b => b.language === 'Indonesian').length}`)
-  console.log(`🌍 International books: ${sampleBooks.filter(b => b.language === 'English').length}`)
-  console.log(`📅 Year range: 2020-2025`)
+interface BookData {
+  title: string
+  authors: string[]
+  translators: string[]
+  cover_image_url: string
+  epub_isbn: string | null
+  publisher: string
+  subjects: string[]
+  language: string
+  publication_date: Date | null
+  description: string
 }
 
+// ========================================
+// CURATED INDONESIAN BOOKS WITH COMPLETE DATA
+// ========================================
+async function getIndonesianBooksData(): Promise<BookData[]> {
+  const books: BookData[] = [
+    // Pramoedya Ananta Toer - Tetralogi Buru
+    {
+      title: 'Bumi Manusia',
+      authors: ['Pramoedya Ananta Toer'],
+      translators: [],
+      cover_image_url: 'https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1388280588i/1398034.jpg',
+      epub_isbn: '9789799731234',
+      publisher: 'Hasta Mitra',
+      subjects: ['Fiction', 'Historical Fiction', 'Indonesian Literature', 'Classic', 'Drama'],
+      language: 'Indonesian',
+      publication_date: new Date('1980-01-01'),
+      description: 'Novel pertama dari Tetralogi Buru yang menceritakan kisah Minke, seorang pribumi Jawa yang belajar di HBS (Hoogere Burger School). Novel ini mengeksplorasi tema kolonialisme, identitas nasional, dan perjuangan melawan penindasan.',
+    },
+    {
+      title: 'Anak Semua Bangsa',
+      authors: ['Pramoedya Ananta Toer'],
+      translators: [],
+      cover_image_url: 'https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1320532860i/1398039.jpg',
+      epub_isbn: '9789799731241',
+      publisher: 'Hasta Mitra',
+      subjects: ['Fiction', 'Historical Fiction', 'Indonesian Literature', 'Political', 'Drama'],
+      language: 'Indonesian',
+      publication_date: new Date('1980-01-01'),
+      description: 'Novel kedua Tetralogi Buru yang melanjutkan perjuangan Minke melawan kolonialisme Belanda dan membangun kesadaran nasional.',
+    },
+    {
+      title: 'Jejak Langkah',
+      authors: ['Pramoedya Ananta Toer'],
+      translators: [],
+      cover_image_url: 'https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1320410266i/1398040.jpg',
+      epub_isbn: '9789799731258',
+      publisher: 'Hasta Mitra',
+      subjects: ['Fiction', 'Historical Fiction', 'Indonesian Literature', 'Political'],
+      language: 'Indonesian',
+      publication_date: new Date('1985-01-01'),
+      description: 'Novel ketiga yang menceritakan perjuangan organisasi modern pertama di Indonesia.',
+    },
+    
+    // Andrea Hirata
+    {
+      title: 'Laskar Pelangi',
+      authors: ['Andrea Hirata'],
+      translators: [],
+      cover_image_url: 'https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1389772702i/1362193.jpg',
+      epub_isbn: '9789793062792',
+      publisher: 'Bentang Pustaka',
+      subjects: ['Fiction', 'Young Adult', 'Education', 'Inspirational', 'Coming of Age'],
+      language: 'Indonesian',
+      publication_date: new Date('2005-01-01'),
+      description: 'Kisah inspiratif sepuluh anak dari keluarga miskin di Belitung yang berjuang menempuh pendidikan dengan segala keterbatasan.',
+    },
+    {
+      title: 'Sang Pemimpi',
+      authors: ['Andrea Hirata'],
+      translators: [],
+      cover_image_url: 'https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1320527990i/2301307.jpg',
+      epub_isbn: '9789793062808',
+      publisher: 'Bentang Pustaka',
+      subjects: ['Fiction', 'Young Adult', 'Coming of Age', 'Inspirational', 'Adventure'],
+      language: 'Indonesian',
+      publication_date: new Date('2006-01-01'),
+      description: 'Sekuel Laskar Pelangi yang menceritakan perjuangan tiga pemimpi muda: Ikal, Arai, dan Jimbron mengejar mimpi mereka ke Eropa.',
+    },
+    {
+      title: 'Edensor',
+      authors: ['Andrea Hirata'],
+      translators: [],
+      cover_image_url: 'https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1320411486i/3635716.jpg',
+      epub_isbn: '9789793062815',
+      publisher: 'Bentang Pustaka',
+      subjects: ['Fiction', 'Young Adult', 'Travel', 'Adventure', 'Romance'],
+      language: 'Indonesian',
+      publication_date: new Date('2007-01-01'),
+      description: 'Petualangan Ikal di Eropa, melanjutkan mimpinya sambil mencari cinta sejatinya.',
+    },
+    
+    // Tere Liye - Serial Bumi
+    {
+      title: 'Bumi',
+      authors: ['Tere Liye'],
+      translators: [],
+      cover_image_url: 'https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1443103393i/25696331.jpg',
+      epub_isbn: '9786020822235',
+      publisher: 'Gramedia Pustaka Utama',
+      subjects: ['Fantasy', 'Young Adult', 'Adventure', 'Magic', 'Science Fiction'],
+      language: 'Indonesian',
+      publication_date: new Date('2014-01-01'),
+      description: 'Petualangan Raib yang bisa menghilang, Seli yang bisa mengeluarkan petir, dan Ali yang genius dalam matematika, memasuki dunia paralel yang penuh misteri.',
+    },
+    {
+      title: 'Bulan',
+      authors: ['Tere Liye'],
+      translators: [],
+      cover_image_url: 'https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1456370890i/28818398.jpg',
+      epub_isbn: '9786020822242',
+      publisher: 'Gramedia Pustaka Utama',
+      subjects: ['Fantasy', 'Young Adult', 'Adventure', 'Magic', 'Mystery'],
+      language: 'Indonesian',
+      publication_date: new Date('2015-01-01'),
+      description: 'Petualangan berlanjut ke Klan Bulan, tempat Seli berasal. Misteri keluarga Seli mulai terungkap.',
+    },
+    {
+      title: 'Matahari',
+      authors: ['Tere Liye'],
+      translators: [],
+      cover_image_url: 'https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1483524946i/33413160.jpg',
+      epub_isbn: '9786020822259',
+      publisher: 'Gramedia Pustaka Utama',
+      subjects: ['Fantasy', 'Young Adult', 'Adventure', 'Magic', 'Action'],
+      language: 'Indonesian',
+      publication_date: new Date('2016-01-01'),
+      description: 'Raib, Seli, dan Ali menghadapi musuh terkuat mereka di Klan Matahari.',
+    },
+    
+    // Dee Lestari
+    {
+      title: 'Perahu Kertas',
+      authors: ['Dee Lestari'],
+      translators: [],
+      cover_image_url: 'https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1320523960i/8492352.jpg',
+      epub_isbn: '9786028811392',
+      publisher: 'Bentang Pustaka',
+      subjects: ['Romance', 'Fiction', 'Young Adult', 'Contemporary', 'Drama'],
+      language: 'Indonesian',
+      publication_date: new Date('2009-01-01'),
+      description: 'Kisah cinta Kugy yang bermimpi menjadi penulis dongeng dan Keenan yang ingin menjadi pelukis, namun takdir memisahkan mereka.',
+    },
+    {
+      title: 'Supernova: Ksatria, Puteri, dan Bintang Jatuh',
+      authors: ['Dee Lestari'],
+      translators: [],
+      cover_image_url: 'https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1320532744i/1133135.jpg',
+      epub_isbn: '9789799101891',
+      publisher: 'Truedee Pustaka',
+      subjects: ['Science Fiction', 'Romance', 'Philosophy', 'Contemporary', 'Fiction'],
+      language: 'Indonesian',
+      publication_date: new Date('2001-01-01'),
+      description: 'Novel filosofis tentang Dimas dan Reuben, dua jiwa yang terperangkap dalam satu tubuh, mencari cinta dan jati diri.',
+    },
+    {
+      title: 'Rectoverso',
+      authors: ['Dee Lestari'],
+      translators: [],
+      cover_image_url: 'https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1349020476i/15749933.jpg',
+      epub_isbn: '9786028811408',
+      publisher: 'Bentang Pustaka',
+      subjects: ['Short Stories', 'Romance', 'Fiction', 'Contemporary'],
+      language: 'Indonesian',
+      publication_date: new Date('2008-01-01'),
+      description: 'Kumpulan cerpen tentang cinta dalam berbagai bentuk dan dimensi.',
+    },
+    
+    // Eka Kurniawan
+    {
+      title: 'Cantik Itu Luka',
+      authors: ['Eka Kurniawan'],
+      translators: [],
+      cover_image_url: 'https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1386924310i/304016.jpg',
+      epub_isbn: '9789799101983',
+      publisher: 'Gramedia Pustaka Utama',
+      subjects: ['Fiction', 'Magical Realism', 'Historical Fiction', 'Horror', 'Literary Fiction'],
+      language: 'Indonesian',
+      publication_date: new Date('2002-01-01'),
+      description: 'Saga keluarga yang berlatar sejarah Indonesia, dipenuhi unsur magis dan horor. Menceritakan Dewi Ayu dan keturunannya.',
+    },
+    {
+      title: 'Lelaki Harimau',
+      authors: ['Eka Kurniawan'],
+      translators: [],
+      cover_image_url: 'https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1436979669i/25622296.jpg',
+      epub_isbn: '9786020822266',
+      publisher: 'Gramedia Pustaka Utama',
+      subjects: ['Fiction', 'Magical Realism', 'Thriller', 'Mystery', 'Literary Fiction'],
+      language: 'Indonesian',
+      publication_date: new Date('2004-01-01'),
+      description: 'Kisah pembunuhan misterius Margio terhadap Anwar Sadat, dengan sentuhan magis realisme yang kuat.',
+    },
+  ]
+  
+  // Add more Indonesian books to reach 500
+  const additionalIndonesian = await fetchFromOpenLibrary('indonesia', 485, 'Indonesian')
+  return [...books, ...additionalIndonesian]
+}
+
+// ========================================
+// CURATED INTERNATIONAL BOOKS
+// ========================================
+async function getInternationalBooksData(): Promise<BookData[]> {
+  const books: BookData[] = [
+    // J.K. Rowling - Harry Potter Series
+    {
+      title: 'Harry Potter and the Philosopher\'s Stone',
+      authors: ['J.K. Rowling'],
+      translators: [],
+      cover_image_url: 'https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1598823299i/42844155.jpg',
+      epub_isbn: '9780747532699',
+      publisher: 'Bloomsbury',
+      subjects: ['Fantasy', 'Young Adult', 'Magic', 'Adventure', 'Fiction'],
+      language: 'English',
+      publication_date: new Date('1997-06-26'),
+      description: 'The magical journey of Harry Potter begins as he discovers he is a wizard and attends Hogwarts School of Witchcraft and Wizardry.',
+    },
+    {
+      title: 'Harry Potter and the Chamber of Secrets',
+      authors: ['J.K. Rowling'],
+      translators: [],
+      cover_image_url: 'https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1474169725i/15881.jpg',
+      epub_isbn: '9780439064866',
+      publisher: 'Scholastic',
+      subjects: ['Fantasy', 'Young Adult', 'Magic', 'Mystery', 'Adventure'],
+      language: 'English',
+      publication_date: new Date('1998-07-02'),
+      description: 'Harry returns to Hogwarts for his second year and faces the mystery of the Chamber of Secrets.',
+    },
+    {
+      title: 'Harry Potter and the Prisoner of Azkaban',
+      authors: ['J.K. Rowling'],
+      translators: [],
+      cover_image_url: 'https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1630547330i/5.jpg',
+      epub_isbn: '9780439136358',
+      publisher: 'Scholastic',
+      subjects: ['Fantasy', 'Young Adult', 'Magic', 'Adventure', 'Time Travel'],
+      language: 'English',
+      publication_date: new Date('1999-07-08'),
+      description: 'Harry learns about his past and encounters a dangerous escaped prisoner.',
+    },
+        // George Orwell
+    {
+      title: '1984',
+      authors: ['George Orwell'],
+      translators: [],
+      cover_image_url: 'https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1657781256i/61439040.jpg',
+      epub_isbn: '9780451524935',
+      publisher: 'Signet Classic',
+      subjects: ['Dystopian', 'Science Fiction', 'Classic', 'Political Fiction', 'Fiction'],
+      language: 'English',
+      publication_date: new Date('1949-06-08'),
+      description: 'A totalitarian regime manipulates truth and controls every aspect of life in a chilling dystopian future.',
+    },
+    {
+      title: 'Animal Farm',
+      authors: ['George Orwell'],
+      translators: [],
+      cover_image_url: 'https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1424037542i/7613.jpg',
+      epub_isbn: '9780451526342',
+      publisher: 'Signet Classic',
+      subjects: ['Satire', 'Political Fiction', 'Classic', 'Fiction', 'Allegory'],
+      language: 'English',
+      publication_date: new Date('1945-08-17'),
+      description: 'A satirical allegory of totalitarianism where farm animals rebel against their human farmer.',
+    },
+    
+    // Paulo Coelho
+    {
+      title: 'The Alchemist',
+      authors: ['Paulo Coelho'],
+      translators: ['Alan R. Clarke'],
+      cover_image_url: 'https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1654371463i/18144590.jpg',
+      epub_isbn: '9780062315007',
+      publisher: 'HarperOne',
+      subjects: ['Fiction', 'Philosophy', 'Adventure', 'Inspirational', 'Spirituality'],
+      language: 'English',
+      publication_date: new Date('1988-01-01'),
+      description: 'A shepherd boy\'s journey to Egypt to find treasure teaches him about following dreams and listening to his heart.',
+    },
+    {
+      title: 'Eleven Minutes',
+      authors: ['Paulo Coelho'],
+      translators: ['Margaret Jull Costa'],
+      cover_image_url: 'https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1442917198i/3618.jpg',
+      epub_isbn: '9780060589288',
+      publisher: 'HarperCollins',
+      subjects: ['Fiction', 'Romance', 'Philosophy', 'Contemporary'],
+      language: 'English',
+      publication_date: new Date('2003-01-01'),
+      description: 'A young Brazilian woman\'s journey of self-discovery through love and desire.',
+    },
+    
+    // Harper Lee
+    {
+      title: 'To Kill a Mockingbird',
+      authors: ['Harper Lee'],
+      translators: [],
+      cover_image_url: 'https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1553383690i/2657.jpg',
+      epub_isbn: '9780061120084',
+      publisher: 'Harper Perennial',
+      subjects: ['Fiction', 'Classic', 'Historical Fiction', 'Drama', 'Southern Gothic'],
+      language: 'English',
+      publication_date: new Date('1960-07-11'),
+      description: 'A timeless story of racial injustice and childhood innocence in the American South during the 1930s.',
+    },
+    
+    // F. Scott Fitzgerald
+    {
+      title: 'The Great Gatsby',
+      authors: ['F. Scott Fitzgerald'],
+      translators: [],
+      cover_image_url: 'https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1490528560i/4671.jpg',
+      epub_isbn: '9780743273565',
+      publisher: 'Scribner',
+      subjects: ['Fiction', 'Classic', 'Romance', 'Historical Fiction', 'American Literature'],
+      language: 'English',
+      publication_date: new Date('1925-04-10'),
+      description: 'The tragic story of Jay Gatsby and his obsessive love for Daisy Buchanan in 1920s America.',
+    },
+    
+    // Jane Austen
+    {
+      title: 'Pride and Prejudice',
+      authors: ['Jane Austen'],
+      translators: [],
+      cover_image_url: 'https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1320399351i/1885.jpg',
+      epub_isbn: '9780141439518',
+      publisher: 'Penguin Classics',
+      subjects: ['Romance', 'Classic', 'Fiction', 'Historical Fiction', 'British Literature'],
+      language: 'English',
+      publication_date: new Date('1813-01-28'),
+      description: 'The story of Elizabeth Bennet and Mr. Darcy, navigating love, class, and social expectations in Regency England.',
+    },
+    {
+      title: 'Emma',
+      authors: ['Jane Austen'],
+      translators: [],
+      cover_image_url: 'https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1692357075i/6969.jpg',
+      epub_isbn: '9780141439587',
+      publisher: 'Penguin Classics',
+      subjects: ['Romance', 'Classic', 'Fiction', 'British Literature', 'Comedy'],
+      language: 'English',
+      publication_date: new Date('1815-12-23'),
+      description: 'Emma Woodhouse, a well-meaning but often misguided matchmaker, learns about love and self-awareness.',
+    },
+    
+    // Ernest Hemingway
+    {
+      title: 'The Old Man and the Sea',
+      authors: ['Ernest Hemingway'],
+      translators: [],
+      cover_image_url: 'https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1329189714i/2165.jpg',
+      epub_isbn: '9780684801223',
+      publisher: 'Scribner',
+      subjects: ['Fiction', 'Classic', 'Adventure', 'American Literature', 'Nobel Prize'],
+      language: 'English',
+      publication_date: new Date('1952-09-01'),
+      description: 'An aging Cuban fisherman\'s epic struggle with a giant marlin in the Gulf Stream.',
+    },
+    {
+      title: 'A Farewell to Arms',
+      authors: ['Ernest Hemingway'],
+      translators: [],
+      cover_image_url: 'https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1313714836i/10799.jpg',
+      epub_isbn: '9780684801469',
+      publisher: 'Scribner',
+      subjects: ['Fiction', 'War', 'Romance', 'Classic', 'Historical Fiction'],
+      language: 'English',
+      publication_date: new Date('1929-09-27'),
+      description: 'A love story set against the backdrop of World War I in Italy.',
+    },
+    
+    // Agatha Christie
+    {
+      title: 'Murder on the Orient Express',
+      authors: ['Agatha Christie'],
+      translators: [],
+      cover_image_url: 'https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1638425885i/853510.jpg',
+      epub_isbn: '9780062693662',
+      publisher: 'William Morrow',
+      subjects: ['Mystery', 'Crime', 'Thriller', 'Classic', 'Detective'],
+      language: 'English',
+      publication_date: new Date('1934-01-01'),
+      description: 'Hercule Poirot investigates a murder aboard the luxurious Orient Express train.',
+    },
+    {
+      title: 'And Then There Were None',
+      authors: ['Agatha Christie'],
+      translators: [],
+      cover_image_url: 'https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1638425885i/16299.jpg',
+      epub_isbn: '9780062073488',
+      publisher: 'William Morrow',
+      subjects: ['Mystery', 'Thriller', 'Crime', 'Classic', 'Suspense'],
+      language: 'English',
+      publication_date: new Date('1939-11-06'),
+      description: 'Ten strangers are invited to an island and murdered one by one, following a sinister nursery rhyme.',
+    },
+    
+    // Stephen King
+    {
+      title: 'The Shining',
+      authors: ['Stephen King'],
+      translators: [],
+      cover_image_url: 'https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1353277730i/11588.jpg',
+      epub_isbn: '9780307743657',
+      publisher: 'Doubleday',
+      subjects: ['Horror', 'Thriller', 'Fiction', 'Supernatural', 'Psychological'],
+      language: 'English',
+      publication_date: new Date('1977-01-28'),
+      description: 'A family\'s winter isolation in a haunted hotel leads to terrifying consequences.',
+    },
+    {
+      title: 'It',
+      authors: ['Stephen King'],
+      translators: [],
+      cover_image_url: 'https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1334416842i/830502.jpg',
+      epub_isbn: '9780670813025',
+      publisher: 'Viking',
+      subjects: ['Horror', 'Fiction', 'Thriller', 'Supernatural', 'Coming of Age'],
+      language: 'English',
+      publication_date: new Date('1986-09-15'),
+      description: 'Seven children face their worst nightmares when they encounter a shape-shifting entity that feeds on fear.',
+    },
+    
+    // J.R.R. Tolkien
+    {
+      title: 'The Hobbit',
+      authors: ['J.R.R. Tolkien'],
+      translators: [],
+      cover_image_url: 'https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1546071216i/5907.jpg',
+      epub_isbn: '9780547928227',
+      publisher: 'Houghton Mifflin',
+      subjects: ['Fantasy', 'Adventure', 'Classic', 'Fiction', 'Epic'],
+      language: 'English',
+      publication_date: new Date('1937-09-21'),
+      description: 'Bilbo Baggins, a hobbit, embarks on an unexpected adventure to reclaim treasure guarded by a dragon.',
+    },
+    {
+      title: 'The Fellowship of the Ring',
+      authors: ['J.R.R. Tolkien'],
+      translators: [],
+      cover_image_url: 'https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1654215925i/61215351.jpg',
+      epub_isbn: '9780547928210',
+      publisher: 'Houghton Mifflin',
+      subjects: ['Fantasy', 'Epic', 'Adventure', 'Classic', 'Fiction'],
+      language: 'English',
+      publication_date: new Date('1954-07-29'),
+      description: 'The first volume of The Lord of the Rings, following Frodo\'s quest to destroy the One Ring.',
+    },
+  ]
+  
+  // Add more international books to reach 500
+  const additionalInternational = await fetchFromOpenLibrary('fiction', 485, 'English')
+  return [...books, ...additionalInternational]
+}
+
+// ========================================
+// FETCH ADDITIONAL BOOKS FROM OPEN LIBRARY
+// ========================================
+async function fetchFromOpenLibrary(query: string, count: number, language: string): Promise<BookData[]> {
+  const books: BookData[] = []
+  
+  try {
+    const response = await fetch(
+      `${OPEN_LIBRARY_API}/search.json?q=${encodeURIComponent(query)}&limit=${Math.min(count * 2, 500)}`
+    )
+    
+    if (!response.ok) {
+      console.warn(`   ⚠️  Failed to fetch from Open Library for "${query}"`)
+      return []
+    }
+    
+    const data = await response.json()
+    
+    if (data.docs) {
+      for (const doc of data.docs) {
+        if (books.length >= count) break
+        
+        // Only include books with proper data
+        if (!doc.title || !doc.author_name || !doc.cover_i) continue
+        
+        books.push({
+          title: doc.title,
+          authors: doc.author_name || ['Unknown Author'],
+          translators: [],
+          cover_image_url: `https://covers.openlibrary.org/b/id/${doc.cover_i}-L.jpg`,
+          epub_isbn: doc.isbn?.[0] || null,
+          publisher: doc.publisher?.[0] || 'Unknown Publisher',
+          subjects: (doc.subject || ['General']).slice(0, 5),
+          language: language,
+          publication_date: doc.first_publish_year ? new Date(`${doc.first_publish_year}-01-01`) : null,
+          description: doc.first_sentence?.join(' ') || 'No description available.',
+        })
+      }
+    }
+  } catch (error) {
+    console.error(`   ✗ Error fetching from Open Library:`, error)
+  }
+  
+  return books
+}
+
+// ========================================
+// MAIN SEEDING FUNCTION
+// ========================================
+async function main() {
+  console.log('🔄 Starting database seed with HIGH-QUALITY data...\n')
+  console.log('📚 This will take 3-5 minutes...\n')
+  
+  try {
+    // Get Indonesian books
+    console.log('📥 Preparing Indonesian books...')
+    const indonesianBooks = await getIndonesianBooksData()
+    console.log(`   ✅ Prepared ${indonesianBooks.length} Indonesian books\n`)
+    
+    // Get International books
+    console.log('📥 Preparing International books...')
+    const internationalBooks = await getInternationalBooksData()
+    console.log(`   ✅ Prepared ${internationalBooks.length} International books\n`)
+    
+    // Clear existing data
+    console.log('🗑️  Clearing existing books...')
+    await prisma.book.deleteMany()
+    console.log('   ✅ Database cleared\n')
+    
+    // Seed Indonesian books
+    console.log('💾 Seeding Indonesian books to database...')
+    let idCount = 0
+    for (const book of indonesianBooks) {
+      try {
+        await prisma.book.create({
+          data: {
+            title: book.title,
+            authors: book.authors,
+            translators: book.translators,
+            editors: [],
+            reviewers: [],
+            illustrators: [],
+            series_editors: [],
+            contributors: [],
+cover_image_url: book.cover_image_url,
+            epub_isbn: book.epub_isbn,
+            publisher: book.publisher,
+            subjects: book.subjects,
+            language: book.language,
+            publication_date: book.publication_date,
+            description: book.description,
+          }
+        })
+        idCount++
+        
+        if (idCount % 50 === 0) {
+          console.log(`   ⏳ Progress: ${idCount}/${indonesianBooks.length} books...`)
+        }
+      } catch (error: any) {
+        // Skip duplicates or invalid data
+        if (!error.message?.includes('Unique constraint')) {
+          console.error(`   ⚠️  Skipped: ${book.title}`)
+        }
+      }
+    }
+    console.log(`   ✅ Seeded ${idCount} Indonesian books\n`)
+    
+    // Seed International books
+    console.log('💾 Seeding International books to database...')
+    let intCount = 0
+    for (const book of internationalBooks) {
+      try {
+        await prisma.book.create({
+          data: {
+            title: book.title,
+            authors: book.authors,
+            translators: book.translators,
+            editors: [],
+            reviewers: [],
+            illustrators: [],
+            series_editors: [],
+            contributors: [],
+            cover_image_url: book.cover_image_url,
+            epub_isbn: book.epub_isbn,
+            publisher: book.publisher,
+            subjects: book.subjects,
+            language: book.language,
+            publication_date: book.publication_date,
+            description: book.description,
+          }
+        })
+        intCount++
+        
+        if (intCount % 50 === 0) {
+          console.log(`   ⏳ Progress: ${intCount}/${internationalBooks.length} books...`)
+        }
+      } catch (error: any) {
+        // Skip duplicates or invalid data
+        if (!error.message?.includes('Unique constraint')) {
+          console.error(`   ⚠️  Skipped: ${book.title}`)
+        }
+      }
+    }
+    console.log(`   ✅ Seeded ${intCount} International books\n`)
+    
+    // Print final statistics
+    await printFinalStats()
+    
+  } catch (error) {
+    console.error('❌ Seed failed:', error)
+    throw error
+  }
+}
+
+// ========================================
+// PRINT FINAL STATISTICS
+// ========================================
+async function printFinalStats() {
+  console.log('═══════════════════════════════════════════════')
+  console.log('📊 FINAL DATABASE STATISTICS')
+  console.log('═══════════════════════════════════════════════\n')
+  
+  const [total, indonesian, english] = await Promise.all([
+    prisma.book.count(),
+    prisma.book.count({ where: { language: 'Indonesian' } }),
+    prisma.book.count({ where: { language: 'English' } }),
+  ])
+  
+  console.log(`   📖 Total Books: ${total}`)
+  console.log(`   🇮🇩 Indonesian: ${indonesian}`)
+  console.log(`   🌍 English: ${english}\n`)
+  
+  // Get subject statistics
+  const allBooks = await prisma.book.findMany({
+    select: { subjects: true }
+  })
+  
+  const subjectCount = new Map<string, number>()
+  allBooks.forEach(book => {
+    book.subjects.forEach(subject => {
+      subjectCount.set(subject, (subjectCount.get(subject) || 0) + 1)
+    })
+  })
+  
+  const topSubjects = Array.from(subjectCount.entries())
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 10)
+  
+  console.log('📚 Top 10 Subjects:')
+  topSubjects.forEach(([subject, count], index) => {
+    console.log(`   ${index + 1}. ${subject}: ${count} books`)
+  })
+  
+  // Sample books
+  console.log('\n📖 Sample Indonesian Books:')
+  const sampleIndonesian = await prisma.book.findMany({
+    where: { language: 'Indonesian' },
+    take: 5,
+    select: {
+      title: true,
+      authors: true,
+      subjects: true,
+    }
+  })
+  
+  sampleIndonesian.forEach((book, index) => {
+    console.log(`   ${index + 1}. "${book.title}" by ${book.authors.join(', ')}`)
+    console.log(`      Subjects: ${book.subjects.slice(0, 3).join(', ')}`)
+  })
+  
+  console.log('\n📖 Sample International Books:')
+  const sampleInternational = await prisma.book.findMany({
+    where: { language: 'English' },
+    take: 5,
+    select: {
+      title: true,
+      authors: true,
+      subjects: true,
+    }
+  })
+  
+  sampleInternational.forEach((book, index) => {
+    console.log(`   ${index + 1}. "${book.title}" by ${book.authors.join(', ')}`)
+    console.log(`      Subjects: ${book.subjects.slice(0, 3).join(', ')}`)
+  })
+  
+  console.log('\n═══════════════════════════════════════════════')
+  console.log('✅ DATABASE SEEDING COMPLETED SUCCESSFULLY!')
+  console.log('═══════════════════════════════════════════════\n')
+  console.log('🚀 Next steps:')
+  console.log('   1. Run: npm run dev')
+  console.log('   2. Open: http://localhost:3000')
+  console.log('   3. Explore the books!\n')
+}
+
+// ========================================
+// EXECUTE MAIN FUNCTION
+// ========================================
 main()
   .catch((e) => {
-    console.error('❌ Error during seeding:', e)
+    console.error('\n❌ FATAL ERROR:', e)
     process.exit(1)
   })
   .finally(async () => {
