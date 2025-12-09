@@ -2,18 +2,19 @@ import { cn } from '@/lib/utils'
 import { HTMLAttributes } from 'react'
 
 interface BadgeProps extends HTMLAttributes<HTMLSpanElement> {
-  variant?: 'default' | 'secondary' | 'outline'
+  variant?: 'default' | 'accent' | 'secondary' | 'outline'
 }
 
 export function Badge({ className, variant = 'default', ...props }: BadgeProps) {
   return (
     <span
       className={cn(
-        'inline-flex items-center rounded-full px-3 py-1 text-xs font-medium transition-colors',
+        'inline-flex items-center px-3 py-1 rounded-full text-xs font-medium transition-colors',
         {
-          'bg-blue-100 text-blue-700': variant === 'default',
-          'bg-teal-100 text-teal-700': variant === 'secondary',
-          'border border-blue-300 text-blue-700': variant === 'outline',
+          'bg-midnight/5 text-midnight/60': variant === 'default',
+          'bg-accent/10 text-accent font-semibold': variant === 'accent',
+          'bg-glow/10 text-glow': variant === 'secondary',
+          'border border-midnight/20 text-midnight/70': variant === 'outline',
         },
         className
       )}

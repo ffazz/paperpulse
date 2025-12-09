@@ -1,15 +1,26 @@
+'use client'
+
+import { HiHeart } from 'react-icons/hi2'
+import { motion } from 'framer-motion'
+
 export default function Footer() {
   return (
-    <footer className="glass mt-16 border-t border-white/20">
-      <div className="container mx-auto px-4 py-8">
-        <div className="text-center space-y-4">
-          <p className="text-gray-600 text-sm">
-            Built with Next.js 15, TailwindCSS, Prisma, and PostgreSQL
-          </p>
-          <p className="text-gray-500 text-xs">
-            © 2025 PaperPulse – Discover Your Next Favorite Book
-          </p>
-        </div>
+    <footer className="border-t border-midnight/5 mt-32">
+      <div className="container py-12">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="flex flex-col items-center gap-4 text-center"
+        >
+          <div className="text-sm text-midnight/40 flex items-center gap-2">
+            Made with <HiHeart className="text-red-500 w-4 h-4 animate-pulse" /> for book lovers
+          </div>
+          
+          <div className="text-xs text-midnight/30">
+            © 2025 PaperPulse · Powered by vibes
+          </div>
+        </motion.div>
       </div>
     </footer>
   )

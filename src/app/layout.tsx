@@ -1,16 +1,19 @@
 import type { Metadata } from 'next'
-import { Inter, Plus_Jakarta_Sans } from 'next/font/google'
+import { Inter } from 'next/font/google'
 import './globals.css'
-import Header from '@/components/Header'
-import Footer from '@/components/Footer'
+import Header from '@/components/ui/Header'
+import Footer from '@/components/ui/Footer'
 
-const inter = Inter({ subsets: ['latin'], variable: '--font-inter' })
-const plusJakarta = Plus_Jakarta_Sans({ subsets: ['latin'], variable: '--font-jakarta' })
+const inter = Inter({ 
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-inter',
+})
 
 export const metadata: Metadata = {
-  title: 'PaperPulse – Discover Your Next Favorite Book',
-  description: 'Platform rekomendasi buku Indonesia dan Internasional berdasarkan vibes, tema, dan genre',
-  keywords: ['buku', 'rekomendasi buku', 'books', 'book recommendation', 'Indonesia', 'international'],
+  title: 'PaperPulse — Feel the vibes, find your book',
+  description: 'Smart book recommendations based on mood, theme, and energy. Discover Indonesian and international books that match your vibe.',
+  keywords: ['books', 'recommendations', 'vibes', 'reading', 'Indonesia', 'international'],
 }
 
 export default function RootLayout({
@@ -19,10 +22,10 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="id">
-      <body className={`${inter.variable} ${plusJakarta.variable} font-sans`}>
+    <html lang="en" className={inter.variable}>
+      <body className="font-sans">
         <Header />
-        <main className="min-h-screen">{children}</main>
+        <main>{children}</main>
         <Footer />
       </body>
     </html>
