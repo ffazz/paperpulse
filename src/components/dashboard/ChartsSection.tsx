@@ -21,24 +21,24 @@ export default function ChartsSection({ insights }: ChartsSectionProps) {
   const maxLang = languageData.length > 0 ? Math.max(...languageData.map(d => d.count)) : 1
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-16">
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 mt-12 md:mt-16">
       {/* Top Subjects Chart */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="bg-white rounded-3xl p-8 shadow-lg"
+        className="bg-white rounded-2xl md:rounded-3xl p-4 sm:p-6 md:p-8 shadow-lg"
       >
-        <h3 className="text-2xl font-bold mb-6">Top Subjects</h3>
-        <div className="space-y-4">
+        <h3 className="text-lg sm:text-xl md:text-2xl font-bold mb-4 md:mb-6">Top Subjects</h3>
+        <div className="space-y-3 md:space-y-4">
           {genreData.length > 0 ? (
             genreData.map((genre, index) => (
-              <div key={index} className="space-y-2">
-                <div className="flex justify-between text-sm">
+              <div key={index} className="space-y-1 md:space-y-2">
+                <div className="flex justify-between text-xs sm:text-sm">
                   <span className="font-medium truncate pr-2">{genre.name}</span>
                   <span className="text-midnight/60 whitespace-nowrap">{genre.count}</span>
                 </div>
-                <div className="w-full bg-midnight/10 rounded-full h-3 overflow-hidden">
+                <div className="w-full bg-midnight/10 rounded-full h-2 md:h-3 overflow-hidden">
                   <motion.div
                     initial={{ width: 0 }}
                     animate={{ width: `${(genre.count / maxGenre) * 100}%` }}
@@ -49,7 +49,7 @@ export default function ChartsSection({ insights }: ChartsSectionProps) {
               </div>
             ))
           ) : (
-            <div className="text-center py-12 text-midnight/60">
+            <div className="text-center py-8 md:py-12 text-midnight/60 text-sm">
               No subject data available
             </div>
           )}
@@ -61,18 +61,18 @@ export default function ChartsSection({ insights }: ChartsSectionProps) {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.2 }}
-        className="bg-white rounded-3xl p-8 shadow-lg"
+        className="bg-white rounded-2xl md:rounded-3xl p-4 sm:p-6 md:p-8 shadow-lg"
       >
-        <h3 className="text-2xl font-bold mb-6">Language Distribution</h3>
-        <div className="space-y-4">
+        <h3 className="text-lg sm:text-xl md:text-2xl font-bold mb-4 md:mb-6">Language Distribution</h3>
+        <div className="space-y-3 md:space-y-4">
           {languageData.length > 0 ? (
             languageData.map((lang, index) => (
-              <div key={index} className="space-y-2">
-                <div className="flex justify-between text-sm">
+              <div key={index} className="space-y-1 md:space-y-2">
+                <div className="flex justify-between text-xs sm:text-sm">
                   <span className="font-medium">{lang.name}</span>
                   <span className="text-midnight/60 whitespace-nowrap">{lang.count}</span>
                 </div>
-                <div className="w-full bg-midnight/10 rounded-full h-3 overflow-hidden">
+                <div className="w-full bg-midnight/10 rounded-full h-2 md:h-3 overflow-hidden">
                   <motion.div
                     initial={{ width: 0 }}
                     animate={{ width: `${(lang.count / maxLang) * 100}%` }}
@@ -83,7 +83,7 @@ export default function ChartsSection({ insights }: ChartsSectionProps) {
               </div>
             ))
           ) : (
-            <div className="text-center py-12 text-midnight/60">
+            <div className="text-center py-8 md:py-12 text-midnight/60 text-sm">
               No language data available
             </div>
           )}

@@ -36,8 +36,8 @@ export default function StatsGrid({ stats }: StatsGridProps) {
   ]
 
   return (
-    <section className="container py-20">
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+    <section className="container py-12 md:py-16 lg:py-20">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 lg:gap-8 max-w-5xl mx-auto">
         {statsData.map((stat, idx) => (
           <motion.div
             key={idx}
@@ -45,7 +45,7 @@ export default function StatsGrid({ stats }: StatsGridProps) {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: idx * 0.1 }}
-            className={`text-center p-8 rounded-2xl ${stat.bgColor} border border-gray-100 shadow-lg hover:shadow-xl transition-shadow`}
+            className={`text-center p-4 md:p-6 lg:p-8 rounded-xl md:rounded-2xl lg:rounded-2xl ${stat.bgColor} border border-gray-100 shadow-lg hover:shadow-xl transition-shadow`}
           >
             {/* Emoji Icon */}
             <motion.div
@@ -53,7 +53,7 @@ export default function StatsGrid({ stats }: StatsGridProps) {
               whileInView={{ scale: 1, rotate: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: idx * 0.1 }}
-              className="text-5xl mb-4"
+              className="text-3xl md:text-4xl lg:text-5xl mb-2 md:mb-3 lg:mb-4"
             >
               {stat.emoji}
             </motion.div>
@@ -64,13 +64,13 @@ export default function StatsGrid({ stats }: StatsGridProps) {
               whileInView={{ scale: 1 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: idx * 0.1 + 0.2 }}
-              className={`text-5xl md:text-6xl font-bold ${stat.color} mb-3`}
+              className={`text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold ${stat.color} mb-2 md:mb-3`}
             >
               {stat.value.toLocaleString()}
             </motion.div>
 
             {/* Label */}
-            <div className="text-sm text-midnight/60 uppercase tracking-wider font-semibold">
+            <div className="text-xs md:text-sm text-midnight/60 uppercase tracking-wider font-semibold">
               {stat.label}
             </div>
           </motion.div>

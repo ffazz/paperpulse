@@ -17,17 +17,17 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$mo
 ;
 function HeroSection() {
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("section", {
-        className: "relative container py-32 md:py-48",
+        className: "relative container py-16 sm:py-24 md:py-32 lg:py-48",
         children: [
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                className: "absolute top-1/4 right-1/4 w-96 h-96 bg-accent/20 rounded-full blur-3xl animate-float"
+                className: "absolute top-1/4 right-1/4 w-48 sm:w-72 md:w-96 h-48 sm:h-72 md:h-96 bg-accent/20 rounded-full blur-3xl animate-float"
             }, void 0, false, {
                 fileName: "[project]/src/components/home/HeroSection.tsx",
                 lineNumber: 11,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                className: "absolute bottom-1/4 left-1/4 w-96 h-96 bg-glow/10 rounded-full blur-3xl animate-float",
+                className: "absolute bottom-1/4 left-1/4 w-48 sm:w-72 md:w-96 h-48 sm:h-72 md:h-96 bg-glow/10 rounded-full blur-3xl animate-float",
                 style: {
                     animationDelay: '2s'
                 }
@@ -37,7 +37,7 @@ function HeroSection() {
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                className: "relative max-w-5xl mx-auto text-center space-y-8",
+                className: "relative max-w-5xl mx-auto text-center space-y-6 sm:space-y-8",
                 children: [
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["motion"].div, {
                         initial: {
@@ -51,17 +51,17 @@ function HeroSection() {
                         transition: {
                             duration: 0.6
                         },
-                        className: "inline-flex items-center gap-2 px-4 py-2 rounded-full bg-midnight/5 backdrop-blur-sm",
+                        className: "inline-flex items-center gap-2 px-3 sm:px-4 py-2 rounded-full bg-midnight/5 backdrop-blur-sm text-xs sm:text-sm",
                         children: [
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$icons$2f$hi2$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["HiSparkles"], {
-                                className: "w-4 h-4 text-accent animate-pulse"
+                                className: "w-3 h-3 sm:w-4 sm:h-4 text-accent animate-pulse"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/home/HeroSection.tsx",
                                 lineNumber: 22,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                className: "text-sm font-medium",
+                                className: "font-medium",
                                 children: "Discover your next favorite read"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/home/HeroSection.tsx",
@@ -87,7 +87,7 @@ function HeroSection() {
                             duration: 0.8,
                             delay: 0.1
                         },
-                        className: "text-7xl md:text-9xl font-bold tracking-tighter leading-none",
+                        className: "text-4xl sm:text-6xl md:text-7xl lg:text-9xl font-bold tracking-tighter leading-none",
                         children: [
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                 className: "block text-midnight",
@@ -124,7 +124,7 @@ function HeroSection() {
                             duration: 0.8,
                             delay: 0.2
                         },
-                        className: "text-xl md:text-2xl text-midnight/60 max-w-3xl mx-auto leading-relaxed",
+                        className: "text-base sm:text-lg md:text-xl lg:text-2xl text-midnight/60 max-w-3xl mx-auto leading-relaxed",
                         children: [
                             "Smart book recommendations powered by mood, theme, and genre.",
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("br", {}, void 0, false, {
@@ -152,7 +152,7 @@ function HeroSection() {
                             duration: 0.8,
                             delay: 0.3
                         },
-                        className: "flex flex-col sm:flex-row items-center justify-center gap-4 pt-8",
+                        className: "flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 pt-6 sm:pt-8",
                         children: [
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
                                 href: "/books",
@@ -164,7 +164,7 @@ function HeroSection() {
                                     whileTap: {
                                         scale: 0.95
                                     },
-                                    className: "group w-full sm:w-auto inline-flex items-center justify-center gap-3 px-8 py-4 bg-midnight text-ghost rounded-full font-medium shadow-2xl hover:shadow-accent/20 transition-all duration-300",
+                                    className: "group w-full sm:w-auto inline-flex items-center justify-center gap-3 px-6 sm:px-8 py-3 sm:py-4 bg-midnight text-ghost rounded-full font-medium text-sm sm:text-base shadow-2xl hover:shadow-accent/20 transition-all duration-300",
                                     children: [
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                             children: "Start Exploring"
@@ -174,7 +174,7 @@ function HeroSection() {
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$icons$2f$hi2$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["HiArrowRight"], {
-                                            className: "w-5 h-5 group-hover:translate-x-1 transition-transform"
+                                            className: "w-4 h-4 sm:w-5 sm:h-5 group-hover:translate-x-1 transition-transform"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/home/HeroSection.tsx",
                                             lineNumber: 65,
@@ -201,7 +201,7 @@ function HeroSection() {
                                     whileTap: {
                                         scale: 0.95
                                     },
-                                    className: "w-full sm:w-auto inline-flex items-center justify-center gap-3 px-8 py-4 border-2 border-midnight/10 rounded-full font-medium text-midnight hover:border-midnight/30 hover:bg-midnight/5 transition-all duration-300 backdrop-blur-sm bg-white/50",
+                                    className: "w-full sm:w-auto inline-flex items-center justify-center gap-3 px-6 sm:px-8 py-3 sm:py-4 border-2 border-midnight/10 rounded-full font-medium text-sm sm:text-base text-midnight hover:border-midnight/30 hover:bg-midnight/5 transition-all duration-300 backdrop-blur-sm bg-white/50",
                                     children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                         children: "View Insights"
                                     }, void 0, false, {
@@ -236,7 +236,7 @@ function HeroSection() {
                             delay: 1,
                             duration: 1
                         },
-                        className: "absolute bottom-8 left-1/2 -translate-x-1/2 hidden md:block",
+                        className: "absolute bottom-4 sm:bottom-8 left-1/2 -translate-x-1/2 hidden md:block",
                         children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["motion"].div, {
                             animate: {
                                 y: [
@@ -325,9 +325,9 @@ function StatsGrid(param) {
         }
     ];
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("section", {
-        className: "container py-20",
+        className: "container py-12 md:py-16 lg:py-20",
         children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-            className: "grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto",
+            className: "grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 lg:gap-8 max-w-5xl mx-auto",
             children: statsData.map((stat, idx)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["motion"].div, {
                     initial: {
                         opacity: 0,
@@ -344,7 +344,7 @@ function StatsGrid(param) {
                         duration: 0.6,
                         delay: idx * 0.1
                     },
-                    className: "text-center p-8 rounded-2xl ".concat(stat.bgColor, " border border-gray-100 shadow-lg hover:shadow-xl transition-shadow"),
+                    className: "text-center p-4 md:p-6 lg:p-8 rounded-xl md:rounded-2xl lg:rounded-2xl ".concat(stat.bgColor, " border border-gray-100 shadow-lg hover:shadow-xl transition-shadow"),
                     children: [
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["motion"].div, {
                             initial: {
@@ -362,7 +362,7 @@ function StatsGrid(param) {
                                 duration: 0.5,
                                 delay: idx * 0.1
                             },
-                            className: "text-5xl mb-4",
+                            className: "text-3xl md:text-4xl lg:text-5xl mb-2 md:mb-3 lg:mb-4",
                             children: stat.emoji
                         }, void 0, false, {
                             fileName: "[project]/src/components/home/StatsGrid.tsx",
@@ -383,7 +383,7 @@ function StatsGrid(param) {
                                 duration: 0.5,
                                 delay: idx * 0.1 + 0.2
                             },
-                            className: "text-5xl md:text-6xl font-bold ".concat(stat.color, " mb-3"),
+                            className: "text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold ".concat(stat.color, " mb-2 md:mb-3"),
                             children: stat.value.toLocaleString()
                         }, void 0, false, {
                             fileName: "[project]/src/components/home/StatsGrid.tsx",
@@ -391,7 +391,7 @@ function StatsGrid(param) {
                             columnNumber: 13
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                            className: "text-sm text-midnight/60 uppercase tracking-wider font-semibold",
+                            className: "text-xs md:text-sm text-midnight/60 uppercase tracking-wider font-semibold",
                             children: stat.label
                         }, void 0, false, {
                             fileName: "[project]/src/components/home/StatsGrid.tsx",
@@ -455,7 +455,7 @@ function FeaturesSection() {
         }
     ];
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("section", {
-        className: "container py-32",
+        className: "container py-16 md:py-24 lg:py-32",
         children: [
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["motion"].div, {
                 initial: {
@@ -472,10 +472,10 @@ function FeaturesSection() {
                 transition: {
                     duration: 0.8
                 },
-                className: "text-center mb-16",
+                className: "text-center mb-12 md:mb-16",
                 children: [
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
-                        className: "text-5xl md:text-6xl font-bold tracking-tight mb-4",
+                        className: "text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-3 md:mb-4",
                         children: [
                             "Why ",
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -494,7 +494,7 @@ function FeaturesSection() {
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                        className: "text-xl text-midnight/60 max-w-2xl mx-auto",
+                        className: "text-base sm:text-lg md:text-xl text-midnight/60 max-w-2xl mx-auto",
                         children: "More than just recommendations. It's about the vibe."
                     }, void 0, false, {
                         fileName: "[project]/src/components/home/FeaturesSection.tsx",
@@ -508,7 +508,7 @@ function FeaturesSection() {
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                className: "grid md:grid-cols-3 gap-8",
+                className: "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 lg:gap-8",
                 children: features.map((feature, idx)=>{
                     const Icon = feature.icon;
                     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["motion"].div, {
@@ -533,10 +533,10 @@ function FeaturesSection() {
                                 duration: 0.2
                             }
                         },
-                        className: "group relative p-8 rounded-3xl border border-midnight/5 hover:border-midnight/10 hover:shadow-2xl hover:shadow-accent/5 transition-all duration-300",
+                        className: "group relative p-4 md:p-6 lg:p-8 rounded-2xl md:rounded-3xl border border-midnight/5 hover:border-midnight/10 hover:shadow-2xl hover:shadow-accent/5 transition-all duration-300",
                         children: [
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                className: "absolute inset-0 bg-gradient-to-br from-accent/5 to-transparent rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                                className: "absolute inset-0 bg-gradient-to-br from-accent/5 to-transparent rounded-2xl md:rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/home/FeaturesSection.tsx",
                                 lineNumber: 55,
@@ -546,9 +546,9 @@ function FeaturesSection() {
                                 className: "relative",
                                 children: [
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                        className: "w-14 h-14 rounded-2xl bg-midnight/5 group-hover:bg-accent/10 flex items-center justify-center mb-6 transition-colors duration-300",
+                                        className: "w-10 h-10 md:w-12 md:h-12 lg:w-14 lg:h-14 rounded-xl md:rounded-2xl bg-midnight/5 group-hover:bg-accent/10 flex items-center justify-center mb-4 md:mb-6 transition-colors duration-300",
                                         children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(Icon, {
-                                            className: "w-7 h-7 text-accent"
+                                            className: "w-5 h-5 md:w-6 md:h-6 lg:w-7 lg:h-7 text-accent"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/home/FeaturesSection.tsx",
                                             lineNumber: 59,
@@ -560,7 +560,7 @@ function FeaturesSection() {
                                         columnNumber: 17
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
-                                        className: "text-2xl font-bold mb-3 group-hover:text-accent transition-colors duration-300",
+                                        className: "text-lg md:text-xl lg:text-2xl font-bold mb-2 md:mb-3 group-hover:text-accent transition-colors duration-300",
                                         children: feature.title
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/home/FeaturesSection.tsx",
@@ -568,7 +568,7 @@ function FeaturesSection() {
                                         columnNumber: 17
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                        className: "text-midnight/60 leading-relaxed",
+                                        className: "text-sm md:text-base text-midnight/60 leading-relaxed",
                                         children: feature.description
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/home/FeaturesSection.tsx",
@@ -625,7 +625,7 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$mo
 ;
 function CTASection() {
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("section", {
-        className: "container py-32",
+        className: "container py-16 md:py-24 lg:py-32",
         children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["motion"].div, {
             initial: {
                 opacity: 0,
@@ -641,7 +641,7 @@ function CTASection() {
             transition: {
                 duration: 0.8
             },
-            className: "relative max-w-4xl mx-auto rounded-[2.5rem] overflow-hidden",
+            className: "relative max-w-4xl mx-auto rounded-2xl md:rounded-3xl lg:rounded-[2.5rem] overflow-hidden",
             children: [
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                     className: "absolute inset-0 bg-gradient-to-br from-midnight via-midnight to-accent/20"
@@ -651,14 +651,14 @@ function CTASection() {
                     columnNumber: 9
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                    className: "absolute top-0 right-0 w-96 h-96 bg-accent/30 rounded-full blur-3xl animate-pulse"
+                    className: "absolute top-0 right-0 w-48 md:w-72 lg:w-96 h-48 md:h-72 lg:h-96 bg-accent/30 rounded-full blur-3xl animate-pulse"
                 }, void 0, false, {
                     fileName: "[project]/src/components/home/CTASection.tsx",
                     lineNumber: 21,
                     columnNumber: 9
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                    className: "relative text-center space-y-8 px-8 py-20 md:px-16 md:py-24 text-ghost",
+                    className: "relative text-center space-y-4 md:space-y-6 lg:space-y-8 px-4 md:px-8 lg:px-16 py-12 md:py-16 lg:py-20 text-ghost",
                     children: [
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["motion"].h2, {
                             initial: {
@@ -676,7 +676,7 @@ function CTASection() {
                                 duration: 0.6,
                                 delay: 0.2
                             },
-                            className: "text-5xl md:text-6xl font-bold tracking-tight",
+                            className: "text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight",
                             children: [
                                 "Ready to find your",
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("br", {}, void 0, false, {
@@ -714,7 +714,7 @@ function CTASection() {
                                 duration: 0.6,
                                 delay: 0.3
                             },
-                            className: "text-xl text-ghost/70 max-w-2xl mx-auto",
+                            className: "text-base md:text-lg lg:text-xl text-ghost/70 max-w-2xl mx-auto",
                             children: "Browse 100+ curated books and get personalized recommendations based on your vibe"
                         }, void 0, false, {
                             fileName: "[project]/src/components/home/CTASection.tsx",
@@ -746,11 +746,11 @@ function CTASection() {
                                     whileTap: {
                                         scale: 0.95
                                     },
-                                    className: "group inline-flex items-center gap-2 px-8 py-4 bg-ghost text-midnight rounded-full font-medium shadow-2xl hover:shadow-ghost/20 transition-shadow",
+                                    className: "group inline-flex items-center gap-2 px-6 md:px-8 py-3 md:py-4 bg-ghost text-midnight rounded-full font-medium text-sm md:text-base shadow-2xl hover:shadow-ghost/20 transition-shadow",
                                     children: [
                                         "Start Now",
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$icons$2f$hi2$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["HiArrowRight"], {
-                                            className: "w-5 h-5 group-hover:translate-x-1 transition-transform"
+                                            className: "w-4 h-4 md:w-5 md:h-5 group-hover:translate-x-1 transition-transform"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/home/CTASection.tsx",
                                             lineNumber: 60,

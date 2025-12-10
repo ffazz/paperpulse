@@ -80,79 +80,80 @@ export default function BookFilters({
     <motion.div 
       initial={{ opacity: 0, x: -20 }}
       animate={{ opacity: 1, x: 0 }}
-      className="space-y-6 sticky top-24"
+      className="sticky top-16 md:top-20 lg:top-24 max-h-[calc(100vh-80px)] md:max-h-[calc(100vh-100px)] lg:max-h-[calc(100vh-120px)] overflow-y-auto scrollbar-thin scrollbar-thumb-midnight/20 scrollbar-track-transparent"
     >
-      {/* Filters Header */}
-      <div className="flex items-center justify-between mb-6">
-        <h3 className="text-lg font-bold text-midnight">Filters</h3>
-        {hasActiveFilters && (
-          <button
-            onClick={clearFilters}
-            className="text-sm text-accent hover:underline font-medium"
-          >
-            Clear All
-          </button>
-        )}
-      </div>
+      <div className="space-y-4 md:space-y-6 pr-2 md:pr-3">
+        {/* Filters Header */}
+        <div className="flex items-center justify-between mb-4 md:mb-6">
+          <h3 className="text-base md:text-lg font-bold text-midnight">Filters</h3>
+          {hasActiveFilters && (
+            <button
+              onClick={clearFilters}
+              className="text-xs md:text-sm text-accent hover:underline font-medium"
+            >
+              Clear All
+            </button>
+          )}
+        </div>
 
-      {/* Search Input */}
-      <div>
-        <label className="block text-sm font-semibold text-midnight/70 mb-3">
+        {/* Search Input */}
+        <div>
+          <label className="block text-xs md:text-sm font-semibold text-midnight/70 mb-2 md:mb-3">
           🔍 Search Books
         </label>
         <input
           type="text"
-          placeholder="Search by title, author, publisher..."
+          placeholder="Search by title, author..."
           value={searchQuery}
           onChange={(e) => handleSearchChange(e.target.value)}
-          className="w-full px-4 py-3 rounded-lg border border-midnight/10 focus:border-accent focus:ring-2 focus:ring-accent/20 outline-none transition-all placeholder:text-midnight/40"
+          className="w-full px-3 md:px-4 py-2 md:py-3 rounded-lg text-sm border border-midnight/10 focus:border-accent focus:ring-2 focus:ring-accent/20 outline-none transition-all placeholder:text-midnight/40"
         />
       </div>
 
       {/* Language Filter */}
       <div>
-        <label className="block text-sm font-semibold text-midnight/70 mb-3">
+        <label className="block text-xs md:text-sm font-semibold text-midnight/70 mb-2 md:mb-3">
           🌐 Language
         </label>
         <div className="space-y-2">
           <button
             onClick={() => handleLanguageChange('')}
-            className={`w-full text-left px-4 py-3 rounded-lg border transition-all ${
+            className={`w-full text-left px-3 md:px-4 py-2 md:py-3 rounded-lg border text-sm md:text-base transition-all ${
               selectedLanguage === '' 
                 ? 'border-accent bg-accent/5 text-accent font-semibold shadow-sm' 
                 : 'border-midnight/10 hover:border-accent/50 hover:bg-accent/5'
             }`}
           >
-            <div className="flex items-center gap-3">
-              <span className="text-xl">🌍</span>
+            <div className="flex items-center gap-2 md:gap-3">
+              <span className="text-lg md:text-xl">🌍</span>
               <span>All Languages</span>
             </div>
           </button>
 
           <button
             onClick={() => handleLanguageChange('Indonesian')}
-            className={`w-full text-left px-4 py-3 rounded-lg border transition-all ${
+            className={`w-full text-left px-3 md:px-4 py-2 md:py-3 rounded-lg border text-sm md:text-base transition-all ${
               selectedLanguage === 'Indonesian' 
                 ? 'border-red-500 bg-red-50 text-red-700 font-semibold shadow-sm' 
                 : 'border-midnight/10 hover:border-red-300 hover:bg-red-50/50'
             }`}
           >
-            <div className="flex items-center gap-3">
-              <span className="text-xl">🇮🇩</span>
+            <div className="flex items-center gap-2 md:gap-3">
+              <span className="text-lg md:text-xl">🇮🇩</span>
               <span>Indonesian</span>
             </div>
           </button>
 
           <button
             onClick={() => handleLanguageChange('English')}
-            className={`w-full text-left px-4 py-3 rounded-lg border transition-all ${
+            className={`w-full text-left px-3 md:px-4 py-2 md:py-3 rounded-lg border text-sm md:text-base transition-all ${
               selectedLanguage === 'English' 
                 ? 'border-blue-500 bg-blue-50 text-blue-700 font-semibold shadow-sm' 
                 : 'border-midnight/10 hover:border-blue-300 hover:bg-blue-50/50'
             }`}
           >
-            <div className="flex items-center gap-3">
-              <span className="text-xl">🇬🇧</span>
+            <div className="flex items-center gap-2 md:gap-3">
+              <span className="text-lg md:text-xl">🇬🇧</span>
               <span>English</span>
             </div>
           </button>
@@ -161,13 +162,13 @@ export default function BookFilters({
 
       {/* Subject/Genre Filter */}
       <div>
-        <label className="block text-sm font-semibold text-midnight/70 mb-3">
+        <label className="block text-xs md:text-sm font-semibold text-midnight/70 mb-2 md:mb-3">
           📚 Subject / Genre
         </label>
         <select
           value={selectedSubject}
           onChange={(e) => handleSubjectChange(e.target.value)}
-          className="w-full px-4 py-3 rounded-lg border border-midnight/10 focus:border-accent focus:ring-2 focus:ring-accent/20 outline-none transition-all cursor-pointer bg-white"
+          className="w-full px-3 md:px-4 py-2 md:py-3 rounded-lg text-sm border border-midnight/10 focus:border-accent focus:ring-2 focus:ring-accent/20 outline-none transition-all cursor-pointer bg-white"
         >
           <option value="">All Subjects</option>
           {availableSubjects.map((subject) => (
@@ -180,13 +181,13 @@ export default function BookFilters({
 
       {/* Publisher Filter */}
       <div>
-        <label className="block text-sm font-semibold text-midnight/70 mb-3">
+        <label className="block text-xs md:text-sm font-semibold text-midnight/70 mb-2 md:mb-3">
           🏢 Publisher
         </label>
         <select
           value={selectedPublisher}
           onChange={(e) => handlePublisherChange(e.target.value)}
-          className="w-full px-4 py-3 rounded-lg border border-midnight/10 focus:border-accent focus:ring-2 focus:ring-accent/20 outline-none transition-all cursor-pointer bg-white"
+          className="w-full px-3 md:px-4 py-2 md:py-3 rounded-lg text-sm border border-midnight/10 focus:border-accent focus:ring-2 focus:ring-accent/20 outline-none transition-all cursor-pointer bg-white"
         >
           <option value="">All Publishers</option>
           {availablePublishers.slice(0, 30).map((publisher) => (
@@ -199,7 +200,7 @@ export default function BookFilters({
 
       {/* Publication Year Filter */}
       <div>
-        <label className="block text-sm font-semibold text-midnight/70 mb-3">
+        <label className="block text-xs md:text-sm font-semibold text-midnight/70 mb-2 md:mb-3">
           📅 Publication Year
         </label>
         <div className="space-y-2">
@@ -213,7 +214,7 @@ export default function BookFilters({
             }}
             min="1800"
             max={new Date().getFullYear()}
-            className="w-full px-4 py-3 rounded-lg border border-midnight/10 focus:border-accent focus:ring-2 focus:ring-accent/20 outline-none transition-all"
+            className="w-full px-3 md:px-4 py-2 md:py-3 rounded-lg text-sm border border-midnight/10 focus:border-accent focus:ring-2 focus:ring-accent/20 outline-none transition-all"
           />
           <input
             type="number"
@@ -225,7 +226,7 @@ export default function BookFilters({
             }}
             min="1800"
             max={new Date().getFullYear()}
-            className="w-full px-4 py-3 rounded-lg border border-midnight/10 focus:border-accent focus:ring-2 focus:ring-accent/20 outline-none transition-all"
+            className="w-full px-3 md:px-4 py-2 md:py-3 rounded-lg text-sm border border-midnight/10 focus:border-accent focus:ring-2 focus:ring-accent/20 outline-none transition-all"
           />
         </div>
       </div>
@@ -235,52 +236,52 @@ export default function BookFilters({
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          className="pt-4 border-t border-midnight/10"
+          className="pt-3 md:pt-4 border-t border-midnight/10"
         >
-          <p className="text-sm text-midnight/60 mb-3 font-medium">Active Filters:</p>
+          <p className="text-xs md:text-sm text-midnight/60 mb-2 md:mb-3 font-medium">Active Filters:</p>
           <div className="space-y-2">
             {selectedLanguage && (
-              <div className="flex items-center justify-between px-3 py-2 bg-accent/5 rounded-lg">
-                <span className="text-sm text-midnight/80">
+              <div className="flex items-center justify-between px-2 md:px-3 py-2 bg-accent/5 rounded-lg text-xs md:text-sm">
+                <span className="text-midnight/80">
                   Language: <span className="font-semibold">{selectedLanguage}</span>
                 </span>
                 <button
                   onClick={() => handleLanguageChange('')}
-                  className="text-accent hover:text-accent/80 text-sm font-bold"
+                  className="text-accent hover:text-accent/80 font-bold ml-1"
                 >
                   ✕
                 </button>
               </div>
             )}
             {selectedSubject && (
-              <div className="flex items-center justify-between px-3 py-2 bg-accent/5 rounded-lg">
-                <span className="text-sm text-midnight/80">
+              <div className="flex items-center justify-between px-2 md:px-3 py-2 bg-accent/5 rounded-lg text-xs md:text-sm">
+                <span className="text-midnight/80">
                   Subject: <span className="font-semibold">{selectedSubject}</span>
                 </span>
                 <button
                   onClick={() => handleSubjectChange('')}
-                  className="text-accent hover:text-accent/80 text-sm font-bold"
+                  className="text-accent hover:text-accent/80 font-bold ml-1"
                 >
                   ✕
                 </button>
               </div>
             )}
             {selectedPublisher && (
-              <div className="flex items-center justify-between px-3 py-2 bg-accent/5 rounded-lg">
-                <span className="text-sm text-midnight/80">
+              <div className="flex items-center justify-between px-2 md:px-3 py-2 bg-accent/5 rounded-lg text-xs md:text-sm">
+                <span className="text-midnight/80">
                   Publisher: <span className="font-semibold">{selectedPublisher.substring(0, 20)}</span>
                 </span>
                 <button
                   onClick={() => handlePublisherChange('')}
-                  className="text-accent hover:text-accent/80 text-sm font-bold"
+                  className="text-accent hover:text-accent/80 font-bold ml-1"
                 >
                   ✕
                 </button>
               </div>
             )}
             {(yearFrom || yearTo) && (
-              <div className="flex items-center justify-between px-3 py-2 bg-accent/5 rounded-lg">
-                <span className="text-sm text-midnight/80">
+              <div className="flex items-center justify-between px-2 md:px-3 py-2 bg-accent/5 rounded-lg text-xs md:text-sm">
+                <span className="text-midnight/80">
                   Year: <span className="font-semibold">{yearFrom || '...'} - {yearTo || '...'}</span>
                 </span>
                 <button
@@ -289,20 +290,20 @@ export default function BookFilters({
                     setYearTo('')
                     handleYearChange()
                   }}
-                  className="text-accent hover:text-accent/80 text-sm font-bold"
+                  className="text-accent hover:text-accent/80 font-bold ml-1"
                 >
                   ✕
                 </button>
               </div>
             )}
             {searchQuery && (
-              <div className="flex items-center justify-between px-3 py-2 bg-accent/5 rounded-lg">
-                <span className="text-sm text-midnight/80">
+              <div className="flex items-center justify-between px-2 md:px-3 py-2 bg-accent/5 rounded-lg text-xs md:text-sm">
+                <span className="text-midnight/80">
                   Search: <span className="font-semibold">"{searchQuery.substring(0, 20)}"</span>
                 </span>
                 <button
                   onClick={() => handleSearchChange('')}
-                  className="text-accent hover:text-accent/80 text-sm font-bold"
+                  className="text-accent hover:text-accent/80 font-bold ml-1"
                 >
                   ✕
                 </button>
@@ -316,11 +317,12 @@ export default function BookFilters({
       {hasActiveFilters && (
         <button
           onClick={clearFilters}
-          className="w-full px-4 py-3 bg-midnight text-white rounded-lg hover:bg-midnight/90 transition-all font-semibold shadow-md hover:shadow-lg"
+          className="w-full px-3 md:px-4 py-2 md:py-3 bg-midnight text-white rounded-lg text-sm md:text-base hover:bg-midnight/90 transition-all font-semibold shadow-md hover:shadow-lg"
         >
           Clear All Filters
         </button>
       )}
+      </div>
     </motion.div>
   )
 }

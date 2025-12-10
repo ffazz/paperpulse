@@ -20,7 +20,10 @@
       }
     ],
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "@/auth": ["./auth.ts"],
+      "@/auth.config": ["./auth.config.ts"],
+      "@/middleware": ["./middleware.ts"]
     },
     "baseUrl": "."
   },

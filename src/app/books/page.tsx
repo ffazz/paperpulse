@@ -50,18 +50,18 @@ export default function BooksPage() {
   }, [books])
 
   return (
-    <div className="min-h-screen pt-24 pb-20">
+    <div className="min-h-screen pt-16 md:pt-20 lg:pt-24 pb-12 md:pb-16 lg:pb-20">
       <div className="container">
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="mb-12"
+          className="mb-8 md:mb-10 lg:mb-12"
         >
-          <h1 className="text-6xl md:text-7xl font-bold tracking-tighter mb-4">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold tracking-tighter mb-2 md:mb-3 lg:mb-4">
             Browse <span className="text-accent">Books</span>
           </h1>
-          <p className="text-xl text-midnight/60">
+          <p className="text-base md:text-lg lg:text-xl text-midnight/60">
             {loading ? 'Loading...' : `${books.length} books curated for you`}
           </p>
         </motion.div>
@@ -72,38 +72,38 @@ export default function BooksPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="mb-12"
+            className="mb-8 md:mb-10 lg:mb-12"
           >
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-4 lg:gap-4">
               {/* Indonesian Books */}
-              <div className="bg-red-50 rounded-xl p-6 border border-red-100 shadow-sm hover:shadow-md transition-shadow">
-                <div className="flex items-center gap-3 mb-2">
-                  <span className="text-3xl">🇮🇩</span>
-                  <p className="text-sm font-semibold text-midnight/70">Indonesian Books</p>
+              <div className="bg-red-50 rounded-lg md:rounded-xl p-4 md:p-6 border border-red-100 shadow-sm hover:shadow-md transition-shadow">
+                <div className="flex items-center gap-2 md:gap-3 mb-2">
+                  <span className="text-2xl md:text-3xl">🇮🇩</span>
+                  <p className="text-xs md:text-sm font-semibold text-midnight/70">Indonesian Books</p>
                 </div>
-                <p className="text-4xl font-bold text-red-600">
+                <p className="text-2xl md:text-3xl lg:text-4xl font-bold text-red-600">
                   {stats.indonesian.toLocaleString()}
                 </p>
               </div>
 
               {/* International Books */}
-              <div className="bg-blue-50 rounded-xl p-6 border border-blue-100 shadow-sm hover:shadow-md transition-shadow">
-                <div className="flex items-center gap-3 mb-2">
-                  <span className="text-3xl">🌍</span>
-                  <p className="text-sm font-semibold text-midnight/70">International Books</p>
+              <div className="bg-blue-50 rounded-lg md:rounded-xl p-4 md:p-6 border border-blue-100 shadow-sm hover:shadow-md transition-shadow">
+                <div className="flex items-center gap-2 md:gap-3 mb-2">
+                  <span className="text-2xl md:text-3xl">🌍</span>
+                  <p className="text-xs md:text-sm font-semibold text-midnight/70">International Books</p>
                 </div>
-                <p className="text-4xl font-bold text-blue-600">
+                <p className="text-2xl md:text-3xl lg:text-4xl font-bold text-blue-600">
                   {stats.international.toLocaleString()}
                 </p>
               </div>
 
               {/* Total Books */}
-              <div className="bg-indigo-50 rounded-xl p-6 border border-indigo-100 shadow-sm hover:shadow-md transition-shadow">
-                <div className="flex items-center gap-3 mb-2">
-                  <span className="text-3xl">📚</span>
-                  <p className="text-sm font-semibold text-midnight/70">Total Books</p>
+              <div className="bg-indigo-50 rounded-lg md:rounded-xl p-4 md:p-6 border border-indigo-100 shadow-sm hover:shadow-md transition-shadow">
+                <div className="flex items-center gap-2 md:gap-3 mb-2">
+                  <span className="text-2xl md:text-3xl">📚</span>
+                  <p className="text-xs md:text-sm font-semibold text-midnight/70">Total Books</p>
                 </div>
-                <p className="text-4xl font-bold text-indigo-600">
+                <p className="text-2xl md:text-3xl lg:text-4xl font-bold text-indigo-600">
                   {stats.total.toLocaleString()}
                 </p>
               </div>
@@ -112,7 +112,7 @@ export default function BooksPage() {
         )}
 
         {/* Content Grid */}
-        <div className="grid lg:grid-cols-4 gap-12">
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 md:gap-8 lg:gap-12">
           {/* Sidebar Filters */}
           <motion.div
             initial={{ opacity: 0, x: -20 }}

@@ -88,7 +88,7 @@ export default function UploadZone() {
   }
 
   return (
-    <div className="backdrop-blur-xl bg-white/50 border border-midnight/5 rounded-3xl p-8 space-y-6">
+    <div className="backdrop-blur-xl bg-white/50 border border-midnight/5 rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-8 space-y-4 sm:space-y-6">
       {/* Drop Zone */}
       <div
         onDragEnter={handleDrag}
@@ -96,7 +96,7 @@ export default function UploadZone() {
         onDragOver={handleDrag}
         onDrop={handleDrop}
         className={`
-          relative border-2 border-dashed rounded-2xl p-12 text-center transition-all duration-300
+          relative border-2 border-dashed rounded-2xl p-6 sm:p-8 md:p-12 text-center transition-all duration-300
           ${dragActive 
             ? 'border-accent bg-accent/5 scale-105' 
             : file 
@@ -120,18 +120,18 @@ export default function UploadZone() {
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.9 }}
-              className="space-y-4"
+              className="space-y-3 sm:space-y-4"
             >
-              <HiCheckCircle className="w-16 h-16 text-emerald-500 mx-auto" />
+              <HiCheckCircle className="w-12 h-12 sm:w-16 sm:h-16 text-emerald-500 mx-auto" />
               <div>
-                <p className="text-lg font-semibold text-midnight">{file.name}</p>
-                <p className="text-sm text-midnight/60 mt-1">
+                <p className="text-base sm:text-lg font-semibold text-midnight break-all">{file.name}</p>
+                <p className="text-xs sm:text-sm text-midnight/60 mt-1">
                   {(file.size / 1024).toFixed(2)} KB
                 </p>
               </div>
               <button
                 onClick={handleRemove}
-                className="text-sm text-red-500 hover:text-red-600 font-medium"
+                className="text-xs sm:text-sm text-red-500 hover:text-red-600 font-medium"
               >
                 Remove file
               </button>
@@ -143,19 +143,19 @@ export default function UploadZone() {
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.9 }}
-              className="cursor-pointer block space-y-4"
+              className="cursor-pointer block space-y-3 sm:space-y-4"
             >
               <motion.div
                 animate={{ y: dragActive ? -10 : 0 }}
                 transition={{ duration: 0.2 }}
               >
-                <HiCloudArrowUp className="w-16 h-16 text-accent mx-auto" />
+                <HiCloudArrowUp className="w-12 h-12 sm:w-16 sm:h-16 text-accent mx-auto" />
               </motion.div>
               <div>
-                <p className="text-lg font-semibold text-midnight mb-2">
+                <p className="text-base sm:text-lg font-semibold text-midnight mb-1 sm:mb-2">
                   {dragActive ? 'Drop your file here' : 'Drag & drop your CSV file'}
                 </p>
-                <p className="text-sm text-midnight/60">
+                <p className="text-xs sm:text-sm text-midnight/60">
                   or click to browse
                 </p>
               </div>
@@ -182,7 +182,7 @@ export default function UploadZone() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             className={`
-              p-4 rounded-xl flex items-center gap-3
+              p-3 sm:p-4 rounded-xl flex items-center gap-3 text-xs sm:text-sm
               ${message.type === 'success' 
                 ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' 
                 : 'bg-red-50 text-red-700 border border-red-200'
@@ -190,11 +190,11 @@ export default function UploadZone() {
             `}
           >
             {message.type === 'success' ? (
-              <HiCheckCircle className="w-5 h-5 flex-shrink-0" />
+              <HiCheckCircle className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0" />
             ) : (
-              <HiXCircle className="w-5 h-5 flex-shrink-0" />
+              <HiXCircle className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0" />
             )}
-            <span className="text-sm font-medium">{message.text}</span>
+            <span className="font-medium">{message.text}</span>
           </motion.div>
         )}
       </AnimatePresence>
