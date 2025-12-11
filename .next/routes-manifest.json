@@ -28,20 +28,20 @@
       "namedRegex": "^/api/auth/(?<nxtPnextauth>.+?)(?:/)?$"
     },
     {
-      "page": "/api/books/[bookId]/posts",
-      "regex": "^/api/books/([^/]+?)/posts(?:/)?$",
-      "routeKeys": {
-        "nxtPbookId": "nxtPbookId"
-      },
-      "namedRegex": "^/api/books/(?<nxtPbookId>[^/]+?)/posts(?:/)?$"
-    },
-    {
       "page": "/api/books/[id]",
       "regex": "^/api/books/([^/]+?)(?:/)?$",
       "routeKeys": {
         "nxtPid": "nxtPid"
       },
       "namedRegex": "^/api/books/(?<nxtPid>[^/]+?)(?:/)?$"
+    },
+    {
+      "page": "/api/books/[id]/posts",
+      "regex": "^/api/books/([^/]+?)/posts(?:/)?$",
+      "routeKeys": {
+        "nxtPid": "nxtPid"
+      },
+      "namedRegex": "^/api/books/(?<nxtPid>[^/]+?)/posts(?:/)?$"
     },
     {
       "page": "/api/books/[id]/recommendations",
@@ -176,6 +176,22 @@
       "namedRegex": "^/api/user/lists/(?<nxtPlistId>[^/]+?)/books/(?<nxtPbookId>[^/]+?)(?:/)?$"
     },
     {
+      "page": "/api/users/[userId]",
+      "regex": "^/api/users/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPuserId": "nxtPuserId"
+      },
+      "namedRegex": "^/api/users/(?<nxtPuserId>[^/]+?)(?:/)?$"
+    },
+    {
+      "page": "/api/users/[userId]/activity",
+      "regex": "^/api/users/([^/]+?)/activity(?:/)?$",
+      "routeKeys": {
+        "nxtPuserId": "nxtPuserId"
+      },
+      "namedRegex": "^/api/users/(?<nxtPuserId>[^/]+?)/activity(?:/)?$"
+    },
+    {
       "page": "/books/[id]",
       "regex": "^/books/([^/]+?)(?:/)?$",
       "routeKeys": {
@@ -222,6 +238,14 @@
         "nxtPshareSlug": "nxtPshareSlug"
       },
       "namedRegex": "^/shared/(?<nxtPshareSlug>[^/]+?)(?:/)?$"
+    },
+    {
+      "page": "/users/[userId]",
+      "regex": "^/users/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPuserId": "nxtPuserId"
+      },
+      "namedRegex": "^/users/(?<nxtPuserId>[^/]+?)(?:/)?$"
     }
   ],
   "staticRoutes": [
