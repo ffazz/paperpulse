@@ -59,6 +59,10 @@ model User {
   activities    UserActivity[]
   profileViews  ProfileView[] @relation("ProfileViewed")
   viewedProfiles ProfileView[] @relation("ProfileViewer")
+  
+  // Notification system relations
+  notifications Notification[] @relation("UserNotifications")
+  triggeredNotifications Notification[] @relation("NotificationActor")
 
   @@map("users")
 }
@@ -390,4 +394,29 @@ model ProfileView {
   @@index([profileUserId])
   @@index([viewedAt])
   @@map("profile_views")
+}
+
+// ==========================================
+// NOTIFICATION SYSTEM
+// ==========================================
+
+model Notification {
+  id        String   @id @default(cuid())
+  userId    String
+  type      String   // post_like, post_comment, comment_reply, comment_like, list_public, goal_milestone, streak_achievement, system_announcement
+  title     String
+  message   String   @db.Text
+  actionUrl String?
+  actorId   String?
+  metadata  Json?
+  isRead    Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  user  User  @relation("UserNotifications", fields: [userId], references: [id], onDelete: Cascade)
+  actor User? @relation("NotificationActor", fields: [actorId], references: [id], onDelete: SetNull)
+
+  @@index([userId])
+  @@index([userId, isRead])
+  @@index([createdAt])
+  @@map("notifications")
 }

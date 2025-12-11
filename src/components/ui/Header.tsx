@@ -6,6 +6,7 @@ import { useSession, signOut } from 'next-auth/react'
 import { HiBookOpen, HiChartBar, HiUser, HiArrowRightOnRectangle, HiHeart, HiChatBubbleLeftRight, HiEllipsisHorizontalCircle } from 'react-icons/hi2'
 import { motion } from 'framer-motion'
 import { useState } from 'react'
+import { NotificationBell } from '@/components/notifications/NotificationBell'
 
 export default function Header() {
   const pathname = usePathname()
@@ -99,51 +100,57 @@ export default function Header() {
               {status === 'loading' ? (
                 <div className="w-8 h-8 rounded-full bg-midnight/10 animate-pulse" />
               ) : session ? (
-                <div className="relative">
-                  <motion.button
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    onClick={() => setShowUserMenu(!showUserMenu)}
-                    className="flex items-center gap-1.5 px-2 sm:px-3 py-1.5 rounded-full bg-accent/10 hover:bg-accent/20 transition-colors"
-                  >
-                    <HiUser className="w-4 h-4 text-accent" />
-                    <span className="text-xs sm:text-sm font-medium text-midnight hidden sm:inline">
-                      {session.user?.name?.split(' ')[0] || 'User'}
-                    </span>
-                  </motion.button>
+                <div className="flex items-center gap-2">
+                  {/* Notification Bell */}
+                  <NotificationBell />
 
-                  {/* User Menu Dropdown */}
-                  {showUserMenu && (
-                    <motion.div
-                      initial={{ opacity: 0, y: -10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      className="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-xl border border-gray-200 py-2 z-50"
+                  {/* User Menu */}
+                  <div className="relative">
+                    <motion.button
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      onClick={() => setShowUserMenu(!showUserMenu)}
+                      className="flex items-center gap-1.5 px-2 sm:px-3 py-1.5 rounded-full bg-accent/10 hover:bg-accent/20 transition-colors"
                     >
-                      <div className="px-4 py-2 border-b border-gray-100">
-                        <p className="text-sm font-medium text-midnight">{session.user?.name}</p>
-                        <p className="text-xs text-gray-600">{session.user?.email}</p>
-                      </div>
-                      <Link href={`/users/${session.user?.id}`}>
-                        <div
-                          onClick={() => setShowUserMenu(false)}
-                          className="w-full flex items-center gap-2 px-4 py-2 text-sm text-midnight hover:bg-midnight/5 transition-colors cursor-pointer"
-                        >
-                          <HiUser className="w-4 h-4" />
-                          View Profile
-                        </div>
-                      </Link>
-                      <button
-                        onClick={() => {
-                          signOut({ redirect: true, redirectTo: '/' })
-                          setShowUserMenu(false)
-                        }}
-                        className="w-full flex items-center gap-2 px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors"
+                      <HiUser className="w-4 h-4 text-accent" />
+                      <span className="text-xs sm:text-sm font-medium text-midnight hidden sm:inline">
+                        {session.user?.name?.split(' ')[0] || 'User'}
+                      </span>
+                    </motion.button>
+
+                    {/* User Menu Dropdown */}
+                    {showUserMenu && (
+                      <motion.div
+                        initial={{ opacity: 0, y: -10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-xl border border-gray-200 py-2 z-50"
                       >
-                        <HiArrowRightOnRectangle className="w-4 h-4" />
-                        Sign Out
-                      </button>
-                    </motion.div>
-                  )}
+                        <div className="px-4 py-2 border-b border-gray-100">
+                          <p className="text-sm font-medium text-midnight">{session.user?.name}</p>
+                          <p className="text-xs text-gray-600">{session.user?.email}</p>
+                        </div>
+                        <Link href={`/users/${session.user?.id}`}>
+                          <div
+                            onClick={() => setShowUserMenu(false)}
+                            className="w-full flex items-center gap-2 px-4 py-2 text-sm text-midnight hover:bg-midnight/5 transition-colors cursor-pointer"
+                          >
+                            <HiUser className="w-4 h-4" />
+                            View Profile
+                          </div>
+                        </Link>
+                        <button
+                          onClick={() => {
+                            signOut({ redirect: true, redirectTo: '/' })
+                            setShowUserMenu(false)
+                          }}
+                          className="w-full flex items-center gap-2 px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors"
+                        >
+                          <HiArrowRightOnRectangle className="w-4 h-4" />
+                          Sign Out
+                        </button>
+                      </motion.div>
+                    )}
+                  </div>
                 </div>
               ) : (
                 <div className="flex items-center gap-1 sm:gap-2">
