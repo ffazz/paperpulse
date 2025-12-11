@@ -38,7 +38,6 @@ interface ReadingList {
   isPublic: boolean
   shareSlug?: string
   books: ListBook[]
-  _count: { books: number }
 }
 
 export default function ListDetailPage({ 
@@ -137,7 +136,6 @@ export default function ListDetailPage({
           ? {
               ...prev,
               books: prev.books.filter((b) => b.bookId !== bookId),
-              _count: { books: prev._count.books - 1 },
             }
           : null
       )
@@ -275,7 +273,7 @@ export default function ListDetailPage({
                     </span>
                   )}
                   <span className="text-gray-600">
-                    {list._count.books} {list._count.books === 1 ? 'book' : 'books'}
+                    {list.books?.length || 0} {list.books?.length === 1 ? 'book' : 'books'}
                   </span>
                 </div>
               </div>
