@@ -13,40 +13,34 @@ export async function GET() {
       where: { language: 'English' }
     })
     
-    const topRatedBooks = await prisma.book.findMany({
+    const topViewedBooks = await prisma.book.findMany({
       take: 5,
-      orderBy: { rating: 'desc' },
+      orderBy: { viewCount: 'desc' },
       select: {
         id: true,
         title: true,
-        author: true,
-        rating: true,
+        authors: true,
+        viewCount: true,
       }
     })
     
     const recentBooks = await prisma.book.findMany({
       take: 5,
-      orderBy: { year: 'desc' },
+      orderBy: { createdAt: 'desc' },
       select: {
         id: true,
         title: true,
-        author: true,
-        year: true,
+        authors: true,
+        publication_date: true,
       }
-    })
-
-    const genreCount = await prisma.book.groupBy({
-      by: ['genre'],
-      _count: true,
     })
 
     return NextResponse.json({
       totalBooks,
       indonesianBooks,
       englishBooks,
-      topRatedBooks,
+      topViewedBooks,
       recentBooks,
-      genreCount,
     })
   } catch (error) {
     console.error('Error fetching stats:', error)

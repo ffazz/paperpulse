@@ -10,22 +10,22 @@ interface ChartsProps {
 const COLORS = ['#0891b2', '#0284c7', '#0369a1', '#075985', '#0c4a6e', '#164e63', '#155e75']
 
 export default function Charts({ insights }: ChartsProps) {
-  const genreData = Object.entries(insights.genreDistribution).map(([name, value]) => ({
+  const genreData = Object.entries(insights.genreDistribution || {}).map(([name, value]) => ({
     name,
     value,
   }))
 
-  const ratingData = Object.entries(insights.ratingDistribution).map(([name, value]) => ({
+  const ratingData = Object.entries(insights.ratingDistribution || {}).map(([name, value]) => ({
     name,
     value,
   }))
 
-  const languageData = Object.entries(insights.languageDistribution).map(([name, value]) => ({
+  const languageData = Object.entries(insights.languageDistribution || {}).map(([name, value]) => ({
     name: name === 'Indonesian' ? 'Indonesia' : name,
     value,
   }))
 
-  const topVibes = Object.entries(insights.vibesFrequency)
+  const topVibes = Object.entries(insights.vibesFrequency || {})
     .sort((a, b) => b[1] - a[1])
     .slice(0, 10)
     .map(([name, value]) => ({ name, value }))

@@ -11,13 +11,18 @@ export interface Book {
   contributors?: string[]
   cover_image_url?: string
   epub_isbn?: string | null
-  publisher: string
+  publisher?: string
   subjects: string[]
   language: string
   publication_date?: string | Date | null
   description?: string | null
   createdAt?: Date
   updatedAt?: Date
+}
+
+// Book with Similarity Score
+export interface BookWithSimilarity extends Book {
+  similarityScore?: number
 }
 
 // Extended Filter Options
@@ -46,4 +51,19 @@ export interface DashboardInsights {
     min: number
     max: number
   }
+}
+
+// Dataset Insights Interface
+export interface DatasetInsights {
+  totalBooks?: number
+  indonesianBooks?: number
+  internationalBooks?: number
+  yearRange?: {
+    min: number
+    max: number
+  }
+  genreDistribution?: Record<string, number>
+  ratingDistribution?: Record<string, number>
+  languageDistribution?: Record<string, number>
+  vibesFrequency?: Record<string, number>
 }

@@ -6,14 +6,14 @@ import { FilterOptions } from '@/types'
 
 interface BookFiltersProps {
   onFilterChange: (filters: FilterOptions) => void
-  availableSubjects: string[]
-  availablePublishers: string[]
+  availableSubjects?: string[]
+  availablePublishers?: string[]
 }
 
 export default function BookFilters({ 
   onFilterChange, 
-  availableSubjects,
-  availablePublishers 
+  availableSubjects = [],
+  availablePublishers = []
 }: BookFiltersProps) {
   const [selectedLanguage, setSelectedLanguage] = useState<string>('')
   const [selectedSubject, setSelectedSubject] = useState<string>('')

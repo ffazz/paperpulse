@@ -30,7 +30,10 @@ export default function ReadingListsGrid() {
       setLoading(true)
       const response = await fetch('/api/user/lists')
       
-      if (!response.ok) throw new Error('Failed to fetch lists')
+      if (!response.ok) {
+        console.error('Lists API error:', response.status, response.statusText)
+        throw new Error(`Failed to fetch lists: ${response.statusText}`)
+      }
       
       const data = await response.json()
       setLists(data)

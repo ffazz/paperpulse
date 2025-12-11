@@ -255,7 +255,9 @@ function useBookmarks() {
             if (!(session === null || session === void 0 ? void 0 : session.user)) return;
             setLoading(true);
             try {
-                const res = await fetch('/api/bookmarks');
+                const res = await fetch('/api/bookmarks', {
+                    cache: 'no-store'
+                });
                 if (res.ok) {
                     const data = await res.json();
                     setBookmarks(data);
@@ -272,13 +274,19 @@ function useBookmarks() {
     }["useBookmarks.useCallback[fetchBookmarks]"], [
         session === null || session === void 0 ? void 0 : session.user
     ]);
-    // Add to bookmarks
+    // Add to bookmarks (optimistic update)
     const addBookmark = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useCallback"])({
         "useBookmarks.useCallback[addBookmark]": async (bookId)=>{
             if (!(session === null || session === void 0 ? void 0 : session.user)) {
-                alert('Please sign in to add favorites');
                 return false;
             }
+            // Optimistic update
+            setFavoriteIds({
+                "useBookmarks.useCallback[addBookmark]": (prev)=>new Set([
+                        ...prev,
+                        bookId
+                    ])
+            }["useBookmarks.useCallback[addBookmark]"]);
             try {
                 const res = await fetch('/api/bookmarks', {
                     method: 'POST',
@@ -289,55 +297,76 @@ function useBookmarks() {
                         bookId
                     })
                 });
-                if (res.ok) {
+                if (!res.ok) {
+                    // Rollback on error
                     setFavoriteIds({
-                        "useBookmarks.useCallback[addBookmark]": (prev)=>new Set([
-                                ...prev,
-                                bookId
-                            ])
-                    }["useBookmarks.useCallback[addBookmark]"]);
-                    // Re-fetch bookmarks
-                    const bookmarksRes = await fetch('/api/bookmarks');
-                    if (bookmarksRes.ok) {
-                        const data = await bookmarksRes.json();
-                        setBookmarks(data);
-                    }
-                    return true;
-                }
-            } catch (error) {
-                console.error('Error adding bookmark:', error);
-            }
-            return false;
-        }
-    }["useBookmarks.useCallback[addBookmark]"], [
-        session === null || session === void 0 ? void 0 : session.user
-    ]);
-    // Remove from bookmarks
-    const removeBookmark = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useCallback"])({
-        "useBookmarks.useCallback[removeBookmark]": async (bookId)=>{
-            try {
-                const res = await fetch("/api/bookmarks?bookId=".concat(bookId), {
-                    method: 'DELETE'
-                });
-                if (res.ok) {
-                    setFavoriteIds({
-                        "useBookmarks.useCallback[removeBookmark]": (prev)=>{
+                        "useBookmarks.useCallback[addBookmark]": (prev)=>{
                             const newSet = new Set(prev);
                             newSet.delete(bookId);
                             return newSet;
                         }
-                    }["useBookmarks.useCallback[removeBookmark]"]);
-                    setBookmarks({
-                        "useBookmarks.useCallback[removeBookmark]": (prev)=>prev.filter({
-                                "useBookmarks.useCallback[removeBookmark]": (b)=>b.bookId !== bookId
-                            }["useBookmarks.useCallback[removeBookmark]"])
-                    }["useBookmarks.useCallback[removeBookmark]"]);
-                    return true;
+                    }["useBookmarks.useCallback[addBookmark]"]);
+                    return false;
                 }
+                return true;
+            } catch (error) {
+                console.error('Error adding bookmark:', error);
+                // Rollback on error
+                setFavoriteIds({
+                    "useBookmarks.useCallback[addBookmark]": (prev)=>{
+                        const newSet = new Set(prev);
+                        newSet.delete(bookId);
+                        return newSet;
+                    }
+                }["useBookmarks.useCallback[addBookmark]"]);
+                return false;
+            }
+        }
+    }["useBookmarks.useCallback[addBookmark]"], [
+        session === null || session === void 0 ? void 0 : session.user
+    ]);
+    // Remove from bookmarks (optimistic update)
+    const removeBookmark = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useCallback"])({
+        "useBookmarks.useCallback[removeBookmark]": async (bookId)=>{
+            // Optimistic update
+            setFavoriteIds({
+                "useBookmarks.useCallback[removeBookmark]": (prev)=>{
+                    const newSet = new Set(prev);
+                    newSet.delete(bookId);
+                    return newSet;
+                }
+            }["useBookmarks.useCallback[removeBookmark]"]);
+            try {
+                const res = await fetch("/api/bookmarks?bookId=".concat(bookId), {
+                    method: 'DELETE'
+                });
+                if (!res.ok) {
+                    // Rollback on error
+                    setFavoriteIds({
+                        "useBookmarks.useCallback[removeBookmark]": (prev)=>new Set([
+                                ...prev,
+                                bookId
+                            ])
+                    }["useBookmarks.useCallback[removeBookmark]"]);
+                    return false;
+                }
+                setBookmarks({
+                    "useBookmarks.useCallback[removeBookmark]": (prev)=>prev.filter({
+                            "useBookmarks.useCallback[removeBookmark]": (b)=>b.bookId !== bookId
+                        }["useBookmarks.useCallback[removeBookmark]"])
+                }["useBookmarks.useCallback[removeBookmark]"]);
+                return true;
             } catch (error) {
                 console.error('Error removing bookmark:', error);
+                // Rollback on error
+                setFavoriteIds({
+                    "useBookmarks.useCallback[removeBookmark]": (prev)=>new Set([
+                            ...prev,
+                            bookId
+                        ])
+                }["useBookmarks.useCallback[removeBookmark]"]);
+                return false;
             }
-            return false;
         }
     }["useBookmarks.useCallback[removeBookmark]"], []);
     // Toggle bookmark
@@ -526,7 +555,7 @@ var _s = __turbopack_context__.k.signature();
 ;
 ;
 function BookFilters(param) {
-    let { onFilterChange, availableSubjects, availablePublishers } = param;
+    let { onFilterChange, availableSubjects = [], availablePublishers = [] } = param;
     _s();
     const [selectedLanguage, setSelectedLanguage] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])('');
     const [selectedSubject, setSelectedSubject] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])('');

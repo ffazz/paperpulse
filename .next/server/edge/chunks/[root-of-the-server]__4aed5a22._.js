@@ -39,8 +39,7 @@ __turbopack_context__.s([
 ]);
 const authConfig = {
     pages: {
-        signIn: '/auth/signin',
-        signUp: '/auth/signup'
+        signIn: '/auth/signin'
     },
     callbacks: {
         authorized ({ auth, request: { nextUrl } }) {

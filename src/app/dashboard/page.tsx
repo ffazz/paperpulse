@@ -4,15 +4,14 @@ import ChartsSection from '@/components/dashboard/ChartsSection'
 import DashboardLoading from './loading'
 
 async function getInsights() {
-  const baseUrl = process.env.NEXT_PUBLIC_URL || 'http://localhost:3000'
-  
   try {
-    const response = await fetch(`${baseUrl}/api/insights`, {
+    const response = await fetch('http://localhost:3000/api/insights', {
       cache: 'no-store',
     })
     
     if (!response.ok) {
-      throw new Error('Failed to fetch insights')
+      console.error('Insights API error:', response.status, response.statusText)
+      throw new Error(`Failed to fetch insights: ${response.statusText}`)
     }
     
     return response.json()

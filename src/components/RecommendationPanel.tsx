@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { BookWithSimilarity } from '@/types'
-import BookCard from './BookCard'
+import BookCard from '@/components/books/BookCard'
 
 interface RecommendationPanelProps {
   bookId: string
@@ -57,9 +57,9 @@ export default function RecommendationPanel({ bookId }: RecommendationPanelProps
         ✨ Rekomendasi Serupa
       </h2>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {recommendations.map((book) => (
+        {recommendations.map((book, idx) => (
           <div key={book.id} className="relative">
-            <BookCard book={book} />
+            <BookCard book={book} index={idx} />
             {book.similarityScore && (
               <div className="absolute top-2 right-2 bg-gradient-to-r from-cyan-500 to-blue-500 text-white text-xs font-bold px-2 py-1 rounded-full">
                 {Math.round(book.similarityScore * 100)}% match

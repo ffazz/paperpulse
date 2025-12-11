@@ -13,7 +13,7 @@ export async function GET(request: NextRequest) {
     }
 
     const targetBook = await prisma.book.findUnique({
-      where: { id: bookId },
+      where: { id: parseInt(bookId) },
     })
 
     if (!targetBook) {
@@ -22,8 +22,8 @@ export async function GET(request: NextRequest) {
 
     const allBooks = await prisma.book.findMany()
     const recommendations = RecommendationEngine.getRecommendations(
-      targetBook,
-      allBooks,
+      targetBook as any,
+      allBooks as any,
       limit
     )
 
@@ -44,7 +44,7 @@ export async function POST(request: NextRequest) {
     }
 
     const allBooks = await prisma.book.findMany()
-    const results = RecommendationEngine.searchByVibes(vibesQuery, allBooks)
+    const results = RecommendationEngine.searchByVibes(vibesQuery, allBooks as any)
 
     return NextResponse.json(results)
   } catch (error) {
