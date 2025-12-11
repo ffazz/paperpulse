@@ -4,17 +4,16 @@ import CredentialsProvider from 'next-auth/providers/credentials'
 import { prisma } from '@/lib/prisma'
 import { authConfig } from './auth.config'
 import bcrypt from 'bcryptjs'
-import { z } from 'zod'
-
-const credentialsSchema = z.object({
-  email: z.string().email('Invalid email'),
-  password: z.string().min(6, 'Password too short'),
-})
 
 export const { auth, signIn, signOut, handlers } = NextAuth({
   ...authConfig,
   adapter: PrismaAdapter(prisma),
-  session: { strategy: 'jwt' },
+  session: { 
+    strategy: 'jwt',
+    maxAge: 30 * 24 * 60 * 60, // 30 days
+  },
+  secret: process.env.NEXTAUTH_SECRET,
+  trustHost: true,
   events: {
     async signIn({ user }) {
       console.log('[EVENT] User signed in:', user.email)
@@ -25,77 +24,67 @@ export const { auth, signIn, signOut, handlers } = NextAuth({
   },
   providers: [
     CredentialsProvider({
+      id: 'credentials',
       name: 'Credentials',
       credentials: {
-        email: { label: 'Email', type: 'email' },
+        email: { label: 'Email', type: 'email', placeholder: 'you@example.com' },
         password: { label: 'Password', type: 'password' },
       },
-      async authorize(credentials: any) {
-        console.log('[AUTH] Authorize function called')
-        console.log('[AUTH] Credentials received:', JSON.stringify(credentials))
+      async authorize(credentials) {
+        console.log('[AUTH] Authorize called')
         
-        // Hardcoded test return
-        if (credentials?.email === 'test@example.com' && credentials?.password === 'password123') {
-          console.log('[AUTH] ✓ Test credentials accepted')
-          return {
-            id: 'cmj0v0npk0000ct50zv6f9slv',
-            email: 'test@example.com',
-            name: 'Test User',
-            image: null,
-          }
-        }
-        
-        // Real database lookup
         if (!credentials?.email || !credentials?.password) {
           console.log('[AUTH] Missing email or password')
           return null
         }
 
+        const email = credentials.email as string
+        const password = credentials.password as string
+
+        console.log('[AUTH] Attempting to authenticate:', email)
+
         try {
-          const result = credentialsSchema.safeParse({
-            email: credentials.email as string,
-            password: credentials.password as string,
-          })
-          
-          if (!result.success) {
-            console.error('[AUTH] Validation failed:', result.error.issues.map(i => `${i.path.join('.')}: ${i.message}`))
+          // Validate email format
+          if (!email.includes('@')) {
+            console.log('[AUTH] Invalid email format')
             return null
           }
 
-          const { email, password } = result.data
-          console.log('[AUTH] Looking up user:', email)
-          
-          const user = await prisma.user.findUnique({ 
+          // Lookup user
+          const user = await prisma.user.findUnique({
             where: { email },
           })
-          
+
           if (!user) {
-            console.log('[AUTH] User not found for email:', email)
+            console.log('[AUTH] User not found:', email)
             return null
           }
-          
+
           if (!user.password) {
             console.log('[AUTH] User has no password hash')
             return null
           }
 
+          // Compare password
           console.log('[AUTH] Comparing passwords...')
-          const passwordMatch = await bcrypt.compare(password, user.password)
-          
-          if (!passwordMatch) {
-            console.log('[AUTH] Password does not match')
+          const isPasswordValid = await bcrypt.compare(password, user.password)
+
+          if (!isPasswordValid) {
+            console.log('[AUTH] Password mismatch')
             return null
           }
 
-          console.log('[AUTH] ✓ Authentication successful for:', email)
+          console.log('[AUTH] ✓ Authentication successful:', email)
+
+          // Return user object with required fields
           return {
             id: user.id,
             email: user.email,
-            name: user.name,
+            name: user.name || 'User',
             image: user.image,
           }
         } catch (error) {
-          console.error('[AUTH] Critical error in authorize:', error)
+          console.error('[AUTH] Error in authorize:', error instanceof Error ? error.message : error)
           return null
         }
       },
@@ -103,24 +92,29 @@ export const { auth, signIn, signOut, handlers } = NextAuth({
   ],
   callbacks: {
     async jwt({ token, user }) {
-      console.log('[JWT] Token callback - user:', !!user)
-      if (user) token.id = user.id
+      console.log('[JWT] Token callback - user present:', !!user)
+      if (user) {
+        console.log('[JWT] Setting token.id:', user.id)
+        token.id = user.id
+      }
       return token
     },
     async session({ session, token }) {
-      console.log('[SESSION] Session callback')
-      if (token && session.user) session.user.id = token.id as string
+      console.log('[SESSION] Session callback - token.id:', token.id)
+      if (session.user) {
+        session.user.id = token.id as string
+      }
       return session
     },
   },
   logger: {
-    error(code, ...message) {
+    error: (code, ...message) => {
       console.error('[NextAuth Error]', code, ...message)
     },
-    warn(code, ...message) {
+    warn: (code, ...message) => {
       console.warn('[NextAuth Warn]', code, ...message)
     },
-    debug(code, ...message) {
+    debug: (code, ...message) => {
       console.debug('[NextAuth Debug]', code, ...message)
     },
   },
