@@ -2,18 +2,30 @@
 
 import { useEffect, useState } from 'react'
 import { useParams, useRouter } from 'next/navigation'
+import { useSession } from 'next-auth/react'
 import { Book } from '@/types'
-import Navbar from '@/components/Navbar'
 import Image from 'next/image'
 import { motion } from 'framer-motion'
+import RecommendationSection from '@/components/books/RecommendationSection'
+import { ToastContainer } from '@/components/ui/Toast'
+import { useBookmarks } from '@/hooks/useBookmarks'
+import { useToast } from '@/hooks/useToast'
+import { HiPlus } from 'react-icons/hi2'
 
 export default function BookDetailPage() {
   const params = useParams()
   const router = useRouter()
+  const { data: session } = useSession()
+  const { favoriteIds, addBookmark, removeBookmark } = useBookmarks()
+  const { toasts, success, error: showError, removeToast } = useToast()
   const [book, setBook] = useState<Book | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [imageError, setImageError] = useState(false)
+  const [isFavorite, setIsFavorite] = useState(false)
+  const [isBookmarking, setIsBookmarking] = useState(false)
+  const [userLists, setUserLists] = useState<{ id: string; name: string }[]>([])
+  const [showListDropdown, setShowListDropdown] = useState(false)
 
   useEffect(() => {
     async function fetchBook() {
@@ -21,7 +33,9 @@ export default function BookDetailPage() {
         setLoading(true)
         setError(null)
         
-        const response = await fetch(`/api/books/${params.id}`)
+        const response = await fetch(`/api/books/${params.id}`, {
+          cache: 'no-store'
+        })
         
         if (!response.ok) {
           throw new Error('Failed to fetch book')
@@ -29,6 +43,12 @@ export default function BookDetailPage() {
         
         const data = await response.json()
         setBook(data)
+
+        // Track view in background
+        fetch(`/api/books/${params.id}/view`, {
+          method: 'POST',
+          cache: 'no-store'
+        }).catch(() => {})
       } catch (err) {
         console.error('Failed to load book:', err)
         setError('Failed to load book details.')
@@ -42,7 +62,88 @@ export default function BookDetailPage() {
     }
   }, [params.id])
 
-  // Loading state
+  // Update favorite status when book or favoriteIds changes
+  useEffect(() => {
+    if (book && favoriteIds.has(book.id)) {
+      setIsFavorite(true)
+    } else {
+      setIsFavorite(false)
+    }
+  }, [book, favoriteIds])
+
+  const handleToggleFavorite = async () => {
+    if (!session?.user) {
+      router.push('/auth/signin')
+      return
+    }
+
+    if (!book) return
+
+    setIsBookmarking(true)
+    try {
+      if (isFavorite) {
+        const result = await removeBookmark(book.id)
+        if (result) {
+          showError(`Removed "${book.title}" from favorites`)
+        } else {
+          showError('Failed to remove from favorites')
+        }
+      } else {
+        const result = await addBookmark(book.id)
+        if (result) {
+          success(`Successfully added "${book.title}" to favorites`)
+        } else {
+          showError('Failed to add to favorites')
+        }
+      }
+    } catch (err) {
+      console.error('Error toggling favorite:', err)
+      showError('An error occurred while updating favorites')
+    } finally {
+      setIsBookmarking(false)
+    }
+  }
+
+  const fetchUserLists = async () => {
+    if (!session?.user) {
+      router.push('/auth/signin')
+      return
+    }
+
+    try {
+      const res = await fetch('/api/user/lists')
+      if (res.ok) {
+        const data = await res.json()
+        setUserLists(data)
+      }
+    } catch (err) {
+      console.error('Error fetching lists:', err)
+    }
+  }
+
+  const handleAddToList = async (listId: string) => {
+    if (!book) return
+
+    try {
+      const res = await fetch(`/api/user/lists/${listId}/books`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ bookId: book.id }),
+      })
+
+      if (res.ok) {
+        success(`Added "${book.title}" to list!`)
+        setShowListDropdown(false)
+      } else {
+        const data = await res.json()
+        showError(data.error || 'Failed to add to list')
+      }
+    } catch (err) {
+      console.error('Error:', err)
+      showError('Failed to add to list')
+    }
+  }
+
   if (loading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-purple-50">
@@ -56,7 +157,6 @@ export default function BookDetailPage() {
     )
   }
 
-  // Error state
   if (error || !book) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-purple-50">
@@ -83,9 +183,7 @@ export default function BookDetailPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-purple-50">
-      
       <main className="container mx-auto px-4 py-4 md:py-8 mt-14 md:mt-16 lg:mt-20">
-        {/* Back Button */}
         <motion.button
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
@@ -97,7 +195,6 @@ export default function BookDetailPage() {
 
         <div className="bg-white rounded-xl md:rounded-2xl shadow-2xl overflow-hidden">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-6 lg:gap-8 p-4 md:p-6 lg:p-8">
-            {/* Left Column - Book Cover */}
             <motion.div 
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
@@ -125,7 +222,6 @@ export default function BookDetailPage() {
                     </div>
                   )}
                   
-                  {/* Language Badge */}
                   <div className="absolute top-2 md:top-4 right-2 md:right-4">
                     <span className={`px-2 md:px-4 py-1 md:py-2 rounded-full text-xs md:text-sm font-bold shadow-lg backdrop-blur-sm ${
                       isIndonesian 
@@ -137,7 +233,6 @@ export default function BookDetailPage() {
                   </div>
                 </div>
 
-                {/* Quick Stats */}
                 <div className="mt-4 md:mt-6 space-y-2 md:space-y-3">
                   {book.publication_date && (
                     <div className="flex items-center gap-2 md:gap-3 p-2 md:p-3 bg-gray-50 rounded-lg">
@@ -172,19 +267,90 @@ export default function BookDetailPage() {
               </div>
             </motion.div>
 
-            {/* Right Column - Book Details */}
             <motion.div 
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 }}
               className="lg:col-span-2"
             >
-              {/* Title */}
-              <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-midnight mb-3 md:mb-4 leading-tight">
-                {book.title}
-              </h1>
+              <div className="flex items-start justify-between gap-4 mb-4 md:mb-6">
+                <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-midnight leading-tight flex-1">
+                  {book.title}
+                </h1>
+                <div className="flex flex-col gap-2 flex-shrink-0">
+                  <motion.button
+                    onClick={handleToggleFavorite}
+                    disabled={isBookmarking}
+                    whileTap={{ scale: 0.95 }}
+                    className={`flex-shrink-0 px-3 md:px-5 py-2 md:py-3 rounded-lg font-semibold transition-all duration-200 ${
+                      isFavorite
+                        ? 'bg-accent text-white shadow-lg'
+                        : 'bg-gray-100 text-midnight hover:bg-gray-200'
+                    } ${isBookmarking ? 'opacity-50 cursor-not-allowed' : ''}`}
+                  >
+                    {isBookmarking ? (
+                      <span>...</span>
+                    ) : isFavorite ? (
+                      <span className="text-sm md:text-base">❤️ Favorited</span>
+                    ) : (
+                      <span className="text-sm md:text-base">🤍 Add to Favorite</span>
+                    )}
+                  </motion.button>
 
-              {/* Authors */}
+                  {session?.user && (
+                    <div className="relative">
+                      <motion.button
+                        onClick={() => {
+                          setShowListDropdown(!showListDropdown)
+                          if (!showListDropdown && userLists.length === 0) {
+                            fetchUserLists()
+                          }
+                        }}
+                        whileTap={{ scale: 0.95 }}
+                        className="w-full px-3 md:px-5 py-2 md:py-3 rounded-lg font-semibold transition-all duration-200 bg-gray-100 text-midnight hover:bg-gray-200 flex items-center justify-center gap-2"
+                      >
+                        <HiPlus className="w-4 h-4" />
+                        <span className="text-sm md:text-base">Add to List</span>
+                      </motion.button>
+
+                      {showListDropdown && (
+                        <motion.div
+                          initial={{ opacity: 0, y: -10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          className="absolute top-full right-0 mt-2 w-48 bg-white rounded-lg shadow-xl z-10 border border-gray-200"
+                        >
+                          {userLists.length === 0 ? (
+                            <p className="px-4 py-3 text-sm text-gray-500 text-center">
+                              No lists yet. Create one to get started!
+                            </p>
+                          ) : (
+                            <div className="max-h-64 overflow-y-auto">
+                              {userLists.map((list) => (
+                                <button
+                                  key={list.id}
+                                  onClick={() => handleAddToList(list.id)}
+                                  className="w-full text-left px-4 py-2 hover:bg-gray-100 transition-colors text-sm"
+                                >
+                                  {list.name}
+                                </button>
+                              ))}
+                            </div>
+                          )}
+                          <div className="border-t px-4 py-2">
+                            <button
+                              onClick={() => router.push('/reading-lists')}
+                              className="w-full text-center text-sm text-accent hover:text-accent/80 font-semibold"
+                            >
+                              Manage Lists
+                            </button>
+                          </div>
+                        </motion.div>
+                      )}
+                    </div>
+                  )}
+                </div>
+              </div>
+
               {book.authors && book.authors.length > 0 && (
                 <div className="mb-4 md:mb-6">
                   <div className="flex items-start gap-2 md:gap-3">
@@ -199,7 +365,6 @@ export default function BookDetailPage() {
                 </div>
               )}
 
-              {/* Publisher */}
               {book.publisher && (
                 <div className="mb-4 md:mb-6">
                   <div className="flex items-start gap-2 md:gap-3">
@@ -212,7 +377,6 @@ export default function BookDetailPage() {
                 </div>
               )}
 
-              {/* Description */}
               {book.description && (
                 <div className="mb-6 md:mb-8">
                   <h2 className="text-lg md:text-2xl font-bold text-midnight mb-3 md:mb-4 flex items-center gap-2">
@@ -226,7 +390,6 @@ export default function BookDetailPage() {
                 </div>
               )}
 
-              {/* Subjects/Categories */}
               {book.subjects && book.subjects.length > 0 && (
                 <div className="mb-6 md:mb-8">
                   <h2 className="text-lg md:text-2xl font-bold text-midnight mb-3 md:mb-4 flex items-center gap-2">
@@ -247,7 +410,15 @@ export default function BookDetailPage() {
             </motion.div>
           </div>
         </div>
+
+        {book && (
+          <div className="mt-12 md:mt-16">
+            <RecommendationSection bookId={book.id} />
+          </div>
+        )}
       </main>
+      
+      <ToastContainer toasts={toasts} onRemove={removeToast} />
     </div>
   )
 }

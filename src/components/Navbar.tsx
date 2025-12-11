@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { motion } from 'framer-motion'
+import { HiBookmark } from 'react-icons/hi2'
 
 export default function Navbar() {
   const pathname = usePathname()
@@ -51,6 +52,17 @@ export default function Navbar() {
               }`}
             >
               Browse
+            </Link>
+            <Link
+              href="/reading-lists"
+              className={`font-semibold transition-colors flex items-center gap-2 ${
+                pathname === '/reading-lists' || pathname.startsWith('/reading-lists/')
+                  ? 'text-accent'
+                  : 'text-midnight/60 hover:text-accent'
+              }`}
+            >
+              <HiBookmark className="w-4 h-4" />
+              My Lists
             </Link>
             <Link
               href="/books"
