@@ -20,18 +20,26 @@ export default function SignIn() {
     setLoading(true)
 
     try {
+      console.log('[CLIENT] Submitting credentials...')
       const result = await signIn('credentials', {
         email,
         password,
         redirect: false,
       })
 
+      console.log('[CLIENT] SignIn result:', result)
+
       if (result?.error) {
+        console.error('[CLIENT] Sign-in error:', result.error)
         setError('Invalid email or password')
-      } else {
+      } else if (result?.ok) {
+        console.log('[CLIENT] Sign-in successful')
         router.push('/dashboard')
+      } else {
+        setError('Authentication failed')
       }
     } catch (err) {
+      console.error('[CLIENT] Exception during sign-in:', err)
       setError('Something went wrong. Please try again.')
     } finally {
       setLoading(false)
