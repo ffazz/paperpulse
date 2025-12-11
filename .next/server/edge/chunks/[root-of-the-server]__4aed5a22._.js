@@ -221,7 +221,8 @@ const __TURBOPACK__default__export__ = (0, __TURBOPACK__imported__module__$5b$pr
         '/dashboard',
         '/profile',
         '/favorites',
-        '/reading-lists'
+        '/reading-lists',
+        '/circle'
     ];
     const authRoutes = [
         '/auth/signin',

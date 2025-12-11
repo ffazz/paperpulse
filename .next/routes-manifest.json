@@ -1,1 +1,217 @@
-{"version":3,"caseSensitive":false,"basePath":"","rewrites":{"beforeFiles":[],"afterFiles":[],"fallback":[]},"redirects":[{"source":"/:path+/","destination":"/:path+","permanent":true,"internal":true,"regex":"^(?:\\/((?:[^\\/]+?)(?:\\/(?:[^\\/]+?))*))\\/$"}],"headers":[]}
+{
+  "version": 3,
+  "pages404": true,
+  "caseSensitive": false,
+  "basePath": "",
+  "redirects": [
+    {
+      "source": "/:path+/",
+      "destination": "/:path+",
+      "internal": true,
+      "statusCode": 308,
+      "regex": "^(?:/((?:[^/]+?)(?:/(?:[^/]+?))*))/$"
+    }
+  ],
+  "headers": [],
+  "rewrites": {
+    "beforeFiles": [],
+    "afterFiles": [],
+    "fallback": []
+  },
+  "dynamicRoutes": [
+    {
+      "page": "/api/auth/[...nextauth]",
+      "regex": "^/api/auth/(.+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPnextauth": "nxtPnextauth"
+      },
+      "namedRegex": "^/api/auth/(?<nxtPnextauth>.+?)(?:/)?$"
+    },
+    {
+      "page": "/api/books/[id]",
+      "regex": "^/api/books/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPid": "nxtPid"
+      },
+      "namedRegex": "^/api/books/(?<nxtPid>[^/]+?)(?:/)?$"
+    },
+    {
+      "page": "/api/books/[id]/recommendations",
+      "regex": "^/api/books/([^/]+?)/recommendations(?:/)?$",
+      "routeKeys": {
+        "nxtPid": "nxtPid"
+      },
+      "namedRegex": "^/api/books/(?<nxtPid>[^/]+?)/recommendations(?:/)?$"
+    },
+    {
+      "page": "/api/books/[id]/view",
+      "regex": "^/api/books/([^/]+?)/view(?:/)?$",
+      "routeKeys": {
+        "nxtPid": "nxtPid"
+      },
+      "namedRegex": "^/api/books/(?<nxtPid>[^/]+?)/view(?:/)?$"
+    },
+    {
+      "page": "/api/circle/posts/[postId]",
+      "regex": "^/api/circle/posts/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPpostId": "nxtPpostId"
+      },
+      "namedRegex": "^/api/circle/posts/(?<nxtPpostId>[^/]+?)(?:/)?$"
+    },
+    {
+      "page": "/api/circle/posts/[postId]/comments",
+      "regex": "^/api/circle/posts/([^/]+?)/comments(?:/)?$",
+      "routeKeys": {
+        "nxtPpostId": "nxtPpostId"
+      },
+      "namedRegex": "^/api/circle/posts/(?<nxtPpostId>[^/]+?)/comments(?:/)?$"
+    },
+    {
+      "page": "/api/circle/posts/[postId]/likes",
+      "regex": "^/api/circle/posts/([^/]+?)/likes(?:/)?$",
+      "routeKeys": {
+        "nxtPpostId": "nxtPpostId"
+      },
+      "namedRegex": "^/api/circle/posts/(?<nxtPpostId>[^/]+?)/likes(?:/)?$"
+    },
+    {
+      "page": "/api/public/lists/[shareSlug]",
+      "regex": "^/api/public/lists/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPshareSlug": "nxtPshareSlug"
+      },
+      "namedRegex": "^/api/public/lists/(?<nxtPshareSlug>[^/]+?)(?:/)?$"
+    },
+    {
+      "page": "/api/user/lists/[listId]",
+      "regex": "^/api/user/lists/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPlistId": "nxtPlistId"
+      },
+      "namedRegex": "^/api/user/lists/(?<nxtPlistId>[^/]+?)(?:/)?$"
+    },
+    {
+      "page": "/api/user/lists/[listId]/books",
+      "regex": "^/api/user/lists/([^/]+?)/books(?:/)?$",
+      "routeKeys": {
+        "nxtPlistId": "nxtPlistId"
+      },
+      "namedRegex": "^/api/user/lists/(?<nxtPlistId>[^/]+?)/books(?:/)?$"
+    },
+    {
+      "page": "/api/user/lists/[listId]/books/[bookId]",
+      "regex": "^/api/user/lists/([^/]+?)/books/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPlistId": "nxtPlistId",
+        "nxtPbookId": "nxtPbookId"
+      },
+      "namedRegex": "^/api/user/lists/(?<nxtPlistId>[^/]+?)/books/(?<nxtPbookId>[^/]+?)(?:/)?$"
+    },
+    {
+      "page": "/books/[id]",
+      "regex": "^/books/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPid": "nxtPid"
+      },
+      "namedRegex": "^/books/(?<nxtPid>[^/]+?)(?:/)?$"
+    },
+    {
+      "page": "/circle/posts/[postId]",
+      "regex": "^/circle/posts/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPpostId": "nxtPpostId"
+      },
+      "namedRegex": "^/circle/posts/(?<nxtPpostId>[^/]+?)(?:/)?$"
+    },
+    {
+      "page": "/reading-lists/[listId]",
+      "regex": "^/reading\\-lists/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPlistId": "nxtPlistId"
+      },
+      "namedRegex": "^/reading\\-lists/(?<nxtPlistId>[^/]+?)(?:/)?$"
+    },
+    {
+      "page": "/shared/[shareSlug]",
+      "regex": "^/shared/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPshareSlug": "nxtPshareSlug"
+      },
+      "namedRegex": "^/shared/(?<nxtPshareSlug>[^/]+?)(?:/)?$"
+    }
+  ],
+  "staticRoutes": [
+    {
+      "page": "/",
+      "regex": "^/(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/(?:/)?$"
+    },
+    {
+      "page": "/_not-found",
+      "regex": "^/_not\\-found(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/_not\\-found(?:/)?$"
+    },
+    {
+      "page": "/auth/signin",
+      "regex": "^/auth/signin(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/auth/signin(?:/)?$"
+    },
+    {
+      "page": "/auth/signup",
+      "regex": "^/auth/signup(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/auth/signup(?:/)?$"
+    },
+    {
+      "page": "/books",
+      "regex": "^/books(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/books(?:/)?$"
+    },
+    {
+      "page": "/circle",
+      "regex": "^/circle(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/circle(?:/)?$"
+    },
+    {
+      "page": "/dashboard",
+      "regex": "^/dashboard(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/dashboard(?:/)?$"
+    },
+    {
+      "page": "/favorites",
+      "regex": "^/favorites(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/favorites(?:/)?$"
+    },
+    {
+      "page": "/reading-lists",
+      "regex": "^/reading\\-lists(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/reading\\-lists(?:/)?$"
+    }
+  ],
+  "dataRoutes": [],
+  "rsc": {
+    "header": "rsc",
+    "varyHeader": "rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch",
+    "prefetchHeader": "next-router-prefetch",
+    "didPostponeHeader": "x-nextjs-postponed",
+    "contentTypeHeader": "text/x-component",
+    "suffix": ".rsc",
+    "prefetchSuffix": ".prefetch.rsc",
+    "prefetchSegmentHeader": "next-router-segment-prefetch",
+    "prefetchSegmentSuffix": ".segment.rsc",
+    "prefetchSegmentDirSuffix": ".segments"
+  },
+  "rewriteHeaders": {
+    "pathHeader": "x-nextjs-rewritten-path",
+    "queryHeader": "x-nextjs-rewritten-query"
+  }
+}

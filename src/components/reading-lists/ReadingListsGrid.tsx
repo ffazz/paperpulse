@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import { useRouter } from 'next/navigation'
 import { motion } from 'framer-motion'
 import { HiPlus, HiBookmark } from 'react-icons/hi2'
 import CreateListModal from './CreateListModal'
@@ -17,6 +18,7 @@ interface ReadingList {
 }
 
 export default function ReadingListsGrid() {
+  const router = useRouter()
   const [lists, setLists] = useState<ReadingList[]>([])
   const [loading, setLoading] = useState(true)
   const [showCreateModal, setShowCreateModal] = useState(false)
@@ -108,6 +110,7 @@ export default function ReadingListsGrid() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: idx * 0.1 }}
+                onClick={() => router.push(`/reading-lists/${list.id}`)}
                 className="group bg-white rounded-3xl shadow-lg hover:shadow-xl transition-all p-6 cursor-pointer"
               >
                 <div className="space-y-4">
