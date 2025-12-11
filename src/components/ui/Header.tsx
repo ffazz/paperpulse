@@ -3,7 +3,7 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useSession, signOut } from 'next-auth/react'
-import { HiBookOpen, HiChartBar, HiCloudArrowUp, HiUser, HiArrowRightOnRectangle, HiHeart } from 'react-icons/hi2'
+import { HiBookOpen, HiChartBar, HiUser, HiArrowRightOnRectangle, HiHeart, HiChatBubbleLeftRight, HiEllipsisHorizontalCircle } from 'react-icons/hi2'
 import { motion } from 'framer-motion'
 import { useState } from 'react'
 
@@ -15,11 +15,12 @@ export default function Header() {
   const navItems = [
     { href: '/books', label: 'Browse', icon: HiBookOpen },
     { href: '/dashboard', label: 'Insights', icon: HiChartBar },
-    { href: '/upload', label: 'Upload', icon: HiCloudArrowUp },
   ]
 
   const authenticatedNavItems = [
     { href: '/favorites', label: 'Favorites', icon: HiHeart },
+    { href: '/reading-lists', label: 'Lists', icon: HiEllipsisHorizontalCircle },
+    { href: '/circle', label: 'Circle', icon: HiChatBubbleLeftRight },
   ]
 
   return (

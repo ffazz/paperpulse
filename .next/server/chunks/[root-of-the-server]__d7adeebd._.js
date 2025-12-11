@@ -1,5 +1,5 @@
 module.exports = [
-"[project]/.next-internal/server/app/api/user/lists/route/actions.js [app-rsc] (server actions loader, ecmascript)", ((__turbopack_context__, module, exports) => {
+"[project]/.next-internal/server/app/api/user/lists/[listId]/books/route/actions.js [app-rsc] (server actions loader, ecmascript)", ((__turbopack_context__, module, exports) => {
 
 }),
 "[externals]/next/dist/compiled/next-server/app-route-turbo.runtime.dev.js [external] (next/dist/compiled/next-server/app-route-turbo.runtime.dev.js, cjs)", ((__turbopack_context__, module, exports) => {
@@ -247,25 +247,25 @@ const { auth, signIn, signOut, handlers } = (0, __TURBOPACK__imported__module__$
     }
 });
 }),
-"[project]/src/app/api/user/lists/route.ts [app-route] (ecmascript)", ((__turbopack_context__) => {
+"[project]/src/app/api/user/lists/[listId]/books/route.ts [app-route] (ecmascript)", ((__turbopack_context__) => {
 "use strict";
 
 __turbopack_context__.s([
-    "GET",
-    ()=>GET,
+    "DELETE",
+    ()=>DELETE,
     "POST",
     ()=>POST
 ]);
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/server.js [app-route] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$auth$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/auth.ts [app-route] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$prisma$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/lib/prisma.ts [app-route] (ecmascript)");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$nanoid$2f$index$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__$3c$locals$3e$__ = __turbopack_context__.i("[project]/node_modules/nanoid/index.js [app-route] (ecmascript) <locals>");
 ;
 ;
 ;
-;
-async function GET() {
+async function POST(request, { params }) {
     try {
+        const resolvedParams = await params;
+        const { listId } = resolvedParams;
         const session = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$auth$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["auth"])();
         if (!session?.user?.email) {
             return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
@@ -286,39 +286,124 @@ async function GET() {
                 status: 404
             });
         }
-        const lists = await __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$prisma$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["prisma"].readingList.findMany({
+        const list = await __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$prisma$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["prisma"].readingList.findUnique({
             where: {
-                userId: user.id
-            },
-            include: {
-                books: {
-                    include: {
-                        book: true
-                    },
-                    take: 4
-                },
-                _count: {
-                    select: {
-                        books: true
-                    }
-                }
-            },
-            orderBy: {
-                updatedAt: 'desc'
+                id: listId
             }
         });
-        return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json(lists);
+        if (!list) {
+            return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
+                error: 'List not found'
+            }, {
+                status: 404
+            });
+        }
+        if (list.userId !== user.id) {
+            return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
+                error: 'Forbidden'
+            }, {
+                status: 403
+            });
+        }
+        const { bookId, note, favoriteQuote } = await request.json();
+        if (!bookId || typeof bookId !== 'number') {
+            return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
+                error: 'Book ID is required'
+            }, {
+                status: 400
+            });
+        }
+        // Validation
+        if (note && note.length > 2000) {
+            return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
+                error: 'Note must be 2000 characters or less'
+            }, {
+                status: 400
+            });
+        }
+        if (favoriteQuote && favoriteQuote.length > 1000) {
+            return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
+                error: 'Quote must be 1000 characters or less'
+            }, {
+                status: 400
+            });
+        }
+        // Check if book exists
+        const book = await __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$prisma$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["prisma"].book.findUnique({
+            where: {
+                id: bookId
+            }
+        });
+        if (!book) {
+            return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
+                error: 'Book not found'
+            }, {
+                status: 404
+            });
+        }
+        // Check if book already in list
+        const existing = await __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$prisma$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["prisma"].readingListBook.findUnique({
+            where: {
+                listId_bookId: {
+                    listId,
+                    bookId
+                }
+            }
+        });
+        if (existing) {
+            return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
+                error: 'Book already in this list'
+            }, {
+                status: 400
+            });
+        }
+        const listBook = await __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$prisma$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["prisma"].readingListBook.create({
+            data: {
+                listId,
+                bookId,
+                note: note?.trim() || null,
+                favoriteQuote: favoriteQuote?.trim() || null
+            },
+            include: {
+                book: true
+            }
+        });
+        // Increment bookmarkCount
+        await __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$prisma$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["prisma"].book.update({
+            where: {
+                id: bookId
+            },
+            data: {
+                bookmarkCount: {
+                    increment: 1
+                }
+            }
+        });
+        // Update list updatedAt
+        await __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$prisma$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["prisma"].readingList.update({
+            where: {
+                id: listId
+            },
+            data: {
+                updatedAt: new Date()
+            }
+        });
+        return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json(listBook, {
+            status: 201
+        });
     } catch (error) {
-        console.error('Error fetching lists:', error);
+        console.error('Error adding book to list:', error);
         return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
-            error: 'Failed to fetch lists'
+            error: 'Failed to add book to list'
         }, {
             status: 500
         });
     }
 }
-async function POST(request) {
+async function DELETE(request, { params }) {
     try {
+        const resolvedParams = await params;
+        const { listId } = resolvedParams;
         const session = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$auth$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["auth"])();
         if (!session?.user?.email) {
             return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
@@ -339,71 +424,84 @@ async function POST(request) {
                 status: 404
             });
         }
-        const { name, description, isPublic } = await request.json();
-        // Validation
-        if (!name || name.trim().length === 0) {
-            return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
-                error: 'List name is required'
-            }, {
-                status: 400
-            });
-        }
-        if (name.length > 100) {
-            return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
-                error: 'List name must be 100 characters or less'
-            }, {
-                status: 400
-            });
-        }
-        if (description && description.length > 500) {
-            return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
-                error: 'Description must be 500 characters or less'
-            }, {
-                status: 400
-            });
-        }
-        // Check list count limit (max 50 lists per user)
-        const listCount = await __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$prisma$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["prisma"].readingList.count({
+        const list = await __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$prisma$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["prisma"].readingList.findUnique({
             where: {
-                userId: user.id
+                id: listId
             }
         });
-        if (listCount >= 50) {
+        if (!list) {
             return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
-                error: 'You can only create up to 50 lists'
+                error: 'List not found'
+            }, {
+                status: 404
+            });
+        }
+        if (list.userId !== user.id) {
+            return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
+                error: 'Forbidden'
+            }, {
+                status: 403
+            });
+        }
+        const { searchParams } = new URL(request.url);
+        const bookId = parseInt(searchParams.get('bookId') || '');
+        if (!bookId || isNaN(bookId)) {
+            return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
+                error: 'Book ID is required'
             }, {
                 status: 400
             });
         }
-        const shareSlug = isPublic ? (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$nanoid$2f$index$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__$3c$locals$3e$__["nanoid"])(8) : null;
-        const newList = await __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$prisma$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["prisma"].readingList.create({
-            data: {
-                name: name.trim(),
-                description: description?.trim() || null,
-                userId: user.id,
-                isPublic: isPublic ?? false,
-                shareSlug
-            },
-            include: {
-                books: {
-                    include: {
-                        book: true
-                    }
-                },
-                _count: {
-                    select: {
-                        books: true
-                    }
+        const listBook = await __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$prisma$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["prisma"].readingListBook.findUnique({
+            where: {
+                listId_bookId: {
+                    listId,
+                    bookId
                 }
             }
         });
-        return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json(newList, {
-            status: 201
+        if (!listBook) {
+            return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
+                error: 'Book not in list'
+            }, {
+                status: 404
+            });
+        }
+        await __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$prisma$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["prisma"].readingListBook.delete({
+            where: {
+                listId_bookId: {
+                    listId,
+                    bookId
+                }
+            }
+        });
+        // Decrement bookmarkCount
+        await __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$prisma$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["prisma"].book.update({
+            where: {
+                id: bookId
+            },
+            data: {
+                bookmarkCount: {
+                    decrement: 1
+                }
+            }
+        });
+        // Update list updatedAt
+        await __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$prisma$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["prisma"].readingList.update({
+            where: {
+                id: listId
+            },
+            data: {
+                updatedAt: new Date()
+            }
+        });
+        return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
+            success: true
         });
     } catch (error) {
-        console.error('Error creating list:', error);
+        console.error('Error removing book from list:', error);
         return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
-            error: 'Failed to create list'
+            error: 'Failed to remove book from list'
         }, {
             status: 500
         });
@@ -412,4 +510,4 @@ async function POST(request) {
 }),
 ];
 
-//# sourceMappingURL=%5Broot-of-the-server%5D__c3790def._.js.map
+//# sourceMappingURL=%5Broot-of-the-server%5D__d7adeebd._.js.map
