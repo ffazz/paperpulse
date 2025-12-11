@@ -34,6 +34,13 @@ export default function CirclePage() {
   const [page, setPage] = useState(1)
   const [total, setTotal] = useState(0)
   const [showCreateModal, setShowCreateModal] = useState(false)
+  const [formData, setFormData] = useState({
+    title: '',
+    content: '',
+    category: 'Discussion',
+    tags: ''
+  })
+  const [submitting, setSubmitting] = useState(false)
 
   useEffect(() => {
     if (status === 'unauthenticated') {
@@ -66,6 +73,49 @@ export default function CirclePage() {
       console.error('Error fetching posts:', error)
     } finally {
       setLoading(false)
+    }
+  }
+
+  const handleCreatePost = async (e: React.FormEvent) => {
+    e.preventDefault()
+    
+    if (!formData.title.trim() || !formData.content.trim()) {
+      alert('Please fill in title and content')
+      return
+    }
+
+    try {
+      setSubmitting(true)
+      const tags = formData.tags
+        .split(',')
+        .map(tag => tag.trim())
+        .filter(tag => tag.length > 0)
+
+      const res = await fetch('/api/circle/posts', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          title: formData.title,
+          content: formData.content,
+          category: formData.category,
+          tags: tags,
+          bookId: null
+        })
+      })
+
+      if (res.ok) {
+        setFormData({ title: '', content: '', category: 'Discussion', tags: '' })
+        setShowCreateModal(false)
+        fetchPosts()
+      } else {
+        const error = await res.json()
+        alert(error.error || 'Failed to create post')
+      }
+    } catch (error) {
+      console.error('Error creating post:', error)
+      alert('Error creating post')
+    } finally {
+      setSubmitting(false)
     }
   }
 
@@ -210,22 +260,108 @@ export default function CirclePage() {
         </div>
       )}
 
-      {/* Create Post Modal - Placeholder */}
+      {/* Create Post Modal */}
       {showCreateModal && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
           <motion.div
             initial={{ scale: 0.95, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
-            className="bg-ghost rounded-xl p-8 max-w-2xl w-full mx-4"
+            className="bg-ghost rounded-xl p-8 max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto"
           >
-            <h2 className="text-2xl font-bold mb-4">Create New Post</h2>
-            <p className="text-midnight/60 mb-6">Modal content coming soon</p>
-            <button
-              onClick={() => setShowCreateModal(false)}
-              className="px-6 py-2 rounded-lg bg-midnight text-ghost font-semibold"
-            >
-              Close
-            </button>
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-2xl font-bold text-midnight">Create New Post</h2>
+              <button
+                onClick={() => setShowCreateModal(false)}
+                className="text-midnight/50 hover:text-midnight"
+              >
+                ✕
+              </button>
+            </div>
+
+            <form onSubmit={handleCreatePost} className="space-y-4">
+              {/* Title */}
+              <div>
+                <label className="block text-sm font-semibold text-midnight mb-2">
+                  Title
+                </label>
+                <input
+                  type="text"
+                  value={formData.title}
+                  onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+                  placeholder="What do you want to share?"
+                  className="w-full px-4 py-2 rounded-lg border border-midnight/10 focus:border-accent focus:outline-none"
+                  disabled={submitting}
+                />
+              </div>
+
+              {/* Content */}
+              <div>
+                <label className="block text-sm font-semibold text-midnight mb-2">
+                  Content
+                </label>
+                <textarea
+                  value={formData.content}
+                  onChange={(e) => setFormData({ ...formData, content: e.target.value })}
+                  placeholder="Share your thoughts, review, or recommendation..."
+                  rows={5}
+                  className="w-full px-4 py-2 rounded-lg border border-midnight/10 focus:border-accent focus:outline-none resize-none"
+                  disabled={submitting}
+                />
+              </div>
+
+              {/* Category */}
+              <div>
+                <label className="block text-sm font-semibold text-midnight mb-2">
+                  Category
+                </label>
+                <select
+                  value={formData.category}
+                  onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+                  className="w-full px-4 py-2 rounded-lg border border-midnight/10 focus:border-accent focus:outline-none"
+                  disabled={submitting}
+                >
+                  {categories.map((cat) => (
+                    <option key={cat} value={cat}>
+                      {cat}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              {/* Tags */}
+              <div>
+                <label className="block text-sm font-semibold text-midnight mb-2">
+                  Tags (comma-separated, optional)
+                </label>
+                <input
+                  type="text"
+                  value={formData.tags}
+                  onChange={(e) => setFormData({ ...formData, tags: e.target.value })}
+                  placeholder="e.g. fiction, bestseller, must-read"
+                  className="w-full px-4 py-2 rounded-lg border border-midnight/10 focus:border-accent focus:outline-none"
+                  disabled={submitting}
+                />
+              </div>
+
+              {/* Actions */}
+              <div className="flex gap-3 pt-4">
+                <button
+                  type="submit"
+                  disabled={submitting}
+                  className="flex-1 px-6 py-2 rounded-lg bg-accent text-ghost font-semibold hover:bg-accent/90 disabled:opacity-50 transition-colors"
+                >
+                  {submitting ? 'Publishing...' : 'Publish Post'}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setShowCreateModal(false)}
+                  disabled={submitting}
+                  className="px-6 py-2 rounded-lg border border-midnight/10 text-midnight font-semibold hover:bg-midnight/5 disabled:opacity-50 transition-colors"
+                >
+                  Cancel
+                </button>
+              </div>
+            </form>
           </motion.div>
         </div>
       )}
