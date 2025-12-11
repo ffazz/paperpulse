@@ -184,12 +184,44 @@
       "namedRegex": "^/api/users/(?<nxtPuserId>[^/]+?)(?:/)?$"
     },
     {
+      "page": "/api/users/[userId]/achievements",
+      "regex": "^/api/users/([^/]+?)/achievements(?:/)?$",
+      "routeKeys": {
+        "nxtPuserId": "nxtPuserId"
+      },
+      "namedRegex": "^/api/users/(?<nxtPuserId>[^/]+?)/achievements(?:/)?$"
+    },
+    {
       "page": "/api/users/[userId]/activity",
       "regex": "^/api/users/([^/]+?)/activity(?:/)?$",
       "routeKeys": {
         "nxtPuserId": "nxtPuserId"
       },
       "namedRegex": "^/api/users/(?<nxtPuserId>[^/]+?)/activity(?:/)?$"
+    },
+    {
+      "page": "/api/users/[userId]/avatar",
+      "regex": "^/api/users/([^/]+?)/avatar(?:/)?$",
+      "routeKeys": {
+        "nxtPuserId": "nxtPuserId"
+      },
+      "namedRegex": "^/api/users/(?<nxtPuserId>[^/]+?)/avatar(?:/)?$"
+    },
+    {
+      "page": "/api/users/[userId]/cover",
+      "regex": "^/api/users/([^/]+?)/cover(?:/)?$",
+      "routeKeys": {
+        "nxtPuserId": "nxtPuserId"
+      },
+      "namedRegex": "^/api/users/(?<nxtPuserId>[^/]+?)/cover(?:/)?$"
+    },
+    {
+      "page": "/api/users/[userId]/stats",
+      "regex": "^/api/users/([^/]+?)/stats(?:/)?$",
+      "routeKeys": {
+        "nxtPuserId": "nxtPuserId"
+      },
+      "namedRegex": "^/api/users/(?<nxtPuserId>[^/]+?)/stats(?:/)?$"
     },
     {
       "page": "/books/[id]",

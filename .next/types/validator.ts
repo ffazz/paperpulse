@@ -470,6 +470,15 @@ type RouteHandlerConfig<Route extends AppRouteHandlerRoutes = AppRouteHandlerRou
   type __Unused = __Check
 }
 
+// Validate ../../src/app/api/users/[userId]/achievements/route.ts
+{
+  type __IsExpected<Specific extends RouteHandlerConfig<"/api/users/[userId]/achievements">> = Specific
+  const handler = {} as typeof import("../../src/app/api/users/[userId]/achievements/route.js")
+  type __Check = __IsExpected<typeof handler>
+  // @ts-ignore
+  type __Unused = __Check
+}
+
 // Validate ../../src/app/api/users/[userId]/activity/route.ts
 {
   type __IsExpected<Specific extends RouteHandlerConfig<"/api/users/[userId]/activity">> = Specific
@@ -479,10 +488,37 @@ type RouteHandlerConfig<Route extends AppRouteHandlerRoutes = AppRouteHandlerRou
   type __Unused = __Check
 }
 
+// Validate ../../src/app/api/users/[userId]/avatar/route.ts
+{
+  type __IsExpected<Specific extends RouteHandlerConfig<"/api/users/[userId]/avatar">> = Specific
+  const handler = {} as typeof import("../../src/app/api/users/[userId]/avatar/route.js")
+  type __Check = __IsExpected<typeof handler>
+  // @ts-ignore
+  type __Unused = __Check
+}
+
+// Validate ../../src/app/api/users/[userId]/cover/route.ts
+{
+  type __IsExpected<Specific extends RouteHandlerConfig<"/api/users/[userId]/cover">> = Specific
+  const handler = {} as typeof import("../../src/app/api/users/[userId]/cover/route.js")
+  type __Check = __IsExpected<typeof handler>
+  // @ts-ignore
+  type __Unused = __Check
+}
+
 // Validate ../../src/app/api/users/[userId]/route.ts
 {
   type __IsExpected<Specific extends RouteHandlerConfig<"/api/users/[userId]">> = Specific
   const handler = {} as typeof import("../../src/app/api/users/[userId]/route.js")
+  type __Check = __IsExpected<typeof handler>
+  // @ts-ignore
+  type __Unused = __Check
+}
+
+// Validate ../../src/app/api/users/[userId]/stats/route.ts
+{
+  type __IsExpected<Specific extends RouteHandlerConfig<"/api/users/[userId]/stats">> = Specific
+  const handler = {} as typeof import("../../src/app/api/users/[userId]/stats/route.js")
   type __Check = __IsExpected<typeof handler>
   // @ts-ignore
   type __Unused = __Check
