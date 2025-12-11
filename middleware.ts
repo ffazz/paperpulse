@@ -5,7 +5,7 @@ export default auth((req) => {
   const { pathname } = req.nextUrl
   const isLoggedIn = !!req.auth
 
-  const protectedRoutes = ['/dashboard', '/profile', '/favorites']
+  const protectedRoutes = ['/dashboard', '/profile', '/favorites', '/reading-lists']
   const authRoutes = ['/auth/signin', '/auth/signup']
 
   if (protectedRoutes.some((r) => pathname.startsWith(r)) && !isLoggedIn) {
