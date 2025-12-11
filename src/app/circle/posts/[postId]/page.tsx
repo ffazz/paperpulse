@@ -144,7 +144,7 @@ export default function PostDetailPage() {
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      className="container py-8 md:py-12"
+      className="container pt-20 md:pt-24 pb-8 md:pb-12"
     >
       {/* Back Button */}
       <Link href="/circle">
