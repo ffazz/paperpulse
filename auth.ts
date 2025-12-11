@@ -15,55 +15,66 @@ export const { auth, signIn, signOut, handlers } = NextAuth({
   ...authConfig,
   adapter: PrismaAdapter(prisma),
   session: { strategy: 'jwt' },
+  events: {
+    async signIn({ user }) {
+      console.log('[EVENT] User signed in:', user.email)
+    },
+    async signOut() {
+      console.log('[EVENT] User signed out')
+    },
+  },
   providers: [
     CredentialsProvider({
       name: 'Credentials',
       credentials: {
-        email: { label: 'Email', type: 'email', placeholder: 'you@example.com' },
+        email: { label: 'Email', type: 'email' },
         password: { label: 'Password', type: 'password' },
       },
-      async authorize(credentials, req) {
-        console.log('[AUTH] Authorize called')
-        console.log('[AUTH] Credentials:', credentials)
+      async authorize(credentials: Partial<Record<string, unknown>>) {
+        console.log('[AUTH] Authorize called with:', Object.keys(credentials || {}))
         
-        if (!credentials) {
-          console.error('[AUTH] No credentials provided')
+        if (!credentials?.email || !credentials?.password) {
+          console.log('[AUTH] Missing email or password')
           return null
         }
 
         try {
-          const parsed = credentialsSchema.safeParse(credentials)
+          const result = credentialsSchema.safeParse({
+            email: credentials.email as string,
+            password: credentials.password as string,
+          })
           
-          if (!parsed.success) {
-            console.error('[AUTH] Validation error:', parsed.error.issues)
+          if (!result.success) {
+            console.error('[AUTH] Validation failed:', result.error.issues.map(i => `${i.path.join('.')}: ${i.message}`))
             return null
           }
 
-          const { email, password } = parsed.data
-          console.log('[AUTH] Attempting login for:', email)
+          const { email, password } = result.data
+          console.log('[AUTH] Looking up user:', email)
           
           const user = await prisma.user.findUnique({ 
             where: { email },
           })
           
           if (!user) {
-            console.error('[AUTH] User not found:', email)
+            console.log('[AUTH] User not found for email:', email)
             return null
           }
           
           if (!user.password) {
-            console.error('[AUTH] User has no password hash:', email)
+            console.log('[AUTH] User has no password hash')
             return null
           }
 
+          console.log('[AUTH] Comparing passwords...')
           const passwordMatch = await bcrypt.compare(password, user.password)
           
           if (!passwordMatch) {
-            console.error('[AUTH] Password mismatch for user:', email)
+            console.log('[AUTH] Password does not match')
             return null
           }
 
-          console.log('[AUTH] Login successful for:', email)
+          console.log('[AUTH] ✓ Authentication successful for:', email)
           return {
             id: user.id,
             email: user.email,
@@ -71,7 +82,7 @@ export const { auth, signIn, signOut, handlers } = NextAuth({
             image: user.image,
           }
         } catch (error) {
-          console.error('[AUTH] Authorize error:', error)
+          console.error('[AUTH] Critical error in authorize:', error)
           return null
         }
       },

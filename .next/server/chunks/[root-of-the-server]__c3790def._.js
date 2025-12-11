@@ -157,16 +157,31 @@ const { auth, signIn, signOut, handlers } = (0, __TURBOPACK__imported__module__$
                     email: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$zod$2f$v4$2f$classic$2f$external$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__$3c$export__$2a$__as__z$3e$__["z"].string().email(),
                     password: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$zod$2f$v4$2f$classic$2f$external$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__$3c$export__$2a$__as__z$3e$__["z"].string().min(6)
                 }).safeParse(credentials);
-                if (!parsed.success) return null;
+                if (!parsed.success) {
+                    console.error('Validation failed:', parsed.error);
+                    return null;
+                }
                 const { email, password } = parsed.data;
+                console.log('Attempting login for email:', email);
                 const user = await __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$prisma$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["prisma"].user.findUnique({
                     where: {
                         email
                     }
                 });
-                if (!user || !user.password) return null;
+                if (!user) {
+                    console.error('User not found:', email);
+                    return null;
+                }
+                if (!user.password) {
+                    console.error('User has no password set:', email);
+                    return null;
+                }
                 const match = await __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$bcryptjs$2f$index$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["default"].compare(password, user.password);
-                if (!match) return null;
+                if (!match) {
+                    console.error('Password mismatch for user:', email);
+                    return null;
+                }
+                console.log('Login successful for:', email);
                 return {
                     id: user.id,
                     email: user.email,

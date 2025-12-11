@@ -136,54 +136,108 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$zod$2f$v4$2f
 ;
 ;
 ;
+const credentialsSchema = __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$zod$2f$v4$2f$classic$2f$external$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__$3c$export__$2a$__as__z$3e$__["z"].object({
+    email: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$zod$2f$v4$2f$classic$2f$external$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__$3c$export__$2a$__as__z$3e$__["z"].string().email('Invalid email'),
+    password: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$zod$2f$v4$2f$classic$2f$external$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__$3c$export__$2a$__as__z$3e$__["z"].string().min(6, 'Password too short')
+});
 const { auth, signIn, signOut, handlers } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2d$auth$2f$index$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__$3c$locals$3e$__["default"])({
     ...__TURBOPACK__imported__module__$5b$project$5d2f$auth$2e$config$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["authConfig"],
     adapter: (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$auth$2f$prisma$2d$adapter$2f$index$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["PrismaAdapter"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$prisma$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["prisma"]),
     session: {
         strategy: 'jwt'
     },
+    events: {
+        async signIn ({ user }) {
+            console.log('[EVENT] User signed in:', user.email);
+        },
+        async signOut () {
+            console.log('[EVENT] User signed out');
+        }
+    },
     providers: [
         (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2d$auth$2f$node_modules$2f40$auth$2f$core$2f$providers$2f$credentials$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["default"])({
+            name: 'Credentials',
             credentials: {
                 email: {
+                    label: 'Email',
                     type: 'email'
                 },
                 password: {
+                    label: 'Password',
                     type: 'password'
                 }
             },
             async authorize (credentials) {
-                const parsed = __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$zod$2f$v4$2f$classic$2f$external$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__$3c$export__$2a$__as__z$3e$__["z"].object({
-                    email: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$zod$2f$v4$2f$classic$2f$external$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__$3c$export__$2a$__as__z$3e$__["z"].string().email(),
-                    password: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$zod$2f$v4$2f$classic$2f$external$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__$3c$export__$2a$__as__z$3e$__["z"].string().min(6)
-                }).safeParse(credentials);
-                if (!parsed.success) return null;
-                const { email, password } = parsed.data;
-                const user = await __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$prisma$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["prisma"].user.findUnique({
-                    where: {
-                        email
+                console.log('[AUTH] Authorize called with:', Object.keys(credentials || {}));
+                if (!credentials?.email || !credentials?.password) {
+                    console.log('[AUTH] Missing email or password');
+                    return null;
+                }
+                try {
+                    const result = credentialsSchema.safeParse({
+                        email: credentials.email,
+                        password: credentials.password
+                    });
+                    if (!result.success) {
+                        console.error('[AUTH] Validation failed:', result.error.issues.map((i)=>`${i.path.join('.')}: ${i.message}`));
+                        return null;
                     }
-                });
-                if (!user || !user.password) return null;
-                const match = await __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$bcryptjs$2f$index$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["default"].compare(password, user.password);
-                if (!match) return null;
-                return {
-                    id: user.id,
-                    email: user.email,
-                    name: user.name,
-                    image: user.image
-                };
+                    const { email, password } = result.data;
+                    console.log('[AUTH] Looking up user:', email);
+                    const user = await __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$prisma$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["prisma"].user.findUnique({
+                        where: {
+                            email
+                        }
+                    });
+                    if (!user) {
+                        console.log('[AUTH] User not found for email:', email);
+                        return null;
+                    }
+                    if (!user.password) {
+                        console.log('[AUTH] User has no password hash');
+                        return null;
+                    }
+                    console.log('[AUTH] Comparing passwords...');
+                    const passwordMatch = await __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$bcryptjs$2f$index$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["default"].compare(password, user.password);
+                    if (!passwordMatch) {
+                        console.log('[AUTH] Password does not match');
+                        return null;
+                    }
+                    console.log('[AUTH] ✓ Authentication successful for:', email);
+                    return {
+                        id: user.id,
+                        email: user.email,
+                        name: user.name,
+                        image: user.image
+                    };
+                } catch (error) {
+                    console.error('[AUTH] Critical error in authorize:', error);
+                    return null;
+                }
             }
         })
     ],
     callbacks: {
         async jwt ({ token, user }) {
+            console.log('[JWT] Token callback - user:', !!user);
             if (user) token.id = user.id;
             return token;
         },
         async session ({ session, token }) {
+            console.log('[SESSION] Session callback');
             if (token && session.user) session.user.id = token.id;
             return session;
+        }
+    },
+    logger: {
+        error (code, ...message) {
+            console.error('[NextAuth Error]', code, ...message);
+        },
+        warn (code, ...message) {
+            console.warn('[NextAuth Warn]', code, ...message);
+        },
+        debug (code, ...message) {
+            console.debug('[NextAuth Debug]', code, ...message);
         }
     }
 });
