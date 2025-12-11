@@ -1,22 +1,15 @@
 {
   "/_not-found/page": "app/_not-found/page.js",
   "/api/auth/[...nextauth]/route": "app/api/auth/[...nextauth]/route.js",
-  "/api/auth/register/route": "app/api/auth/register/route.js",
   "/api/bookmarks/route": "app/api/bookmarks/route.js",
-  "/api/books/[id]/recommendations/route": "app/api/books/[id]/recommendations/route.js",
-  "/api/books/[id]/route": "app/api/books/[id]/route.js",
-  "/api/books/[id]/view/route": "app/api/books/[id]/view/route.js",
   "/api/books/route": "app/api/books/route.js",
-  "/api/insights/route": "app/api/insights/route.js",
+  "/api/circle/posts/route": "app/api/circle/posts/route.js",
   "/api/user/goals/route": "app/api/user/goals/route.js",
-  "/api/user/lists/[listId]/books/route": "app/api/user/lists/[listId]/books/route.js",
   "/api/user/lists/route": "app/api/user/lists/route.js",
   "/auth/signin/page": "app/auth/signin/page.js",
-  "/books/[id]/page": "app/books/[id]/page.js",
   "/books/page": "app/books/page.js",
+  "/circle/page": "app/circle/page.js",
   "/dashboard/page": "app/dashboard/page.js",
   "/favorites/page": "app/favorites/page.js",
-  "/page": "app/page.js",
-  "/reading-lists/page": "app/reading-lists/page.js",
-  "/upload/page": "app/upload/page.js"
+  "/reading-lists/page": "app/reading-lists/page.js"
 }

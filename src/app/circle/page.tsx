@@ -81,7 +81,7 @@ export default function CirclePage() {
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      className="container py-8 md:py-12"
+      className="container pt-20 md:pt-24 pb-8 md:pb-12"
     >
       {/* Header */}
       <div className="flex items-center justify-between mb-8">

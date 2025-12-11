@@ -17,7 +17,7 @@ export default async function ReadingListsPage() {
   }
 
   return (
-    <main className="min-h-screen bg-gradient-to-b from-white to-accent/5 py-8 md:py-12">
+    <main className="min-h-screen bg-gradient-to-b from-white to-accent/5 pt-20 md:pt-24 pb-8 md:pb-12">
       <div className="container mx-auto px-4">
         <div className="space-y-12">
           {/* My Lists Section */}
