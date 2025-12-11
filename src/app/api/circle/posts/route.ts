@@ -103,6 +103,25 @@ export async function POST(req: NextRequest) {
       }
     })
 
+    // Track activity
+    try {
+      await prisma.userActivity.create({
+        data: {
+          userId: session.user.id,
+          type: 'created_post',
+          metadata: {
+            postId: post.id,
+            title: title.substring(0, 50),
+            bookId: bookId || null
+          },
+          isPublic: true
+        }
+      })
+    } catch (activityError) {
+      console.error('[ACTIVITY_TRACKING] Error tracking post creation:', activityError)
+      // Don't fail the post creation if activity tracking fails
+    }
+
     // Increment book discussionCount if bookId provided
     if (bookId) {
       await prisma.book.update({

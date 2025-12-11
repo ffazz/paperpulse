@@ -72,6 +72,25 @@ export async function PUT(
           where: { id: goalId },
           data: { currentBooks: { increment: 1 } }
         })
+
+        // Track activity for book completion
+        try {
+          await prisma.userActivity.create({
+            data: {
+              userId: session.user.id,
+              type: 'completed_book',
+              metadata: {
+                bookId: bookId,
+                bookTitle: updated.book.title,
+                goalId: goalId,
+                rating: rating || null
+              },
+              isPublic: true
+            }
+          })
+        } catch (activityError) {
+          console.error('Error tracking book completion:', activityError)
+        }
       } else if (wasCompleted && !willBeCompleted) {
         // Changing from completed to reading
         await prisma.readingGoal.update({

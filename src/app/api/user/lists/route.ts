@@ -109,6 +109,24 @@ export async function POST(request: Request) {
       },
     })
 
+    // Track activity
+    try {
+      await prisma.userActivity.create({
+        data: {
+          userId: user.id,
+          type: 'created_list',
+          metadata: {
+            listId: newList.id,
+            listName: name.substring(0, 50)
+          },
+          isPublic: true
+        }
+      })
+    } catch (activityError) {
+      console.error('Error tracking list creation:', activityError)
+      // Don't fail the list creation if activity tracking fails
+    }
+
     return NextResponse.json(newList, { status: 201 })
   } catch (error) {
     console.error('Error creating list:', error)
