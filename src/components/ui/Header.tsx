@@ -123,6 +123,15 @@ export default function Header() {
                         <p className="text-sm font-medium text-midnight">{session.user?.name}</p>
                         <p className="text-xs text-gray-600">{session.user?.email}</p>
                       </div>
+                      <Link href={`/users/${session.user?.id}`}>
+                        <div
+                          onClick={() => setShowUserMenu(false)}
+                          className="w-full flex items-center gap-2 px-4 py-2 text-sm text-midnight hover:bg-midnight/5 transition-colors cursor-pointer"
+                        >
+                          <HiUser className="w-4 h-4" />
+                          View Profile
+                        </div>
+                      </Link>
                       <button
                         onClick={() => {
                           signOut({ redirect: true, redirectTo: '/' })

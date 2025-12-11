@@ -173,6 +173,25 @@ export async function POST(
         where: { id: goalId },
         data: { currentBooks: { increment: 1 } }
       })
+
+      // Create activity for completed book
+      try {
+        await prisma.userActivity.create({
+          data: {
+            userId: session.user.id,
+            type: 'completed_book',
+            metadata: {
+              bookId,
+              bookTitle: goalBook.book.title,
+              rating: rating || null
+            },
+            isPublic: true
+          }
+        })
+      } catch (activityError) {
+        console.error('Error creating activity:', activityError)
+        // Don't fail the request if activity creation fails
+      }
     }
 
     // Increment book bookmarkCount
