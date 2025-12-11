@@ -25,8 +25,18 @@ model User {
   // Profile enhancement fields
   bio           String?   @db.Text
   favoriteGenres String[] @default([])
-  website       String?
   location      String?
+  website       String?
+  twitter       String?
+  instagram     String?
+  goodreads     String?
+  
+  // Privacy & appearance settings
+  isPublic      Boolean   @default(true)
+  showEmail     Boolean   @default(false)
+  showReadingGoal Boolean @default(true)
+  coverImage    String?
+  theme         String    @default("light") // light, dark, auto
   
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
@@ -44,6 +54,11 @@ model User {
   comments      Comment[]
   postLikes     PostLike[]
   commentLikes  CommentLike[]
+  
+  // Profile system relations
+  activities    UserActivity[]
+  profileViews  ProfileView[] @relation("ProfileViewed")
+  viewedProfiles ProfileView[] @relation("ProfileViewer")
 
   @@map("users")
 }
@@ -340,4 +355,39 @@ model CommentLike {
 
   @@unique([commentId, userId])
   @@map("comment_likes")
+}
+
+// ==========================================
+// USER ACTIVITY & PROFILE SYSTEM
+// ==========================================
+
+model UserActivity {
+  id        String   @id @default(cuid())
+  userId    String
+  type      String   // created_list, added_book_to_list, completed_book, created_post, wrote_review, achieved_goal, started_reading, bookmarked_book
+  metadata  Json     // Flexible field for activity-specific data
+  isPublic  Boolean  @default(true)
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([type])
+  @@index([createdAt])
+  @@index([userId, createdAt])
+  @@map("user_activities")
+}
+
+model ProfileView {
+  id             String   @id @default(cuid())
+  profileUserId  String
+  viewerUserId   String?
+  viewedAt       DateTime @default(now())
+
+  profileUser User   @relation("ProfileViewed", fields: [profileUserId], references: [id], onDelete: Cascade)
+  viewer      User?  @relation("ProfileViewer", fields: [viewerUserId], references: [id], onDelete: SetNull)
+
+  @@index([profileUserId])
+  @@index([viewedAt])
+  @@map("profile_views")
 }
