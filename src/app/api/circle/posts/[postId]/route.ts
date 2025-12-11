@@ -160,7 +160,7 @@ export async function DELETE(
 
     const post = await prisma.post.findUnique({
       where: { id: postId },
-      select: { authorId: true }
+      select: { authorId: true, bookId: true }
     })
 
     if (!post) {
@@ -180,6 +180,14 @@ export async function DELETE(
     await prisma.post.delete({
       where: { id: postId }
     })
+
+    // Decrement book discussionCount if bookId exists
+    if (post.bookId) {
+      await prisma.book.update({
+        where: { id: post.bookId },
+        data: { discussionCount: { decrement: 1 } }
+      })
+    }
 
     return NextResponse.json({ success: true })
   } catch (error) {

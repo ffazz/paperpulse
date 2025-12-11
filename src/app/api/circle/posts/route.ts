@@ -103,6 +103,14 @@ export async function POST(req: NextRequest) {
       }
     })
 
+    // Increment book discussionCount if bookId provided
+    if (bookId) {
+      await prisma.book.update({
+        where: { id: bookId },
+        data: { discussionCount: { increment: 1 } }
+      })
+    }
+
     return NextResponse.json(post, { status: 201 })
   } catch (error) {
     console.error('[CIRCLE_API] Error creating post:', error)

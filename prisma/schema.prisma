@@ -166,6 +166,7 @@ model Book {
   categories       String[]  @default([])
   bookmarkCount    Int       @default(0)
   viewCount        Int       @default(0)
+  discussionCount  Int       @default(0)
   
   createdAt        DateTime  @default(now())
   updatedAt        DateTime  @updatedAt
@@ -176,6 +177,7 @@ model Book {
   readingStatuses  ReadingStatus[]
   readingListBooks ReadingListBook[]
   posts            Post[]
+  goalBooks        ReadingGoalBook[]
 
   @@index([language])
   @@index([publisher])
@@ -234,11 +236,31 @@ model ReadingGoal {
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user  User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  books ReadingGoalBook[]
 
   @@unique([userId, year])
   @@index([userId])
   @@map("reading_goals")
+}
+
+model ReadingGoalBook {
+  id          String   @id @default(cuid())
+  goalId      String
+  bookId      Int
+  status      String   @default("reading") // reading, completed
+  startedAt   DateTime @default(now())
+  completedAt DateTime?
+  rating      Float?
+  createdAt   DateTime @default(now())
+
+  goal ReadingGoal @relation(fields: [goalId], references: [id], onDelete: Cascade)
+  book Book        @relation(fields: [bookId], references: [id], onDelete: Cascade)
+
+  @@unique([goalId, bookId])
+  @@index([goalId])
+  @@index([status])
+  @@map("reading_goal_books")
 }
 
 // ==========================================
@@ -267,6 +289,7 @@ model Post {
 
   @@index([category])
   @@index([authorId])
+  @@index([bookId])
   @@index([createdAt])
   @@index([likeCount])
   @@map("posts")
