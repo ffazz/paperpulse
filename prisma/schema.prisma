@@ -21,6 +21,13 @@ model User {
   emailVerified DateTime?
   password      String
   image         String?
+  
+  // Profile enhancement fields
+  bio           String?   @db.Text
+  favoriteGenres String[] @default([])
+  website       String?
+  location      String?
+  
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
 
@@ -31,6 +38,12 @@ model User {
   readingStatuses ReadingStatus[]
   readingLists    ReadingList[]
   readingGoals    ReadingGoal[]
+  
+  // Circle forum relations
+  posts         Post[]
+  comments      Comment[]
+  postLikes     PostLike[]
+  commentLikes  CommentLike[]
 
   @@map("users")
 }
@@ -162,8 +175,8 @@ model Book {
   reviews          Review[]
   readingStatuses  ReadingStatus[]
   readingListBooks ReadingListBook[]
+  posts            Post[]
 
-  // Indexes untuk query performance
   @@index([language])
   @@index([publisher])
   @@index([title])
@@ -226,4 +239,82 @@ model ReadingGoal {
   @@unique([userId, year])
   @@index([userId])
   @@map("reading_goals")
+}
+
+// ==========================================
+// CIRCLE FORUM MODELS
+// ==========================================
+
+model Post {
+  id           String   @id @default(cuid())
+  authorId     String
+  title        String   @db.VarChar(200)
+  content      String   @db.Text
+  category     String   // Recommendation, Review, Quote, Discussion
+  bookId       Int?
+  tags         String[] @default([])
+  likeCount    Int      @default(0)
+  commentCount Int      @default(0)
+  viewCount    Int      @default(0)
+  isPinned     Boolean  @default(false)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  author   User       @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  book     Book?      @relation(fields: [bookId], references: [id], onDelete: SetNull)
+  comments Comment[]
+  likes    PostLike[]
+
+  @@index([category])
+  @@index([authorId])
+  @@index([createdAt])
+  @@index([likeCount])
+  @@map("posts")
+}
+
+model Comment {
+  id        String   @id @default(cuid())
+  postId    String
+  authorId  String
+  content   String   @db.Text
+  parentId  String?
+  likeCount Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  post     Post         @relation(fields: [postId], references: [id], onDelete: Cascade)
+  author   User         @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  parent   Comment?     @relation("CommentReplies", fields: [parentId], references: [id], onDelete: Cascade)
+  replies  Comment[]    @relation("CommentReplies")
+  likes    CommentLike[]
+
+  @@index([postId])
+  @@index([authorId])
+  @@map("comments")
+}
+
+model PostLike {
+  id        String   @id @default(cuid())
+  postId    String
+  userId    String
+  createdAt DateTime @default(now())
+
+  post Post @relation(fields: [postId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([postId, userId])
+  @@map("post_likes")
+}
+
+model CommentLike {
+  id        String   @id @default(cuid())
+  commentId String
+  userId    String
+  createdAt DateTime @default(now())
+
+  comment Comment @relation(fields: [commentId], references: [id], onDelete: Cascade)
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([commentId, userId])
+  @@map("comment_likes")
 }
