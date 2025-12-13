@@ -1,5 +1,6 @@
 import { auth } from '@/auth'
 import { prisma } from '@/lib/prisma'
+import { createPostCommentNotification, createCommentReplyNotification } from '@/lib/notification-service'
 import { NextRequest, NextResponse } from 'next/server'
 
 export async function POST(
@@ -57,6 +58,30 @@ export async function POST(
       where: { id: postId },
       data: { commentCount: { increment: 1 } }
     })
+
+    // Send notification
+    if (parentId) {
+      // Replying to a comment
+      const parentComment = await prisma.comment.findUnique({
+        where: { id: parentId }
+      })
+      if (parentComment) {
+        await createCommentReplyNotification(
+          parentId,
+          parentComment.authorId,
+          session.user.id,
+          postId
+        )
+      }
+    } else {
+      // Commenting on post
+      await createPostCommentNotification(
+        postId,
+        post.authorId,
+        session.user.id,
+        comment.id
+      )
+    }
 
     return NextResponse.json(comment, { status: 201 })
   } catch (error) {

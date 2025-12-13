@@ -1,5 +1,6 @@
 import { auth } from '@/auth'
 import { prisma } from '@/lib/prisma'
+import { createPostLikeNotification } from '@/lib/notification-service'
 import { NextRequest, NextResponse } from 'next/server'
 
 export async function POST(
@@ -69,6 +70,9 @@ export async function POST(
         where: { id: postId },
         data: { likeCount: { increment: 1 } }
       })
+
+      // Send notification to post author
+      await createPostLikeNotification(postId, post.authorId, session.user.id)
 
       return NextResponse.json({ liked: true })
     }
