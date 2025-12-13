@@ -2,6 +2,7 @@
 
 import { HiHeart } from 'react-icons/hi2'
 import { motion } from 'framer-motion'
+import { Logo } from '@/components/Logo'
 
 export default function Footer() {
   return (
@@ -11,14 +12,16 @@ export default function Footer() {
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="flex flex-col items-center gap-4 text-center"
+          className="flex flex-col items-center gap-6 text-center"
         >
+          <Logo variant="small" size={60} clickable={false} />
+          
           <div className="text-sm text-midnight/40 flex items-center gap-2">
             Made with <HiHeart className="text-red-500 w-4 h-4 animate-pulse" /> for book lovers
           </div>
           
           <div className="text-xs text-midnight/30">
-            © 2025 PaperPulse · Powered by vibes
+            © 2025 PaperPulse · Discover reading together
           </div>
         </motion.div>
       </div>

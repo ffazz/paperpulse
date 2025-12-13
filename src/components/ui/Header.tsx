@@ -6,6 +6,7 @@ import { useSession, signOut } from 'next-auth/react'
 import { HiBookOpen, HiChartBar, HiUser, HiArrowRightOnRectangle, HiHeart, HiChatBubbleLeftRight, HiEllipsisHorizontalCircle } from 'react-icons/hi2'
 import { motion } from 'framer-motion'
 import { useState } from 'react'
+import { Logo } from '@/components/Logo'
 import { NotificationBell } from '@/components/notifications/NotificationBell'
 
 export default function Header() {
@@ -32,15 +33,7 @@ export default function Header() {
     >
       <nav className="container">
         <div className="flex items-center justify-between h-14 sm:h-16">
-          <Link href="/" className="group flex items-center gap-1 sm:gap-2">
-            <motion.div 
-              whileHover={{ scale: 1.05 }}
-              className="text-lg sm:text-2xl font-bold tracking-tighter"
-            >
-              <span className="text-midnight">Paper</span>
-              <span className="text-accent">Pulse</span>
-            </motion.div>
-          </Link>
+          <Logo variant="small" size={32} priority />
 
           <div className="flex items-center gap-0.5 sm:gap-1">
             {/* Main Navigation */}

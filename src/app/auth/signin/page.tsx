@@ -5,6 +5,7 @@ import { signIn } from 'next-auth/react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import { HiEnvelope, HiLockClosed, HiArrowRight } from 'react-icons/hi2'
+import { Logo } from '@/components/Logo'
 
 export default function SignIn() {
   const router = useRouter()
@@ -51,6 +52,11 @@ export default function SignIn() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-accent/10 via-blue-50 to-ghost flex items-center justify-center p-4 sm:p-6 md:p-8">
       <div className="w-full max-w-md">
+        {/* Logo */}
+        <div className="mb-8 text-center flex justify-center">
+          <Logo variant="main" size={80} clickable={false} />
+        </div>
+
         {/* Header */}
         <div className="mb-8 text-center">
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-midnight mb-2">
