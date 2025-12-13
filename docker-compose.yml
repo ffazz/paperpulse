@@ -1,0 +1,74 @@
+version: '3.8'
+
+services:
+  # PostgreSQL Database
+  postgres:
+    image: postgres:15-alpine
+    container_name: paperpulse-db
+    environment:
+      POSTGRES_USER: ${DB_USER:-neondb_owner}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-postgres}
+      POSTGRES_DB: ${DB_NAME:-neondb}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-neondb_owner}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - paperpulse-network
+
+  # Next.js Application
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: paperpulse-app
+    environment:
+      # Database
+      DATABASE_URL: postgresql://${DB_USER:-neondb_owner}:${DB_PASSWORD:-postgres}@postgres:5432/${DB_NAME:-neondb}
+      
+      # Next.js
+      NEXT_PUBLIC_URL: http://localhost:3000
+      NODE_ENV: production
+      
+      # NextAuth
+      NEXTAUTH_URL: http://localhost:3000
+      NEXTAUTH_SECRET: ${NEXTAUTH_SECRET:-5EgT4q2kN7pLm9xJ1w3vR6yB8cZ0dF2hA4sT6uI9oP}
+    ports:
+      - "3000:3000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      - ./public:/app/public
+    networks:
+      - paperpulse-network
+    restart: unless-stopped
+
+  # Optional: pgAdmin untuk database management
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: paperpulse-pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@paperpulse.local
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASSWORD:-admin}
+    ports:
+      - "5050:80"
+    depends_on:
+      - postgres
+    networks:
+      - paperpulse-network
+    profiles:
+      - dev
+
+networks:
+  paperpulse-network:
+    driver: bridge
+
+volumes:
+  postgres_data:
+    driver: local

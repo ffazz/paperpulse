@@ -1,0 +1,62 @@
+version: '3.8'
+
+# Development-only docker-compose
+# Lebih ringan, dengan live reload dan debugging
+
+services:
+  # PostgreSQL Database
+  postgres:
+    image: postgres:15-alpine
+    container_name: paperpulse-dev-db
+    environment:
+      POSTGRES_USER: neondb_owner
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: neondb
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_dev_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U neondb_owner"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - paperpulse-dev-network
+
+  # Redis Cache (optional, untuk future features)
+  redis:
+    image: redis:7-alpine
+    container_name: paperpulse-dev-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_dev_data:/data
+    networks:
+      - paperpulse-dev-network
+    profiles:
+      - cache
+
+  # pgAdmin
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: paperpulse-dev-pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@paperpulse.local
+      PGADMIN_DEFAULT_PASSWORD: admin
+    ports:
+      - "5050:80"
+    depends_on:
+      - postgres
+    networks:
+      - paperpulse-dev-network
+
+networks:
+  paperpulse-dev-network:
+    driver: bridge
+
+volumes:
+  postgres_dev_data:
+    driver: local
+  redis_dev_data:
+    driver: local
