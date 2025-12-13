@@ -1,36 +1,106 @@
 import { Suspense } from 'react'
+import { prisma } from '@/lib/prisma'
 import StatsCards from '@/components/dashboard/StatsCards'
 import ChartsSection from '@/components/dashboard/ChartsSection'
 import DashboardLoading from './loading'
 
 async function getInsights() {
   try {
-    const response = await fetch('http://localhost:3000/api/insights', {
-      cache: 'no-store',
-    })
+    console.log('📊 Fetching insights from database...')
     
-    if (!response.ok) {
-      console.error('Insights API error:', response.status, response.statusText)
-      throw new Error(`Failed to fetch insights: ${response.statusText}`)
+    let books = []
+    try {
+      // Fetch all books directly from database
+      books = await prisma.book.findMany({
+        select: {
+          id: true,
+          language: true,
+          publication_date: true,
+          subjects: true,
+        }
+      })
+      console.log(`✅ Found ${books.length} books`)
+    } catch (dbError) {
+      console.error('❌ Database error:', dbError)
+      // Return fallback if database fails
+      return getDefaultInsights()
     }
+
+    // Calculate statistics
+    const indonesian = books.filter(b => b.language === 'Indonesian').length
+    const international = books.length - indonesian
     
-    return response.json()
-  } catch (error) {
-    console.error('Error fetching insights:', error)
-    return {
-      totalBooks: 0,
-      indonesianBooks: 0,
-      internationalBooks: 0,
+    // Year range
+    const years = books
+      .map(b => b.publication_date ? new Date(b.publication_date).getFullYear() : null)
+      .filter(y => y !== null) as number[]
+    
+    const minYear = years.length > 0 ? Math.min(...years) : new Date().getFullYear()
+    const maxYear = years.length > 0 ? Math.max(...years) : new Date().getFullYear()
+
+    // Top Subjects
+    const subjectCount: Record<string, number> = {}
+    books.forEach(book => {
+      if (book.subjects && Array.isArray(book.subjects)) {
+        book.subjects.forEach((subject: string) => {
+          subjectCount[subject] = (subjectCount[subject] || 0) + 1
+        })
+      }
+    })
+
+    const topSubjects = Object.entries(subjectCount)
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 10)
+      .map(([name, count]) => ({ name, count }))
+
+    // Language Distribution
+    const langCount: Record<string, number> = {}
+    books.forEach(book => {
+      const lang = book.language || 'Unknown'
+      langCount[lang] = (langCount[lang] || 0) + 1
+    })
+
+    const languageDistribution = Object.entries(langCount)
+      .sort((a, b) => b[1] - a[1])
+      .map(([name, count]) => ({ name, count }))
+
+    const insights = {
+      totalBooks: books.length,
+      indonesianBooks: indonesian,
+      internationalBooks: international,
       averageRating: 0,
       averagePages: 0,
       yearRange: {
-        min: new Date().getFullYear(),
-        max: new Date().getFullYear(),
+        min: minYear,
+        max: maxYear,
       },
-      topSubjects: [],
-      languageDistribution: [],
-      genreDistribution: [],
+      topSubjects,
+      languageDistribution,
+      genreDistribution: topSubjects.slice(0, 5),
     }
+
+    console.log('✅ Insights calculated:', insights)
+    return insights
+  } catch (error) {
+    console.error('Error fetching insights:', error)
+    return getDefaultInsights()
+  }
+}
+
+function getDefaultInsights() {
+  return {
+    totalBooks: 0,
+    indonesianBooks: 0,
+    internationalBooks: 0,
+    averageRating: 0,
+    averagePages: 0,
+    yearRange: {
+      min: new Date().getFullYear(),
+      max: new Date().getFullYear(),
+    },
+    topSubjects: [],
+    languageDistribution: [],
+    genreDistribution: [],
   }
 }
 

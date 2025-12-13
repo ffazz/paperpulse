@@ -5,15 +5,33 @@ export async function GET() {
   try {
     console.log('📊 Fetching insights...')
 
-    // Fetch all books
-    const books = await prisma.book.findMany({
-      select: {
-        id: true,
-        language: true,
-        publication_date: true,
-        subjects: true,
-      }
-    })
+    let books = []
+    try {
+      // Fetch all books
+      books = await prisma.book.findMany({
+        select: {
+          id: true,
+          language: true,
+          publication_date: true,
+          subjects: true,
+        }
+      })
+      console.log(`📚 Found ${books.length} books`)
+    } catch (dbError) {
+      console.error('❌ Database error fetching books:', dbError)
+      // Return default insights if database fails
+      return NextResponse.json({
+        totalBooks: 0,
+        indonesianBooks: 0,
+        internationalBooks: 0,
+        averageRating: 0,
+        averagePages: 0,
+        yearRange: { min: 2020, max: 2025 },
+        topSubjects: [],
+        languageDistribution: [],
+        genreDistribution: [],
+      })
+    }
 
     // Calculate statistics
     const indonesian = books.filter(b => b.language === 'Indonesian').length
