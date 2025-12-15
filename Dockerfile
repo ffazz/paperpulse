@@ -24,8 +24,8 @@ FROM node:18-alpine
 
 WORKDIR /app
 
-# Install dumb-init untuk signal handling yang proper
-RUN apk add --no-cache dumb-init
+# Install dumb-init dan OpenSSL untuk Prisma
+RUN apk add --no-cache dumb-init openssl
 
 # Copy dari builder
 COPY --from=builder /app/node_modules ./node_modules
@@ -49,5 +49,5 @@ HEALTHCHECK --interval=30s --timeout=3s --start-period=40s --retries=3 \
 # Use dumb-init untuk PID 1
 ENTRYPOINT ["dumb-init", "--"]
 
-# Start app
-CMD ["node", "-e", "require('next/dist/bin/next').nextStart()"]
+# Start app with Next.js server
+CMD ["npm", "start"]
