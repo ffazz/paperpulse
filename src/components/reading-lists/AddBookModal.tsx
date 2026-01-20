@@ -45,6 +45,7 @@ export default function AddBookModal({
     }
 
     searchBooks()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debouncedQuery])
 
   const searchBooks = async () => {

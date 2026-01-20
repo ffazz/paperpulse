@@ -66,6 +66,7 @@ export default function PostDetailPage() {
     if (status === 'authenticated') {
       fetchPost()
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [status, router])
 
   const fetchPost = async () => {

@@ -18,14 +18,11 @@ export async function GET(
       )
     }
 
-    console.log(`📖 Fetching book #${bookId}...`)
-
     const book = await prisma.book.findUnique({
       where: { id: bookId }
     })
 
     if (!book) {
-      console.log(`❌ Book #${bookId} not found`)
       return NextResponse.json(
         { error: 'Book not found' },
         { status: 404 }
@@ -61,7 +58,6 @@ export async function GET(
       inUserLists = lists.map(l => l.list.name)
     }
 
-    console.log(`✅ Found book: ${book.title}`)
     return NextResponse.json({
       ...book,
       inUserGoal,

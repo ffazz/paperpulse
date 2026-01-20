@@ -3,8 +3,6 @@ import { prisma } from '@/lib/prisma'
 
 export async function GET() {
   try {
-    console.log('📊 Fetching insights...')
-
     let books = []
     try {
       // Fetch all books
@@ -16,7 +14,6 @@ export async function GET() {
           subjects: true,
         }
       })
-      console.log(`📚 Found ${books.length} books`)
     } catch (dbError) {
       console.error('❌ Database error fetching books:', dbError)
       // Return default insights if database fails
@@ -86,7 +83,6 @@ export async function GET() {
       genreDistribution: topSubjects,
     }
 
-    console.log('✅ Insights calculated:', insights)
     return NextResponse.json(insights)
   } catch (error) {
     console.error('❌ Error fetching insights:', error)

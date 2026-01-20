@@ -59,6 +59,7 @@ export default function ListDetailPage({
 
   useEffect(() => {
     fetchList()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [listId])
 
   const fetchList = async () => {

@@ -39,6 +39,7 @@ export default function CircleDiscoverPage() {
     } else if (searchQuery.trim()) {
       fetchSearch()
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeTab, timeRange, searchQuery])
 
   const fetchTrending = async () => {

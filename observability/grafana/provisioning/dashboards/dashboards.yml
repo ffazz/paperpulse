@@ -1,0 +1,16 @@
+# Grafana Dashboard Provisioning
+# Auto-load dashboards dari folder /var/lib/grafana/dashboards
+
+apiVersion: 1
+
+providers:
+  - name: 'PaperPulse Dashboards'
+    orgId: 1
+    folder: 'PaperPulse'
+    folderUid: 'paperpulse'
+    type: file
+    disableDeletion: false
+    editable: true
+    updateIntervalSeconds: 30
+    options:
+      path: /etc/grafana/provisioning/dashboards/json

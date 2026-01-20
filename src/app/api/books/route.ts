@@ -11,15 +11,6 @@ export async function GET(request: NextRequest) {
     const yearFrom = searchParams.get('yearFrom')
     const yearTo = searchParams.get('yearTo')
 
-    console.log('🔍 API Request Filters:', {
-      language: languageFilter,
-      subject: subjectFilter,
-      publisher: publisherFilter,
-      search: searchQuery,
-      yearFrom,
-      yearTo
-    })
-
     // Build where clause dynamically
     const where: any = {}
 
@@ -62,16 +53,12 @@ export async function GET(request: NextRequest) {
       }
     }
 
-    console.log('🔍 Prisma where clause:', JSON.stringify(where, null, 2))
-
     // Fetch books with filters
     const books = await prisma.book.findMany({
       where,
       take: 1000,
       orderBy: { id: 'asc' }
     })
-
-    console.log(`✅ Found ${books.length} books`)
 
     return NextResponse.json(books)
 

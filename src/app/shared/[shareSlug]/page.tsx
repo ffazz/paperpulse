@@ -45,6 +45,7 @@ export default function PublicListView({
 
   useEffect(() => {
     fetchList()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [shareSlug])
 
   const fetchList = async () => {

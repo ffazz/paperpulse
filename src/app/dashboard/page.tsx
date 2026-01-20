@@ -6,8 +6,6 @@ import DashboardLoading from './loading'
 
 async function getInsights() {
   try {
-    console.log('📊 Fetching insights from database...')
-    
     let books = []
     try {
       // Fetch all books directly from database
@@ -19,9 +17,7 @@ async function getInsights() {
           subjects: true,
         }
       })
-      console.log(`✅ Found ${books.length} books`)
     } catch (dbError) {
-      console.error('❌ Database error:', dbError)
       // Return fallback if database fails
       return getDefaultInsights()
     }
@@ -64,7 +60,7 @@ async function getInsights() {
       .sort((a, b) => b[1] - a[1])
       .map(([name, count]) => ({ name, count }))
 
-    const insights = {
+    return {
       totalBooks: books.length,
       indonesianBooks: indonesian,
       internationalBooks: international,
@@ -78,9 +74,6 @@ async function getInsights() {
       languageDistribution,
       genreDistribution: topSubjects.slice(0, 5),
     }
-
-    console.log('✅ Insights calculated:', insights)
-    return insights
   } catch (error) {
     console.error('Error fetching insights:', error)
     return getDefaultInsights()

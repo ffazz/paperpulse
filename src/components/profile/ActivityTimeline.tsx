@@ -58,6 +58,7 @@ export function ActivityTimeline({ userId, isOwner }: ActivityTimelineProps) {
 
   useEffect(() => {
     fetchActivities()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userId])
 
   const fetchActivities = async () => {

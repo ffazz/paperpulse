@@ -21,6 +21,7 @@ export default function ReadingGoalCard() {
 
   useEffect(() => {
     fetchGoal()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const fetchGoal = async () => {

@@ -47,7 +47,6 @@ function isIndonesianBook(book: Book): boolean {
 
 export async function getBooks(): Promise<Book[]> {
   try {
-    console.log('🔄 Fetching books from API...');
     const response = await fetch(`${BASE_URL}/books?limit=5000`, { 
       cache: 'no-store',
       next: { revalidate: 0 }
@@ -58,7 +57,6 @@ export async function getBooks(): Promise<Book[]> {
     }
     
     const allBooks: Book[] = await response.json();
-    console.log(`📥 Received ${allBooks.length} books from API`);
     
     const indonesianBooks: Book[] = [];
     const internationalBooks: Book[] = [];
@@ -68,17 +66,14 @@ export async function getBooks(): Promise<Book[]> {
       
       if (isIndonesianBook(book)) {
         if (indonesianBooks.length < 500) indonesianBooks.push(book);
-      } else {
-        if (internationalBooks.length < 500) internationalBooks.push(book);
+      } else if (internationalBooks.length < 500) {
+        internationalBooks.push(book);
       }
       
       if (indonesianBooks.length >= 500 && internationalBooks.length >= 500) break;
     }
     
-    const finalBooks = [...indonesianBooks, ...internationalBooks];
-    console.log(`✅ Indonesian: ${indonesianBooks.length}, International: ${internationalBooks.length}, Total: ${finalBooks.length}`);
-    
-    return finalBooks;
+    return [...indonesianBooks, ...internationalBooks];
   } catch (error) {
     console.error('❌ Error fetching books:', error);
     throw error;

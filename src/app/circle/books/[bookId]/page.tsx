@@ -47,6 +47,7 @@ export default function BookPostsPage({
 
   useEffect(() => {
     fetchBookPosts()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [bookId])
 
   const fetchBookPosts = async () => {

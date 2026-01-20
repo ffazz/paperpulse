@@ -37,7 +37,7 @@ export class RecommendationEngine {
     allBooks: Book[],
     limit: number = 6
   ): BookWithSimilarity[] {
-    const booksWithScores = allBooks
+    return allBooks
       .filter(book => book.id !== targetBook.id)
       .map(book => ({
         ...book,
@@ -45,8 +45,6 @@ export class RecommendationEngine {
       }))
       .sort((a, b) => (b.similarityScore || 0) - (a.similarityScore || 0))
       .slice(0, limit)
-
-    return booksWithScores
   }
 
   public static searchByVibes(query: string, books: Book[]): Book[] {

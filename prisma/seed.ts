@@ -904,7 +904,7 @@ async function main() {
 }
 
 // ========================================
-// PRINT FINAL STATISTICS (Same as before)
+// PRINT FINAL STATISTICS
 // ========================================
 async function printFinalStats() {
   console.log('═══════════════════════════════════════════════')

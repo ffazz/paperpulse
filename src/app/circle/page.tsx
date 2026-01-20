@@ -51,6 +51,7 @@ export default function CirclePage() {
     if (status === 'authenticated') {
       fetchPosts()
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [status, selectedCategory, page, router])
 
   const fetchPosts = async () => {
